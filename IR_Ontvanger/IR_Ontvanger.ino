@@ -30,7 +30,9 @@ boolean receivingChar = false;
 
 // Timer2 overflow
 ISR(TIMER2_OVF_vect) {	
-	timerCounter++; // counts amount of overflows (since last reset)
+	if (timerCounter < 50000) {
+		timerCounter++; // counts amount of overflows (since last reset) to max of BIT_START
+	}
 }
 
 // Pin interrupt
@@ -81,17 +83,16 @@ void detectBit() {
 			Serial.print(1);
 			break; 
 		case BITTYPE_LOW_PAR : // Received bit: 0 (parity)
-			Serial.print(" P:0 ");
+			Serial.print("P:0 ");
 			Serial.print(receiveChar);
 			break; 
 		case BITTYPE_HIGH_PAR : // Received bit: 1 (parity)
-			Serial.print(" P:1");
+			Serial.print("P:1");
 			Serial.print(receiveChar);
-			break;
 		default: // Received bit: Start
 		receiveCharCounter = 0;
-		Serial.print("Start");
 	}
+	
 	Serial.print(" \tTimer: ");
 	Serial.println(timerCounter);
 	
