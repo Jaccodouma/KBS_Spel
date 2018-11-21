@@ -236,7 +236,7 @@ void detectBit() {
 			break; 
 		case BITTYPE_LOW_PAR : // Received bit: 0 (parity)
 			if (receiveCharCounter == 0) {
-				Serial.println("Stop");
+				Serial.println(" | Stop");
 			} else {
 				//Serial.print("P:0 ");
 				if (!has_even_parity(receiveChar)) {
@@ -247,7 +247,7 @@ void detectBit() {
 			break; 
 		case BITTYPE_HIGH_PAR : // Received bit: 1 (parity)
 			if (receiveCharCounter == 0) {
-				Serial.println("Start");
+				Serial.print("Start | ");
 			} else {
 				//Serial.print("P:1 ");
 				if (has_even_parity(receiveChar)) {
