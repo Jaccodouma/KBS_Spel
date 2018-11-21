@@ -5,7 +5,7 @@
 #define PWMTOP_56KHz 36 //36=56khz 58=34khz
 #define PWMTOP_34KHz 58 //36=56khz 58=34khz
 #define PWMTOP_RATIO 58 //36=56khz 58=34khz
-#define BASE_VAL 500 //the overflow counter value
+#define BIT_BASEVALUE 500 //the overflow counter value
 
 #define VAL_LOW 1
 #define VAL_HIGH 2
@@ -26,9 +26,9 @@ ISR(TIMER2_OVF_vect) {
 
     if (TxCode[commandCounter] > 0) {
       if (FREQ_56KHz) {
-        Pulse_value = TxCode[commandCounter] * BASE_VAL * 1.65;
+        Pulse_value = TxCode[commandCounter] * BIT_BASEVALUE * 1.65;
       } else {
-        Pulse_value = TxCode[commandCounter] * BASE_VAL;
+        Pulse_value = TxCode[commandCounter] * BIT_BASEVALUE;
       }
       commandCounter++;
     } else {
@@ -64,8 +64,6 @@ void IR_init(void)
   TIMSK2 = (1 << TOIE2); //turn overflow interupt on
   TCCR2A &= ~(1 << COM2B1); //pin d3 LOW
   sei();
-
-
 }
 
 int main(void)

@@ -1,8 +1,6 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
-
-
 // vars used with IR transmission
 uint16_t timerCounter = 0;
 uint8_t  receiveCharCounter = 0;

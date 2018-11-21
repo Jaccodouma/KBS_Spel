@@ -1,5 +1,5 @@
-C:\Users\Jacco\AppData\Local\Temp\VMBuilds\IR_Ontvanger\uno\Release\IR_Ontvanger.cpp.o: \
- C:\Users\Jacco\AppData\Local\Temp\VMBuilds\IR_Ontvanger\uno\Release\IR_Ontvanger.cpp \
+C:\Users\Jacco\AppData\Local\Temp\VMBuilds\IR_Duplex\uno\Debug\IR_Duplex.cpp.o: \
+ C:\Users\Jacco\AppData\Local\Temp\VMBuilds\IR_Duplex\uno\Debug\IR_Duplex.cpp \
  C:\Program\ Files\ (x86)\Arduino\hardware\arduino\avr\cores\arduino/arduino.h \
  C:\Program\ Files\ (x86)\Arduino\hardware\arduino\avr\cores\arduino/binary.h \
  C:\Program\ Files\ (x86)\Arduino\hardware\arduino\avr\cores\arduino/WCharacter.h \
@@ -10,4 +10,6 @@ C:\Users\Jacco\AppData\Local\Temp\VMBuilds\IR_Ontvanger\uno\Release\IR_Ontvanger
  C:\Program\ Files\ (x86)\Arduino\hardware\arduino\avr\cores\arduino/Printable.h \
  C:\Program\ Files\ (x86)\Arduino\hardware\arduino\avr\cores\arduino/USBAPI.h \
  C:\Program\ Files\ (x86)\Arduino\hardware\arduino\avr\cores\arduino/Arduino.h \
- C:\Program\ Files\ (x86)\Arduino\hardware\arduino\avr\variants\standard/pins_arduino.h
+ C:\Program\ Files\ (x86)\Arduino\hardware\arduino\avr\variants\standard/pins_arduino.h \
+ C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Extensions\hpf0ac2r.20r\Micro\ Platforms\default\debuggers\VM_DBG/VM_DBG.h \
+ C:\Program\ Files\ (x86)\Arduino\hardware\arduino\avr\cores\arduino/Arduino.h
