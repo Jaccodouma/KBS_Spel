@@ -67,7 +67,7 @@ ISR(TIMER2_OVF_vect) {
 			Pulse_value = 0;
 			commandCounter = 0;
 			TCCR2A &= ~(1 << COM2B1);
-			Serial.println("Transmission ended!");
+			//Serial.println("Transmission ended!");
 		}
 	}
 	OVF_counter++; //add 1 everytime the timer reaches the top (PWMTOP)
@@ -239,6 +239,9 @@ void detectBit() {
 				Serial.println("Stop");
 			} else {
 				//Serial.print("P:0 ");
+				if (!has_even_parity(receiveChar)) {
+					Serial.print("PARITY ERROR");
+				}
 				Serial.print((char) receiveChar);
 			}
 			break; 
@@ -247,6 +250,9 @@ void detectBit() {
 				Serial.println("Start");
 			} else {
 				//Serial.print("P:1 ");
+				if (has_even_parity(receiveChar)) {
+					Serial.print("PARITY ERROR");
+				}
 				Serial.print((char) receiveChar);
 			}
 		default: // Received bit: Start
