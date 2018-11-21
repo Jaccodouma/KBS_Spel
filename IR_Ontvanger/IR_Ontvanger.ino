@@ -1,8 +1,8 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
-// PWM TOP, used in PWM (generates frequency for the LED)
-#define PWMTOP 36 
+// PWM TOP, used in PWM (generates frequency for the LED) 36=56khz 58=34khz
+#define PWMTOP 36
 
 // vars used with IR transmission
 uint16_t timerCounter = 0;
@@ -76,20 +76,30 @@ void detectBit() {
 	switch (detectBitType(timerCounter)) {
 		 case BITTYPE_LOW : // Received bit: 0
 			receiveChar = receiveChar<<1; // Shift receiveChar
+			receiveCharCounter++;
 			Serial.print(0);
 			break;
 		case BITTYPE_HIGH : // Received bit: 1
 			receiveChar = receiveChar<<1; // Shift receiveChar
+			receiveCharCounter++;
 			receiveChar |= 1; // set LSB to 1
 			Serial.print(1);
 			break; 
 		case BITTYPE_LOW_PAR : // Received bit: 0 (parity)
-			Serial.print("P:0 ");
-			Serial.print((char) receiveChar);
+			if (receiveCharCounter == 0) {
+				Serial.print("Stop");
+			} else {
+				Serial.print("P:0 ");
+				Serial.print((char) receiveChar);
+			}
 			break; 
 		case BITTYPE_HIGH_PAR : // Received bit: 1 (parity)
-			Serial.print("P:1 ");
-			Serial.print((char) receiveChar);
+			if (receiveCharCounter == 0) {
+				Serial.print("Start");
+			} else {
+				Serial.print("P:1 ");
+				Serial.print((char) receiveChar);
+			}
 		default: // Received bit: Start
 		receiveCharCounter = 0;
 	}
