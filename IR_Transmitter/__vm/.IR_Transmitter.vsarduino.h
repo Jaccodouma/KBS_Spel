@@ -19,11 +19,11 @@
 #define ARDUINO_AVR_UNO
 #define ARDUINO_ARCH_AVR
 int main(void);
-void IR_initPWM();
-void IR_initInterrupt();
-void detectBit();
-int detectBitType(double counter);
+void IR_initPWM(void);
+void sendByte(uint8_t byte);
+uint8_t has_even_parity(uint8_t x);
+void transByte(uint8_t byteIn);
 
 #include "pins_arduino.h" 
 #include "arduino.h"
-#include "IR_Ontvanger.ino"
+#include "IR_Transmitter.ino"

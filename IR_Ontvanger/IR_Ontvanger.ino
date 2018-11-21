@@ -1,16 +1,18 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
+// PWM TOP, used in PWM (generates frequency for the LED)
 #define PWMTOP 36 
 
+// vars used with IR transmission
 uint16_t timerCounter = 0;
 uint8_t  receiveCharCounter = 0;
-char receiveChar = 0;
+uint8_t receiveChar = 0;
 boolean receivingChar = false; 
 
 
 // Timings for detection of bits
-#define BIT_BASEVALUE 1000
+#define BIT_BASEVALUE 500
 
 #define BIT_LOW			 BIT_BASEVALUE
 #define BIT_HIGH		(BIT_BASEVALUE*2)
@@ -44,7 +46,7 @@ ISR(PCINT2_vect) {
 int main(void)
 {
 	Serial.begin(9600);
-	IR_initPWM(PWMTOP);
+	IR_initPWM();
 	IR_initInterrupt();
 	while (1)
 	{
@@ -52,7 +54,7 @@ int main(void)
 	}
 }
 
-void IR_initPWM(int top)
+void IR_initPWM()
 {
 	TCCR2A |= (1 << COM2B1) | (1 << WGM20) | (1 << WGM21); //set compare A
 	TCCR2B |= (1 << CS21) | (1 << WGM22); //set clock prescaler 1 and PWM, Phase and Frequency Correct
@@ -73,22 +75,21 @@ void IR_initInterrupt() {
 void detectBit() {
 	switch (detectBitType(timerCounter)) {
 		 case BITTYPE_LOW : // Received bit: 0
-			receiveChar &= ~(1<<receiveCharCounter);
-			receiveCharCounter++;
+			receiveChar = receiveChar<<1; // Shift receiveChar
 			Serial.print(0);
 			break;
 		case BITTYPE_HIGH : // Received bit: 1
-			receiveChar |= (1<<receiveCharCounter);
-			receiveCharCounter++;
+			receiveChar = receiveChar<<1; // Shift receiveChar
+			receiveChar |= 1; // set LSB to 1
 			Serial.print(1);
 			break; 
 		case BITTYPE_LOW_PAR : // Received bit: 0 (parity)
 			Serial.print("P:0 ");
-			Serial.print(receiveChar);
+			Serial.print((char) receiveChar);
 			break; 
 		case BITTYPE_HIGH_PAR : // Received bit: 1 (parity)
-			Serial.print("P:1");
-			Serial.print(receiveChar);
+			Serial.print("P:1 ");
+			Serial.print((char) receiveChar);
 		default: // Received bit: Start
 		receiveCharCounter = 0;
 	}
