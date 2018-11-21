@@ -2,15 +2,15 @@
 #include <util/delay.h>
 
 // Is it running at 56KHz? (no means 34 KHz)
-#define FREQ_56KHz 1
+#define FREQ_56KHz 0
 
 // Maximum message size (in bytes)
 #define MESSAGE_SIZE 25
 
 // PWM TOP, used in PWM (generates frequency for the LED) 36=56khz 58=34khz
 #define PWMTOP_56 36
-#define PWMTOP_34 58
-#define PWMTOP_RATIO 1.65
+#define PWMTOP_34 58 //58
+#define PWMTOP_RATIO 1.65 //1.65
 
 // Defines for sending data
 #define VAL_LOW 1
@@ -19,7 +19,7 @@
 #define VAL_HIGH_PAR 4
 
 // Defines for receiving data 
-#define BIT_BASEVALUE 100
+#define BIT_BASEVALUE 150
 
 #define BIT_LOW			 BIT_BASEVALUE
 #define BIT_HIGH		(BIT_BASEVALUE*2)
@@ -92,9 +92,6 @@ int main(void) {
 	Serial.begin(9600);
 	
 	IR_init();
-	
-	//uint8_t TxMessage[6] = {'h', 'a', 'l', 'l', 'o'};
-	//transBytes(TxMessage);
 	
 	while(1) {
 		recvWithEndMarker(); 
