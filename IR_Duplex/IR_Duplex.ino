@@ -4,6 +4,9 @@
 // Is it running at 56KHz? (no means 34 KHz)
 #define FREQ_56KHz 0
 
+// Maximum message size (in bytes)
+#define MESSAGE_SIZE 25
+
 // PWM TOP, used in PWM (generates frequency for the LED) 36=56khz 58=34khz
 #define PWMTOP_56 36
 #define PWMTOP_34 58
@@ -36,7 +39,7 @@
 // Variables used for sending data 
 uint16_t OVF_counter = 0;   //pulse length counter
 uint16_t Pulse_value = 0;   //value to set the pulse length
-uint8_t TxCode[100];        //array that is used to prepare the to be transmitted message
+uint8_t TxCode[(MESSAGE_SIZE * 9)+2];        //array that is used to prepare the to be transmitted message
 uint8_t commandCounter = 0; //get the right pulse out of the array
 
 // Variables used for receiving data 
@@ -80,8 +83,7 @@ ISR(PCINT2_vect) {
 }
 
 // Vars with stolen function, delete soon (:
-const byte numChars = 32;
-char receivedChars[numChars];   // an array to store the received data
+char receivedChars[MESSAGE_SIZE];   // an array to store the received data
 
 boolean newData = false;
 // End stolen vars
@@ -116,8 +118,8 @@ void recvWithEndMarker() {
 		if (rc != endMarker) {
 			receivedChars[ndx] = rc;
 			ndx++;
-			if (ndx >= numChars) {
-				ndx = numChars - 1;
+			if (ndx >= MESSAGE_SIZE) {
+				ndx = MESSAGE_SIZE - 1;
 			}
 		}
 		else {
@@ -186,7 +188,7 @@ void printArray(uint8_t massage[10]) {
   //**************debug**************/
 }
 
-void transBytes(uint8_t byteIn[10]) {    //transform the massage into a "array with pulses"
+void transBytes(uint8_t byteIn[MESSAGE_SIZE]) {    //transform the massage into a "array with pulses"
   uint8_t x = 0;
   uint8_t bitNr = 0;
 
@@ -215,6 +217,8 @@ void transBytes(uint8_t byteIn[10]) {    //transform the massage into a "array w
     x++;
   }
   TxCode[bitNr] = 3;
+  bitNr++;
+  TxCode[bitNr] = 0; //a zero is needed to end the pulse code message
   printArray(TxCode);
   Pulse_value = 1; //start the transmission
 }
@@ -255,8 +259,7 @@ void detectBit() {
 				}
 				Serial.print((char) receiveChar);
 			}
-		default: // Received bit: Start (also executed with parity)
-		receiveChar = 0;
+		default: // Received bit: Start
 		receiveCharCounter = 0;
 	}
 	
