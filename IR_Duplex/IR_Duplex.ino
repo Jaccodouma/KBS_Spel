@@ -2,7 +2,7 @@
 #include <util/delay.h>
 
 // Is it running at 56KHz? (no means 34 KHz)
-#define FREQ_56KHz 0
+#define FREQ_56KHz 1
 
 // Maximum message size (in bytes)
 #define MESSAGE_SIZE 25
@@ -19,7 +19,7 @@
 #define VAL_HIGH_PAR 4
 
 // Defines for receiving data 
-#define BIT_BASEVALUE 500
+#define BIT_BASEVALUE 100
 
 #define BIT_LOW			 BIT_BASEVALUE
 #define BIT_HIGH		(BIT_BASEVALUE*2)
@@ -34,7 +34,7 @@
 #define BITTYPE_HIGH_PAR	3
 
 // Used for debugging: disables pulse mode
-#define TURN_PULSEMODE_ON false
+#define TURN_PULSEMODE_ON true
 
 // Variables used for sending data 
 uint16_t OVF_counter = 0;   //pulse length counter
