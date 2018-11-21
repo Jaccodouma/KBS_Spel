@@ -24,7 +24,6 @@ void IR_init(void);
 uint8_t has_even_parity(uint8_t x);
 void printArray(uint8_t massage[10]);
 void transBytes(uint8_t byteIn[10]);
-void transSingleByte(uint8_t byteIn);
 void detectBit();
 int detectBitType(double counter);
 

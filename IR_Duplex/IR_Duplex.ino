@@ -84,11 +84,15 @@ int main(void) {
 	
 	IR_init();
 	
-	uint8_t TxMessage[6] = {'h', 'a', 'l', 'l', 'o'};
-	transBytes(TxMessage);
+	//uint8_t TxMessage[6] = {'h', 'a', 'l', 'l', 'o'};
+	//transBytes(TxMessage);
 	
 	while(1) {
-		
+		if (Serial.available() > 0) {
+			uint8_t data[1];
+			data[0] = Serial.read();
+			transBytes(data);
+		}
 	}
 } 
 
@@ -179,25 +183,6 @@ void transBytes(uint8_t byteIn[10]) {    //transform the massage into a "array w
     x++;
   }
   TxCode[bitNr] = 3;
-  printArray(TxCode);
-  Pulse_value = 1; //start the transmission
-}
-
-void transSingleByte(uint8_t byteIn) {    //transform the massage into a "array with pulses"
-  uint8_t bitNr = 0;
-  for (uint8_t n = 8; n > 0; n--) { //set the pulse lenths in the array
-    if (byteIn & (1 << (n - 1))) {
-      TxCode[bitNr] = VAL_HIGH;
-    } else {
-      TxCode[bitNr] = VAL_LOW;
-    }
-    bitNr++;
-  }
-  if (has_even_parity(byteIn)) { //calculate the parity bit
-    TxCode[bitNr] = VAL_LOW_PAR;     //write a 0 parity
-  } else {
-    TxCode[bitNr] = VAL_HIGH_PAR;    //write a 1 parity
-  }
   printArray(TxCode);
   Pulse_value = 1; //start the transmission
 }
