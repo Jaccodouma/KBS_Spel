@@ -8,9 +8,9 @@
 #define MESSAGE_SIZE 25
 
 // PWM TOP, used in PWM (generates frequency for the LED) 36=56khz 58=34khz
-#define PWMTOP_56 36
-#define PWMTOP_34 58 //58
-#define PWMTOP_RATIO 1.65 //1.65
+#define PWMTOP_56 36      //(16.000.000/8/56.000)=36
+#define PWMTOP_38 53      //(16.000.000/8/38.000)=53
+#define PWMTOP_RATIO 1.47 //(56.000/38.000)=1.47
 
 // Defines for sending data
 #define VAL_LOW 1
@@ -19,7 +19,7 @@
 #define VAL_HIGH_PAR 4
 
 // Defines for receiving data 
-#define BIT_BASEVALUE 150
+#define BIT_BASEVALUE 100
 
 #define BIT_LOW			 BIT_BASEVALUE
 #define BIT_HIGH		(BIT_BASEVALUE*2)
@@ -61,7 +61,7 @@ ISR(TIMER2_OVF_vect) {
 
 		if (TxCode[commandCounter] > 0) {
 			if (FREQ_56KHz) {
-				Pulse_value = TxCode[commandCounter] * BIT_BASEVALUE * 1.65;
+				Pulse_value = TxCode[commandCounter] * BIT_BASEVALUE * PWMTOP_RATIO;
 				} else {
 				Pulse_value = TxCode[commandCounter] * BIT_BASEVALUE;
 			}
@@ -142,11 +142,11 @@ void IR_init(void)
 			OCR2B = PWMTOP_56 ;    //100% duty cycle (without any pulses)
 		}
 		} else {
-		OCR2A = PWMTOP_34;
+		OCR2A = PWMTOP_38;
 		if (TURN_PULSEMODE_ON) { //turn the 34 or 56 khz pwm mode ON or OFF (debug only)
-			OCR2B = PWMTOP_34 / 2; //50% duty cycle
+			OCR2B = PWMTOP_38 / 2; //50% duty cycle
 			} else {
-			OCR2B = PWMTOP_34;    //100% duty cycle (without any pulses)
+			OCR2B = PWMTOP_38;    //100% duty cycle (without any pulses)
 		}
 	}
 	DDRD |= (1 << DDD3); //pin d3 OUTPUT
