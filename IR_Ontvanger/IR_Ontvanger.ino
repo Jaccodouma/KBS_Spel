@@ -1,8 +1,7 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
-// PWM TOP, used in PWM (generates frequency for the LED) 36=56khz 58=34khz
-#define PWMTOP 36
+
 
 // vars used with IR transmission
 uint16_t timerCounter = 0;
@@ -10,6 +9,13 @@ uint8_t  receiveCharCounter = 0;
 uint8_t receiveChar = 0;
 boolean receivingChar = false; 
 
+// Is it running at 56KHz? (no means 34 KHz)
+#define FREQ_56KHz 0
+
+// PWM TOP, used in PWM (generates frequency for the LED) 36=56khz 58=34khz
+#define PWMTOP_56 36
+#define PWMTOP_34 58
+#define PWMTOP_RATIO 1.65
 
 // Timings for detection of bits
 #define BIT_BASEVALUE 500
@@ -26,13 +32,9 @@ boolean receivingChar = false;
 #define BITTYPE_LOW_PAR		2
 #define BITTYPE_HIGH_PAR	3
 
-// Send and receive frequencies
-#define FREQ_SEND 34
-#define FREQ_REC 56
-
 // Timer2 overflow
 ISR(TIMER2_OVF_vect) {	
-	if (timerCounter < 50000) {
+	if (timerCounter < 30000) {
 		timerCounter++; // counts amount of overflows (since last reset) to max of BIT_START
 	}
 }
@@ -58,8 +60,16 @@ void IR_initPWM()
 {
 	TCCR2A |= (1 << COM2B1) | (1 << WGM20) | (1 << WGM21); //set compare A
 	TCCR2B |= (1 << CS21) | (1 << WGM22); //set clock prescaler 1 and PWM, Phase and Frequency Correct
-	OCR2A = PWMTOP; //the top
-	OCR2B = PWMTOP / 2;
+	
+	// Define top to run on certain frequency
+	if (FREQ_56KHz) {
+		OCR2A = PWMTOP_56;
+		//OCR2B = PWMTOP_56 / 2;
+	} else {
+		OCR2A = PWMTOP_34;
+		//OCR2B = PWMTOP_34 / 2;
+	}
+	
 	DDRD |= (1 << DDD3); //set OC1A as output PORTB1 pin9
 	TIMSK2 = (1 << TOIE2);
 	sei();
@@ -74,6 +84,7 @@ void IR_initInterrupt() {
 // Should be called in the interrupt the IR Receiver is connected to
 void detectBit() {
 	switch (detectBitType(timerCounter)) {
+		
 		 case BITTYPE_LOW : // Received bit: 0
 			receiveChar = receiveChar<<1; // Shift receiveChar
 			receiveCharCounter++;
@@ -120,6 +131,11 @@ void detectBit() {
  *  BIT_START		start		4.5 +			4
  */
 int detectBitType(double counter) {
+	
+	if (FREQ_56KHz) {
+		counter = counter / PWMTOP_RATIO;
+	}
+	
 	counter = counter - 0.5 * BIT_BASEVALUE;
 	counter = counter / BIT_BASEVALUE; 
 	return (int) counter;
