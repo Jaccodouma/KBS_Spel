@@ -255,7 +255,8 @@ void detectBit() {
 				}
 				Serial.print((char) receiveChar);
 			}
-		default: // Received bit: Start
+		default: // Received bit: Start (also executed with parity)
+		receiveChar = 0;
 		receiveCharCounter = 0;
 	}
 	
