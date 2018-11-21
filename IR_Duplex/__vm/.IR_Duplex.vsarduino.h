@@ -20,6 +20,7 @@
 #define ARDUINO_AVR_UNO
 #define ARDUINO_ARCH_AVR
 int main(void);
+void recvWithEndMarker();
 void IR_init(void);
 uint8_t has_even_parity(uint8_t x);
 void printArray(uint8_t massage[10]);

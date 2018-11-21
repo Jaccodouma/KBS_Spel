@@ -79,6 +79,13 @@ ISR(PCINT2_vect) {
 	detectBit();
 }
 
+// Vars with stolen function, delete soon (:
+const byte numChars = 32;
+char receivedChars[numChars];   // an array to store the received data
+
+boolean newData = false;
+// End stolen vars
+
 int main(void) {
 	Serial.begin(9600);
 	
@@ -88,13 +95,38 @@ int main(void) {
 	//transBytes(TxMessage);
 	
 	while(1) {
-		if (Serial.available() > 0) {
-			uint8_t data[1];
-			data[0] = Serial.read();
-			transBytes(data);
+		recvWithEndMarker(); 
+		if (newData == true) {
+			transBytes(receivedChars);
+			newData = false;
 		}
 	}
 } 
+
+
+// Stolen function, delete soon (:
+void recvWithEndMarker() {
+	static byte ndx = 0;
+	char endMarker = '\n';
+	char rc;
+	
+	while (Serial.available() > 0 && newData == false) {
+		rc = Serial.read();
+
+		if (rc != endMarker) {
+			receivedChars[ndx] = rc;
+			ndx++;
+			if (ndx >= numChars) {
+				ndx = numChars - 1;
+			}
+		}
+		else {
+			receivedChars[ndx] = '\0'; // terminate the string
+			ndx = 0;
+			newData = true;
+		}
+	}
+}
 
 void IR_init(void)
 {
@@ -143,7 +175,7 @@ uint8_t has_even_parity(uint8_t x) { //check the parity
 }
 
 void printArray(uint8_t massage[10]) {
-  //**************debug**************
+  /**************debug**************
   uint8_t x = 0;
   while (massage[x] > 0) {
     Serial.print(massage[x]);
@@ -151,7 +183,7 @@ void printArray(uint8_t massage[10]) {
     x++;
   }
   Serial.println("ARRAY OF PULSES");
-  //**************debug**************
+  //**************debug**************/
 }
 
 void transBytes(uint8_t byteIn[10]) {    //transform the massage into a "array with pulses"
@@ -194,35 +226,35 @@ void detectBit() {
 		 case BITTYPE_LOW : // Received bit: 0
 			receiveChar = receiveChar<<1; // Shift receiveChar
 			receiveCharCounter++;
-			Serial.print(0);
+			//Serial.print(0);
 			break;
 		case BITTYPE_HIGH : // Received bit: 1
 			receiveChar = receiveChar<<1; // Shift receiveChar
 			receiveCharCounter++;
 			receiveChar |= 1; // set LSB to 1
-			Serial.print(1);
+			//Serial.print(1);
 			break; 
 		case BITTYPE_LOW_PAR : // Received bit: 0 (parity)
 			if (receiveCharCounter == 0) {
-				Serial.print("Stop");
+				Serial.println("Stop");
 			} else {
-				Serial.print("P:0 ");
+				//Serial.print("P:0 ");
 				Serial.print((char) receiveChar);
 			}
 			break; 
 		case BITTYPE_HIGH_PAR : // Received bit: 1 (parity)
 			if (receiveCharCounter == 0) {
-				Serial.print("Start");
+				Serial.println("Start");
 			} else {
-				Serial.print("P:1 ");
+				//Serial.print("P:1 ");
 				Serial.print((char) receiveChar);
 			}
 		default: // Received bit: Start
 		receiveCharCounter = 0;
 	}
 	
-	Serial.print(" \tTimer: ");
-	Serial.println(timerCounter);
+	//Serial.print(" \tTimer: ");
+	//Serial.println(timerCounter);
 	
 	timerCounter = 0; // reset timer counter
 }
