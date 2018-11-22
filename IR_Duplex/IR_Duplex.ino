@@ -1,6 +1,82 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
+#include "IR.h"
+
+char receivedChars[MESSAGE_SIZE];   // an array to store the received data
+
+boolean newData = false;
+
+IR myIR(38); //38KHz sender
+
+ISR(TIMER2_OVF_vect) {
+	myIR.timerOverflow();
+}
+
+ISR(PCINT2_vect) {
+	myIR.pinChange();
+}
+
+int main(void) {
+	Serial.begin(9600);
+	
+	while(1) {
+
+		if(myIR.available()){
+			char string[9];
+			myIR.read(*string);
+			Serial.println(string);
+		}
+
+		if(myIR.error()){
+			Serial.print("Something went wrong");
+		}
+		
+		recvWithEndMarker();
+		
+		if (newData == true) {
+			myIR.write(receivedChars);
+			newData = false;
+		}
+	}
+}
+
+void recvWithEndMarker() {
+	static byte ndx = 0;
+	char endMarker = '\n';
+	char rc;
+	
+	while (Serial.available() > 0 && newData == false) {
+		rc = Serial.read();
+
+		if (rc != endMarker) {
+			receivedChars[ndx] = rc;
+			ndx++;
+			if (ndx >= 8) {
+				ndx = 8 - 1;
+			}
+		}
+		else {
+			receivedChars[ndx] = '\0'; // terminate the string
+			ndx = 0;
+			newData = true;
+		}
+	}
+}
+
+void printArray(uint8_t message[8]) {
+	uint8_t x = 0;
+	while (message[x] > 0) {
+		Serial.print(message[x]);
+		x++;
+	}
+	Serial.println("");
+}
+
+/*
+#include <avr/io.h>
+#include <util/delay.h>
+
 // Is it running at 56KHz? (no means 34 KHz)
 #define FREQ_56KHz 0
 
@@ -19,7 +95,7 @@
 #define VAL_HIGH_PAR 4
 
 // Defines for receiving data 
-#define BIT_BASEVALUE 100
+#define BIT_BASEVALUE 45
 
 #define BIT_LOW			 BIT_BASEVALUE
 #define BIT_HIGH		(BIT_BASEVALUE*2)
@@ -78,7 +154,6 @@ ISR(TIMER2_OVF_vect) {
 
 // Pin interrupt, used for receiving data
 ISR(PCINT2_vect) {
-	// TODO: Replace with flag and call function in loop (?)
 	detectBit();
 }
 
@@ -182,7 +257,7 @@ void printArray(uint8_t massage[10]) {
     x++;
   }
   Serial.println("ARRAY OF PULSES");
-  //**************debug**************/
+  //**************debug**************
 }
 
 void transBytes(uint8_t byteIn[MESSAGE_SIZE]) {    //transform the massage into a "array with pulses"
@@ -274,7 +349,7 @@ void detectBit() {
  *	BIT_LOW_PAR		0 (parity)	2.5 - 3.5		2
  *	BIT_HIGH_PAR	1 (parity)	3.5 - 4.5		3
  *  BIT_START		start		4.5 +			4
- */
+ *
 int detectBitType(double counter) {
 	
 	if (FREQ_56KHz) {

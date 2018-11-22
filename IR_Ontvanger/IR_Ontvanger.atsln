@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Atmel Studio Solution File, Format Version 11.00
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{E66E83B9-2572-4076-B26E-6BE79FF3018A}") = "IR_Ontvanger", "IR_Ontvanger.cppproj", "{1BD355E3-5ECF-4383-ACFD-C2CF73932ECD}"
+EndProject
+Project("{E66E83B9-2572-4076-B26E-6BE79FF3018A}") = "IR_transmit_V3", "..\IR_transmit_V3\IR_transmit_V3.cppproj", "{DBD3F5EB-D112-435E-8993-128FD4A7B009}"
+EndProject
+Project("{E66E83B9-2572-4076-B26E-6BE79FF3018A}") = "IR_Duplex", "..\IR_Duplex\IR_Duplex.cppproj", "{553C0957-579D-4BCB-9417-D7A3981E2D54}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|AVR = Debug|AVR
+		Release|AVR = Release|AVR
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1BD355E3-5ECF-4383-ACFD-C2CF73932ECD}.Debug|AVR.ActiveCfg = Debug|AVR
+		{1BD355E3-5ECF-4383-ACFD-C2CF73932ECD}.Debug|AVR.Build.0 = Debug|AVR
+		{1BD355E3-5ECF-4383-ACFD-C2CF73932ECD}.Release|AVR.ActiveCfg = Release|AVR
+		{1BD355E3-5ECF-4383-ACFD-C2CF73932ECD}.Release|AVR.Build.0 = Release|AVR
+		{DBD3F5EB-D112-435E-8993-128FD4A7B009}.Debug|AVR.ActiveCfg = Debug|AVR
+		{DBD3F5EB-D112-435E-8993-128FD4A7B009}.Debug|AVR.Build.0 = Debug|AVR
+		{DBD3F5EB-D112-435E-8993-128FD4A7B009}.Release|AVR.ActiveCfg = Release|AVR
+		{DBD3F5EB-D112-435E-8993-128FD4A7B009}.Release|AVR.Build.0 = Release|AVR
+		{553C0957-579D-4BCB-9417-D7A3981E2D54}.Debug|AVR.ActiveCfg = Debug|AVR
+		{553C0957-579D-4BCB-9417-D7A3981E2D54}.Debug|AVR.Build.0 = Debug|AVR
+		{553C0957-579D-4BCB-9417-D7A3981E2D54}.Release|AVR.ActiveCfg = Release|AVR
+		{553C0957-579D-4BCB-9417-D7A3981E2D54}.Release|AVR.Build.0 = Release|AVR
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
