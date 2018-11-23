@@ -6,7 +6,7 @@ char receivedChars[MESSAGE_SIZE];   // an array to store the received data
 
 boolean newData = false;
 
-IR myIR(38, 43); //38KHz or 56KHz Transmitter Fq, pulse size (45 default)
+IR myIR(38, 45); //38KHz or 56KHz Transmitter Fq, pulse size (45 default)
 
 ISR(TIMER2_OVF_vect) {
   myIR.timerOverflow();
