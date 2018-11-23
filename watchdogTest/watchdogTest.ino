@@ -25,9 +25,13 @@ void setup() {
 }
 
 void loop() {
-  delay(264);
   wdt_reset();
   Serial.print("loop: ");
   Serial.println(counter);
+  if(counter >= 10){
+    delay(265);
+  }else{
+    delay(264);
+  }
   counter++;
 }
