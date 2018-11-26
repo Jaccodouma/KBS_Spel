@@ -4,6 +4,7 @@
 Gfx::Gfx() {
     Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC);
     tft.begin();
+    tft.fillScreen(BGCOLOR);
     this->tft = &tft;
     gamewidth = tft.width() / BLOCKSIZE;
     gameheight = tft.height() / BLOCKSIZE;
@@ -13,7 +14,6 @@ Gfx::Gfx() {
 }
 
 void Gfx::drawLevel(Level *level) {
-    
     // stel de offset in zodat het speelveld gecentreerd op het scherm te zien is
     offsetX = (tft->width() - level->getWidth() * BLOCKSIZE) / 2;
     offsetY = (tft->height() - level->getHeight() * BLOCKSIZE) / 2;
@@ -25,6 +25,11 @@ void Gfx::drawLevel(Level *level) {
             if (block) drawBlock(block, j, i);
         }
     }
+}
+
+void Gfx::drawPlayer(Player *p) {
+    tft->fillCircle(p->getPrevPos().x+offsetX+BLOCKSIZE/2,p->getPrevPos().y+offsetY+BLOCKSIZE/2,BLOCKSIZE/2,BGCOLOR);
+    tft->fillCircle(p->getPos().x+offsetX+BLOCKSIZE/2,p->getPos().y+offsetY+BLOCKSIZE/2,BLOCKSIZE/2,BLACK);
 }
 
 void Gfx::drawBlock(char block, uint8_t x, uint8_t y) {

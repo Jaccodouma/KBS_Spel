@@ -1,9 +1,11 @@
+// Auteur: Floris Folkertsma (s1094012)
 #pragma once
 #include "Arduino.h"
 #include "SPI.h"
 #include "Adafruit_GFX.h"
 #include "Adafruit_ILI9341.h"
 #include "level.h"
+#include "player.h"
 
 // For the Adafruit shield, these are the default.
 #define TFT_DC 9
@@ -19,6 +21,7 @@ class Gfx {
     public:
         Gfx();
         void drawLevel(Level *level);
+        void drawPlayer(Player *p);
         void drawBlock(char block, uint8_t x, uint8_t y);
         uint8_t gameWidth();
         uint8_t gameHeight();
