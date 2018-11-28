@@ -19,11 +19,11 @@ Level::~Level() {
 
 void Level::createLevel() {
     initLevel();
-    for (int i = 0; i < this->height; i++) {
-        for (int j = 0; j < this->width; j++) {
-            this->level[i][j] = i + 48;
-        }
-    }
+    // for (int i = 0; i < this->height; i++) {
+    //     for (int j = 0; j < this->width; j++) {
+    //         this->level[i][j] = '\0'
+    //     }
+    // }
     // place solid grid blocks
     for (int i = 1; i < this->height; i += 2) {
         for (int j = 1; j < this->width; j += 2) {

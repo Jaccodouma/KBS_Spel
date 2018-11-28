@@ -1,17 +1,17 @@
 #pragma once
-#include "gfx.h"
 #include "level.h"
 #include "player.h"
-#include "control.h"
+#include "lib.h"
 
 class Game {
    public:
-    Game(Level *level, Player *player, Gfx *gfx);
-    void movePlayer(direction d);
-    void start();
-
-   private:
+    Game(Level *level, Player *player);
+    ~Game();
     Level *level;
     Player *player;
-    Gfx *gfx;
+    bool isStarted();
+    bool hasCollision(position p);
+
+   private:
+    bool started;
 };
