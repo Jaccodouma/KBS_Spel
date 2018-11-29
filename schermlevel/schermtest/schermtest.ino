@@ -1,6 +1,5 @@
 #include <avr/io.h>
 #include "game.h"
-#include "gfx.h"
 #include "level.h"
 #include "player.h"
 
