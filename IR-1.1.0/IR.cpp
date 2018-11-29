@@ -13,7 +13,7 @@
 
 // constructor
 IR::IR(uint8_t KHz) {
-  IR::IRinit(KHz, 45); //45 is the default value
+  IR::IRinit(KHz, 30); //30 is the default value
 }
 
 IR::IR(uint8_t KHz, uint8_t Psize) {
@@ -67,9 +67,7 @@ void IR::write(uint8_t byteIn[MESSAGE_SIZE]) {    //transform the massage into a
   uint8_t x = 0;
   uint8_t bitNr = 0;
 
-  TxCode[bitNr] = 4;
-  bitNr++;
-  TxCode[bitNr] = 5;
+  TxCode[bitNr] = 4; //the start bit
   bitNr++;
 
   while (byteIn[x] > 0) {
@@ -87,11 +85,11 @@ void IR::write(uint8_t byteIn[MESSAGE_SIZE]) {    //transform the massage into a
       TxCode[bitNr] = VAL_HIGH_PAR;    //write a 1 parity
     }
     bitNr++;
-    TxCode[bitNr] = 5;
-    bitNr++;
     x++;
   }
-  TxCode[bitNr] = 3;
+  TxCode[bitNr] = 3; //the stop bit
+  bitNr++;
+  TxCode[bitNr] = 1; //just te make sure the message is even
   bitNr++;
   TxCode[bitNr] = 0; //a zero is needed to end the pulse code message
   Pulse_value = 1; //start the transmission
@@ -195,6 +193,8 @@ void IR::pinChange() {
           if (has_even_parity(receiveChar)) {
             // Data is received properly
             data[dataNr] = receiveChar;
+            receiveCharCounter = 0;
+            receiveChar = 0;
             dataNr++;
           } else {
             // parity error
@@ -211,6 +211,8 @@ void IR::pinChange() {
           if (!has_even_parity(receiveChar)) {
             // data is received properly
             data[dataNr] = receiveChar;
+            receiveCharCounter = 0;
+            receiveChar = 0;
             dataNr++;
           } else {
             // Parity error
@@ -225,12 +227,3 @@ void IR::pinChange() {
     timerCounter = 0; // reset timer counter
   }
 }
-
-/*
-  ISR(TIMER2_OVF_vect) {
-  //IR::timerOverflow();
-  }
-
-  ISR(PCINT2_vect) {
-  //IR::pinChange();
-  }*/

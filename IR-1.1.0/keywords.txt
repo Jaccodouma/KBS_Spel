@@ -20,3 +20,4 @@ pinChange	KEYWORD2
 ###########################################
 # Constants (LITERAL1)
 ###########################################
+MESSAGE_SIZE LITERAL1

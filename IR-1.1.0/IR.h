@@ -12,8 +12,8 @@
 #include "Arduino.h"
 
 // Maximum message size (in bytes)
-#define MESSAGE_SIZE 8
-#define RECEIVE_DELAY 500 //s = 500/38000 = 0,013 second
+#define MESSAGE_SIZE 9 //the maximum message size is 8 bytes and 1 stop "/n" or "0x00"
+#define RECEIVE_DELAY 50 //s = 50/38000 = 0,001316 second
 
 // PWM TOP, used in PWM (generates frequency for the LED) 36=56khz 58=34khz
 #define PWMTOP_56 36      //(16.000.000/8/56.000)=36
@@ -73,7 +73,7 @@ class IR
     // Variables used for sending data
     uint16_t OVF_counter = 0;       //pulse length counter
     uint16_t Pulse_value = 0;       //value to set the pulse length
-    uint8_t TxCode[(MESSAGE_SIZE * 9) + 2]; //array that is used to prepare the to be transmitted message
+    uint8_t TxCode[((MESSAGE_SIZE) * 9) + 3]; //array that is used to prepare the to be transmitted message
     uint8_t commandCounter = 0;       //get the right pulse out of the array
 
     // Variables used for receiving data
