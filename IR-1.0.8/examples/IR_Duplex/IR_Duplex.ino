@@ -2,11 +2,11 @@
 
 #include "IR.h"
 
-char receivedChars[MESSAGE_SIZE]= {'h','a','l','l','o'};   // an array to store the received data
+char receivedChars[MESSAGE_SIZE];   // an array to store the received data
 
 boolean newData = false;
 
-IR myIR(38, 100); //38KHz or 56KHz Transmitter Fq, pulse size (45 default)
+IR myIR(56, 100); //38KHz or 56KHz Transmitter Fq, pulse size (45 default)
 
 ISR(TIMER2_OVF_vect) {
   myIR.timerOverflow();
@@ -20,9 +20,24 @@ int main(void) {
   Serial.begin(9600);
 
   while (1) {
-      _delay_ms(1000);
-      myIR.write(receivedChars);
+
+    if (myIR.available()) {
+      char string1[MESSAGE_SIZE];
+      myIR.read(string1);
+      printArray(string1);
     }
+
+    if (myIR.error()) {
+      Serial.print("Something went wrong");
+    }
+
+    recvWithEndMarker();
+
+    if (newData == true) {
+      myIR.write(receivedChars);
+      newData = false;
+    }
+  }
 }
 
 void recvWithEndMarker() {

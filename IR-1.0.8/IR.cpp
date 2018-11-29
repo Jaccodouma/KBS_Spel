@@ -56,13 +56,14 @@ void IR::IRinit(uint8_t KHz, uint8_t Psize) {
   TCCR2A &= ~(1 << COM2B1); //pin d3 LOW
 
   // Interrupt
-  PCICR |= (1 << PCIE2);	// Set pin-change interrupt for pins
-  PCMSK2 |= (1 << PCINT20);	// Set mask to PCINT20 (4/PD4)
+  PCICR |= (1 << PCIE2);  // Set pin-change interrupt for pins
+  PCMSK2 |= (1 << PCINT20); // Set mask to PCINT20 (4/PD4)
   sei();
 } //IR
 
 
 void IR::write(uint8_t byteIn[MESSAGE_SIZE]) {    //transform the massage into a "array with pulses"
+  StopRec = 1; //disables the receiver
   uint8_t x = 0;
   uint8_t bitNr = 0;
 
@@ -97,7 +98,7 @@ void IR::write(uint8_t byteIn[MESSAGE_SIZE]) {    //transform the massage into a
 }
 
 uint8_t IR::available() {
-  if (dataAvailable) {
+  if (dataAvailable && ((((timerCounter / PWMTOP_RATIO) > RECEIVE_DELAY)&&Fq56mode) || ((timerCounter > RECEIVE_DELAY)&&!Fq56mode))){ //wait a few overflows 
     uint8_t x = dataAvailable;
     dataAvailable = 0;
     return x;
@@ -165,6 +166,7 @@ void IR::timerOverflow() {
     } else {
       Pulse_value = 0;
       commandCounter = 0;
+      StopRec = 0; //enables the receiver 
       TCCR2A &= ~(1 << COM2B1);
     }
   }
@@ -172,61 +174,63 @@ void IR::timerOverflow() {
 }
 
 void IR::pinChange() {
-  switch (IR::detectBitType(timerCounter)) {
-    case BITTYPE_LOW : // Received bit: 0
-      receiveChar = receiveChar << 1; // Shift receiveChar
-      receiveCharCounter++;
-      break;
-    case BITTYPE_HIGH : // Received bit: 1
-      receiveChar = receiveChar << 1; // Shift receiveChar
-      receiveCharCounter++;
-      receiveChar |= 1; // set LSB to 1
-      break;
-    case BITTYPE_LOW_PAR : // Received bit: 0 (parity)
-      if (receiveCharCounter == 0) { // Stop bit
-        for (uint8_t n = dataNr; n <= MESSAGE_SIZE; n++) { //clear the unused positions in the array
-          data[n] = 0;
-        }
-        dataAvailable = true; //the freshly received array is ready ;)
-      } else {
-        if (has_even_parity(receiveChar)) {
-          // Data is received properly
-          data[dataNr] = receiveChar;
-          dataNr++;
+  if (!StopRec) {
+    switch (IR::detectBitType(timerCounter)) {
+      case BITTYPE_LOW : // Received bit: 0
+        receiveChar = receiveChar << 1; // Shift receiveChar
+        receiveCharCounter++;
+        break;
+      case BITTYPE_HIGH : // Received bit: 1
+        receiveChar = receiveChar << 1; // Shift receiveChar
+        receiveCharCounter++;
+        receiveChar |= 1; // set LSB to 1
+        break;
+      case BITTYPE_LOW_PAR : // Received bit: 0 (parity)
+        if (receiveCharCounter == 0) { // Stop bit
+          for (uint8_t n = dataNr; n <= MESSAGE_SIZE; n++) { //clear the unused positions in the array
+            data[n] = 0;
+          }
+          dataAvailable = true; //the freshly received array is ready ;)
         } else {
-          // parity error
-          parityError = true; //Oops an error accor...
-        }
-      }
-      break;
-    case BITTYPE_HIGH_PAR : // Received bit: 1 (parity)
-      if (receiveCharCounter == 0) { // Start bit
-        dataAvailable = false;
-        dataNr = 0;
-        // empty data
-      } else {
-        if (!has_even_parity(receiveChar)) {
-          // data is received properly
-          data[dataNr] = receiveChar;
-          dataNr++;
-        } else {
-          // Parity error
-          parityError = true; //Oops an error accor...
+          if (has_even_parity(receiveChar)) {
+            // Data is received properly
+            data[dataNr] = receiveChar;
+            dataNr++;
+          } else {
+            // parity error
+            parityError = true; //Oops an error accor...
+          }
         }
         break;
-      }
-    default: // Received bit: Start
-      receiveCharCounter = 0;
-      receiveChar = 0;
+      case BITTYPE_HIGH_PAR : // Received bit: 1 (parity)
+        if (receiveCharCounter == 0) { // Start bit
+          dataAvailable = false;
+          dataNr = 0;
+          // empty data
+        } else {
+          if (!has_even_parity(receiveChar)) {
+            // data is received properly
+            data[dataNr] = receiveChar;
+            dataNr++;
+          } else {
+            // Parity error
+            parityError = true; //Oops an error accor...
+          }
+          break;
+        }
+      default: // Received bit: Start
+        receiveCharCounter = 0;
+        receiveChar = 0;
+    }
+    timerCounter = 0; // reset timer counter
   }
-  timerCounter = 0; // reset timer counter
 }
 
 /*
-ISR(TIMER2_OVF_vect) {
+  ISR(TIMER2_OVF_vect) {
   //IR::timerOverflow();
-}
+  }
 
-ISR(PCINT2_vect) {
+  ISR(PCINT2_vect) {
   //IR::pinChange();
-}*/
+  }*/

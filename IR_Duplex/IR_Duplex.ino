@@ -18,12 +18,15 @@ ISR(PCINT2_vect) {
 
 int main(void) {
   Serial.begin(9600);
-
+  Serial.println("Typ here your message to start the infinite loop...");
+  
   while (1) {
 
     if (myIR.available()) {
       char string1[MESSAGE_SIZE];
       myIR.read(string1);
+      _delay_ms(300);
+      myIR.write(string1); //this is needed for the infinite loop
       printArray(string1);
     }
 

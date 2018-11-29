@@ -13,6 +13,7 @@
 
 // Maximum message size (in bytes)
 #define MESSAGE_SIZE 8
+#define RECEIVE_DELAY 500 //number of overflows
 
 // PWM TOP, used in PWM (generates frequency for the LED) 36=56khz 58=34khz
 #define PWMTOP_56 36      //(16.000.000/8/56.000)=36
@@ -26,7 +27,7 @@
 #define VAL_HIGH_PAR 4
 
 // Defines for receiving data
-#define BIT_LOW	BIT_BASEVALUE
+#define BIT_LOW  BIT_BASEVALUE
 #define BIT_HIGH (BIT_BASEVALUE*2)
 #define BIT_LOW_PAR (BIT_BASEVALUE*3)
 #define BIT_HIGH_PAR (BIT_BASEVALUE*4)
@@ -66,12 +67,14 @@ class IR
     // settings
     uint8_t BIT_BASEVALUE;
     uint8_t Fq56mode;
+    uint8_t StopRec = 0;
+
 
     // Variables used for sending data
-    uint16_t OVF_counter = 0;				//pulse length counter
-    uint16_t Pulse_value = 0;				//value to set the pulse length
-    uint8_t TxCode[(MESSAGE_SIZE * 9) + 2];	//array that is used to prepare the to be transmitted message
-    uint8_t commandCounter = 0;				//get the right pulse out of the array
+    uint16_t OVF_counter = 0;       //pulse length counter
+    uint16_t Pulse_value = 0;       //value to set the pulse length
+    uint8_t TxCode[(MESSAGE_SIZE * 9) + 2]; //array that is used to prepare the to be transmitted message
+    uint8_t commandCounter = 0;       //get the right pulse out of the array
 
     // Variables used for receiving data
     uint16_t timerCounter = 0;

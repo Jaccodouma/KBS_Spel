@@ -1,4 +1,3 @@
-// Made by Jacco douma and Christiaan van den Berg
 
 
 #include "IR.h"
@@ -7,7 +6,7 @@ char receivedChars[MESSAGE_SIZE];   // an array to store the received data
 
 boolean newData = false;
 
-IR myIR(38, 45); //38KHz or 56KHz Transmitter Fq, pulse size (45 default)
+IR myIR(56, 100); //38KHz or 56KHz Transmitter Fq, pulse size (45 default)
 
 ISR(TIMER2_OVF_vect) {
   myIR.timerOverflow();
@@ -19,12 +18,15 @@ ISR(PCINT2_vect) {
 
 int main(void) {
   Serial.begin(9600);
-
+  Serial.println("Typ here your message to start the infinite loop...");
+  
   while (1) {
 
     if (myIR.available()) {
       char string1[MESSAGE_SIZE];
       myIR.read(string1);
+      _delay_ms(500);
+      myIR.write(string1); //this is needed for the infinite loop
       printArray(string1);
     }
 
