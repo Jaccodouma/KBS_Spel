@@ -1,7 +1,6 @@
 #include <avr/io.h>
-#include "game.h"
-#include "level.h"
-#include "player.h"
+#include "gfx.h"
+#include "control.h"
 
 // ISR(TIMER2_OVF_vect) { 
 // }
