@@ -32,7 +32,7 @@ void Control::update() {
         if (this->game->player->getDirection()) {  // is in beweging
             this->game->player->move();
             position screenPos = this->game->player->getPos();
-            if (screenPos.x % BLOCKSIZE == 0 && screenPos.y % BLOCKSIZE == 0) {
+            if (screenPos.x % gfx->blockSize() == 0 && screenPos.y % gfx->blockSize() == 0) {
                 // klaar met lopen
                 this->game->player->setDirection(direction::DIR_NO);
             }

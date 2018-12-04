@@ -5,6 +5,7 @@
 #include "Adafruit_GFX.h"
 #include "Adafruit_ILI9341.h"
 #include "game.h"
+#include "lib.h"
 
 // For the Adafruit shield, these are the default.
 #define TFT_DC 9
@@ -16,12 +17,6 @@
 
 #define isEven(n) (n % 2 == 0)
 
-struct block {
-    char type;
-    uint8_t x;
-    uint8_t y;
-};
-
 class Gfx {
     public:
         Gfx();
@@ -29,8 +24,9 @@ class Gfx {
         void drawPlayer(Game *g);
         uint8_t gameWidth();
         uint8_t gameHeight();
+        uint8_t blockSize();
     private:
-        uint8_t offsetX, offsetY;
+        uint8_t offsetX, offsetY, blocksize;
         uint8_t gamewidth, gameheight;
         Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC);
         void drawBlock(struct block block);
