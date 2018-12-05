@@ -2,16 +2,14 @@
 #include "gfx.h"
 
 Gfx::Gfx() {
-    blocksize = BLOCKSIZE;
     tft.begin();
     tft.fillScreen(BLACK);
     tft.fillScreen(ILI9341_CYAN);
 
-    gamewidth = tft.width() / blocksize;
-    gameheight = tft.height() / blocksize;
-    // maak de dimensie's van het speelveld altijd oneven
-    if (isEven(gamewidth)) gamewidth--;
-    if (isEven(gameheight)) gameheight--;
+    blocksize = BLOCKSIZE;
+    gamewidth = 15;
+    gameheight = 17;
+    blocksize = tft.width() / gamewidth;
 }
 
 void Gfx::drawLevel(Game *g) {
@@ -25,7 +23,7 @@ void Gfx::drawLevel(Game *g) {
                   tft.height() - offsetY * 2, BLACK);
     for (uint8_t i = 0; i < g->level->getHeight(); i++) {
         for (uint8_t j = 0; j < g->level->getWidth(); j++) {
-            char type = g->level->level[i][j];
+            blocktype type = (blocktype)g->level->level[i][j];
             if (type) {
                 struct block b = { .type = type, .x = j, .y = i };
                 drawBlock(b);
@@ -37,10 +35,10 @@ void Gfx::drawLevel(Game *g) {
 void Gfx::drawPlayer(Game *g) {
     // teken eerst de achtergrondkleur over de vorige positie
     tft.fillCircle(g->player->getPrevPos().x + offsetX + blocksize / 2,
-                    g->player->getPrevPos().y + offsetY + blocksize / 2, blocksize / 2 - 2,
+                    g->player->getPrevPos().y + offsetY + blocksize / 2, blocksize / 2,
                     BGCOLOR);
     tft.fillCircle(g->player->getPos().x + offsetX + blocksize / 2,
-                    g->player->getPos().y + offsetY + blocksize / 2, blocksize / 2 - 2,
+                    g->player->getPos().y + offsetY + blocksize / 2, blocksize / 2,
                     BLACK);
 }
  
@@ -48,6 +46,8 @@ void Gfx::drawBlock(struct block block) {
     switch (block.type) {
         case blocktype::SOLID:
             tft.fillRect(block.x * blocksize + offsetX, block.y * blocksize + offsetY,
+                          blocksize, blocksize, ILI9341_LIGHTGREY);
+            tft.drawRect(block.x * blocksize + offsetX, block.y * blocksize + offsetY,
                           blocksize, blocksize, BLACK);
             break;
     }

@@ -1,6 +1,7 @@
 #pragma once
 #include <Arduino.h>
-typedef enum { SOLID = 'S' } blocktype;
+#include "lib.h"
+
 class Level {
    public:
     char **level;

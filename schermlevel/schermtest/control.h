@@ -19,7 +19,6 @@ class Control {
     public:
         Control(Gfx *gfx);
         ~Control();
-        direction nunchuck_Direction();
         void update();
         void startGame();
         static position movePosition(position p, direction d);
@@ -27,4 +26,5 @@ class Control {
         ArduinoNunchuk nunchuk;
         Gfx *gfx;
         Game *game;
+        direction nunchuck_Direction();
 };

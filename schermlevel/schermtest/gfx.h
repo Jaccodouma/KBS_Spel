@@ -13,9 +13,7 @@
 
 #define BLACK ILI9341_BLACK
 #define BGCOLOR ILI9341_WHITE
-#define BLOCKSIZE 32
-
-#define isEven(n) (n % 2 == 0)
+#define BLOCKSIZE 16
 
 class Gfx {
     public:

@@ -19,15 +19,19 @@ Level::~Level() {
 
 void Level::createLevel() {
     initLevel();
-    // for (int i = 0; i < this->height; i++) {
-    //     for (int j = 0; j < this->width; j++) {
-    //         this->level[i][j] = '\0'
-    //     }
-    // }
-    // place solid grid blocks
-    for (int i = 1; i < this->height; i += 2) {
-        for (int j = 1; j < this->width; j += 2) {
-            this->level[i][j] = blocktype::SOLID;
+    for (int i = 0; i < this->height; i++) {
+        for (int j = 0; j < this->width; j++) {
+            if (i == 0 || i == this->height - 1) { // bovenste of onderste rij
+                this->level[i][j] = 'S';
+            } else {
+                if (j == 0 || j == this->width - 1) { // rand links of rechts
+                    this->level[i][j] = 'S';
+                } else {
+                    if (isEven(i) && isEven(j)) {
+                        this->level[i][j] = 'S';
+                    }
+                }
+            }
         }
     }
 }

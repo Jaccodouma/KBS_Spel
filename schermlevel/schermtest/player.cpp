@@ -5,12 +5,12 @@
 Player::Player(char *name) {
     this->name = name;
     // zet positie linksbovenin scherm
-    this->pos.x = 0;
-    this->pos.y = 0;
-    this->setPos(0, 0);
+    this->pos.x = 16;
+    this->pos.y = 16;
+    this->setPos(16, 16);
     this->movement = direction::DIR_NO;
-    this->fieldPos.x = 0;
-    this->fieldPos.y = 0;
+    this->fieldPos.x = 1;
+    this->fieldPos.y = 1;
 }
 
 Player::~Player() {

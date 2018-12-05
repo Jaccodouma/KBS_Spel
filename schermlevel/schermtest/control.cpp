@@ -46,6 +46,7 @@ void Control::startGame() {
     char *name = (char *)malloc(sizeof(char) * 9);  // acht karakter string
     name = strcpy(name, "ffk27");
     Player *p1 = new Player(name);
+    //p1->setPos(p1->getFieldPos().x * gfx->blockSize(), p1->getFieldPos().y * gfx->blockSize());
     this->game = new Game(level, p1);
     this->gfx->drawLevel(game);
     this->gfx->drawPlayer(game);
