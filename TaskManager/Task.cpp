@@ -1,3 +1,9 @@
+/*
+* Task.h
+*
+* Created: 12/5/2018 11:13:01
+* Author: Jacco Douma
+*/
 #include "Task.h"
 
 /* addTask() */
@@ -7,21 +13,18 @@ void TaskManager::addTask(Task *taskToAdd) {
 }
 
 /* doTask() */
-void TaskManager::doTask() {
-	Serial.print("currentTasknr: \t");Serial.println(currentTasknr);
-	Serial.print("taskCount: \t");	Serial.println(taskCount);
-	tasks[currentTasknr]->run(); // run current task
+void TaskManager::doTask() {	
+	// run current task object
+	// if it returns true (TASK_DONE), go to next task
+	if (tasks[currentTasknr]->run()) {
+		// go to next task
+		currentTasknr++;
+		currentTasknr = currentTasknr % taskCount;
+	};
 }
 
-/* nextTask() */
-void TaskManager::nextTask() {
-	currentTasknr++;
-	currentTasknr = currentTasknr % taskCount;
-}
-
-void Task::run() {
+int Task::run() {
+	// TODO: Remove serial print
 	Serial.println("run() not implemented yet!");
-}
-void TestTask::run() {
-	Serial.println("Task executed");
+	return TASK_DONE;
 }
