@@ -24,14 +24,18 @@ public:
 
 class TaskManager
 {
-public: 
-	void addTask(Task *taskToAdd); // adds task to TaskManager
+public:
 	void doTask(); // Executes the current task
+	
+	void addTask(Task *taskToAdd); // adds task to Main TaskManager
+	void addSideTask(Task *taskToAdd); // Creates side task
 	
 private: 
 	int currentTasknr = 0;
 	int taskCount = 0;
 	Task *tasks[MAX_TASKS];
+	Task *sideTask = NULL; 
+	int hasSideTask = 0; 
 };
 
 #endif //__TASK_H__
