@@ -4,7 +4,7 @@
 * Created: 12/5/2018 11:13:01
 * Author: Jacco Douma
 */
-#include "Task.h"
+#include "TaskManager.h"
 
 /* addTask() */
 void TaskManager::addTask(Task *taskToAdd) {
