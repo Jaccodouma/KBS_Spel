@@ -16,6 +16,17 @@
 #define TASK_BUSY 0
 #define TASK_DONE 1
 
+/* The Task class is a base class to create tasks from.
+ * Tasks must implement and overwrite the run() function. 
+ * The task manager executes a Task's run() function every 
+ * time TaskManager::doTask is called. 
+ * 
+ * The run() function should return one of two things: 
+ * TASK_BUSY:	the next time TaskManager::doTask is called 
+ *				the current run() function needs to run again
+ * TASK_DONE:	lets the task manager know the current task 
+ *				is done. 
+ */
 class Task
 {
 public:

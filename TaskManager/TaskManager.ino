@@ -4,13 +4,12 @@
 class TestTask_side: public Task 
 {
 public:
-	// Example side task, only 
+	// Example side task, only prints that it's a side task
 	int run() {
-		Serial.println("Side task done (:");
+		Serial.println("TASK: SIDE");
 		Serial.println("");
 		return TASK_DONE;
 	}	
-	
 };
 
 class TestTask: public Task
@@ -48,13 +47,17 @@ private:
 
 int main(void) {
 	
+	// Set up serial communication
 	init();
 	Serial.begin(9600);
 	
+	// Create task manager object
 	Serial.println("Creating TaskManager object.");
 	TaskManager *taskManager = new TaskManager;
 	
+	// Create tasks 
 	Serial.println("Creating Task objects.");
+	
 	Task *sideTask = new TestTask_side;
 	
 	Task *task1 = new TestTask(1, taskManager, sideTask);
@@ -65,6 +68,7 @@ int main(void) {
 	Task *task6 = new TestTask(6, taskManager, sideTask);
 	Task *task7 = new TestTask(7, taskManager, sideTask);
 	
+	// Add tasks to task manager (in order)
 	Serial.println("Adding Tasks to TaskManager");
 	taskManager->addTask(task1);
 	taskManager->addTask(task2);
@@ -74,11 +78,13 @@ int main(void) {
 	taskManager->addTask(task6);
 	taskManager->addTask(task7);
 	
+	// Print out message stating we're starting tasks
 	Serial.println("===============");
 	Serial.println("STARTING TASKS");
 	Serial.println("===============");
+	
 	while (1) {
-		// Executing tasks
+		// Execute current task and wait a bit
 		taskManager->doTask();
 		_delay_ms(2000);
 	};
