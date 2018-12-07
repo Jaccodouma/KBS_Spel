@@ -1,26 +1,23 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
-void print2darray(int m, int n, char **chars) {
-    for (int i=0; i<m; i++) {
-        printf("%c", '\n');
-        for (int j=0; j<n; j++) {
-            printf("%c", chars[i][j]);
-        }
-    }
+typedef struct {
+    int id;
+    char naam[9];
+} Student;
+
+void verander(Student s) {
+    strcpy(s.naam, "HALLOO");
 }
 
 int main(int argc, char const *argv[])
 {
-    int width=2,height=2;
-    char **chars = (char **)malloc(height * sizeof(char *));
-    for (int i=0; i<height; i++) {
-        chars[i] = (char *)calloc(width, sizeof(char));
-    }
-    chars[0][0] = 'A';
-    chars[0][1] = 'B';
-    chars[1][0] = 'C';
-    chars[1][1] = 'D';
-    print2darray(2, 2, chars);
+    Student s;
+    s.id = 1094012;
+    strcpy(s.naam, "Floris");
+    verander(s);
+    printf("%s, (%i)\n", s.naam, s.id);
+
     return 0;
 }
