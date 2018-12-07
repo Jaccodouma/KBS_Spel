@@ -179,7 +179,123 @@ const uint8_t white_front[32] PROGMEM = {
   0b00000000, 0b00000000,
 };
 
-//de pixels van de zijkant van het poppetje:
+//de achterkant van het poppetje:
+
+const uint8_t red_back[32] PROGMEM = {
+  0b00011111, 0b11111000,
+  0b00011111, 0b11111000,
+  0b00001111, 0b11110000,
+  0b00000111, 0b11100000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00011111, 0b11111000,
+  0b00111111, 0b11111100,
+  0b00001111, 0b11110000,
+  0b00001111, 0b11110000,
+  0b00000000, 0b00000000,
+  0b10100000, 0b00000101,
+};
+
+const uint8_t green_back[32] PROGMEM = {
+  0b00011111, 0b11111000,
+  0b00011111, 0b11111000,
+  0b00001111, 0b11110000,
+  0b00000111, 0b11100000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00011111, 0b11111000,
+  0b00111111, 0b11111100,
+  0b00001111, 0b11110000,
+  0b00001111, 0b11110000,
+  0b10100000, 0b00000101,
+};
+
+
+const uint8_t black_back[32] PROGMEM = {
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00010000, 0b00001000,
+  0b00010000, 0b00001000,
+  0b00011000, 0b00011000,
+  0b00001111, 0b11110000,
+  0b00000010, 0b01000000,
+  0b00111110, 0b01111100,
+  0b01100000, 0b00000110,
+  0b01000000, 0b00000010,
+  0b01110000, 0b00001110,
+  0b00010000, 0b00001000,
+  0b00010011, 0b11001000,
+  0b00010010, 0b01001000,
+};
+
+const uint8_t skin_back[32] PROGMEM = {
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000001, 0b10000000,
+  0b00000001, 0b10000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b01000000, 0b00000010,
+  0b01000000, 0b00000010,
+  0b00000000, 0b00000000,
+};
+
+const uint8_t yellow_back[32] PROGMEM = {
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00001100, 0b00110000,
+  0b00001100, 0b00110000,
+};
+
+const uint8_t purple_back[32] PROGMEM = {
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00010000, 0b00001000,
+  0b00011000, 0b00011000,
+  0b00001111, 0b11110000,
+  0b00001111, 0b11110000,
+  0b00000111, 0b11100000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+};
+
+//de pixels van de zijkant van het poppetje (rechts):
 
 const uint8_t red_right[32] PROGMEM = {
   0b00000111, 0b11100000,
@@ -289,7 +405,122 @@ const uint8_t white_right[32] PROGMEM = {
   0b00000000, 0b00000000,
   0b00000000, 0b00000000,
   0b00000001, 0b10000000,
-  0b00000001, 0b01000000,  
+  0b00000001, 0b01000000,
+};
+
+//de pixels voor de linkerkant van het poppetje
+
+const uint8_t red_left[32] PROGMEM = {
+  0b00000111, 0b11100000,
+  0b00001000, 0b00010000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000001, 0b11000000,
+  0b00000001, 0b11100000,
+  0b00000001, 0b10100000,
+  0b00000001, 0b10000000,
+  0b00000001, 0b10000000,
+  0b00000000, 0b00010000,
+  0b00000000, 0b00000000,
+};
+
+const uint8_t green_left[32] PROGMEM = {
+  0b00000111, 0b11100000,
+  0b00001000, 0b00010000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000001, 0b11000000,
+  0b00000001, 0b11100000,
+  0b00000001, 0b10100000,
+  0b00000001, 0b10000000,
+  0b00000001, 0b10000000,
+  0b00000000, 0b00010000,
+  0b00000000, 0b00000000,
+};
+const uint8_t black_left[32] PROGMEM = {
+  0b00000000, 0b00000000,
+  0b00000111, 0b11100000,
+  0b00001100, 0b00110000,
+  0b00001000, 0b00010000,
+  0b00011001, 0b00010000,
+  0b00010000, 0b00010000,
+  0b00001000, 0b00110000,
+  0b00000110, 0b01100000,
+  0b00000010, 0b01000000,
+  0b00000010, 0b00100000,
+  0b00000010, 0b00010000,
+  0b00000010, 0b01010000,
+  0b00000010, 0b01110000,
+  0b00000010, 0b01000000,
+  0b00000010, 0b01000000,
+  0b00000101, 0b01000000,
+};
+
+const uint8_t skin_left[32] PROGMEM = {
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000011, 0b11000000,
+  0b00000100, 0b11100000,
+  0b00000100, 0b11100000,
+  0b00001111, 0b11100000,
+  0b00000111, 0b11000000,
+  0b00000001, 0b10000000,
+  0b00000001, 0b10000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00010000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+};
+
+const uint8_t yellow_left[32] PROGMEM = {
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000001, 0b10000000,
+  0b00000010, 0b10000000,
+};
+
+const uint8_t white_left[32] PROGMEM = {
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000011, 0b00000000,
+  0b00000010, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
 };
 
 int main(void) {
@@ -311,21 +542,31 @@ int main(void) {
 
   // LOOP
   for (;;) {
-  nunchuk.update();
-//  drawGreen_right();
-//  drawRed_right();
-  drawIndicatorRed_right(nunchuk.analogX , nunchuk.analogY);
-  
-//     drawIndicatorRed_front(nunchuk.analogX , nunchuk.analogY);
-////      drawIndicatorGreen_front(nunchuk.analogX , nunchuk.analogY);
+    nunchuk.update();
+    //  drawGreen_right(100,100);
+    //  drawRed_right(150,150
+    //  drawRed_left(100,100);
+    //  drawGreen_left(150,150);
+    //  drawRed_front(100,100);
+    //  drawGreen_front(150,150);
+
+    //  drawIndicatorRed_right(nunchuk.analogX , nunchuk.analogY);
+    //  drawIndicatorGreen_right(nunchuk.analogX , nunchuk.analogY);
+    //  drawIndicatorGreen_left(nunchuk.analogX , nunchuk.analogY);
+    //  drawIndicatorRed_left(nunchuk.analogX , nunchuk.analogY);
+    //  drawIndicatorRed_front(nunchuk.analogX , nunchuk.analogY);
+    //  drawIndicatorGreen_front(nunchuk.analogX , nunchuk.analogY);
+    //  drawIndicatorRed_back(nunchuk.analogX , nunchuk.analogY);
+    //  drawIndicatorGreen_back(nunchuk.analogX , nunchuk.analogY);
+
     nunchuck_Direction();
-//    drawRed_front(100,100);
-//    drawGreen_front(150,150);
-//delay(250);
+    //delay(250);
   }
 }
 
-void drawRed_front(int x,int y) {
+//de voorkant van het poppetje:
+
+void drawRed_front(int x, int y) {
   Screen.drawBitmap(x, y, red_front, 16, 16, RED);
   Screen.drawBitmap(x, y, black_front, 16, 16, BLACK);
   Screen.drawBitmap(x, y, skin_front, 16, 16, SKIN);
@@ -341,7 +582,7 @@ void drawGreen_front(int x, int y) {
   Screen.drawBitmap(x, y, white_front, 16, 16, WHITE);
 }
 
-void deleteRed_front(int x,int y) {
+void deleteRed_front(int x, int y) {
   Screen.drawBitmap(x, y, red_front, 16, 16, BLACK);
   Screen.drawBitmap(x, y, black_front, 16, 16, BLACK);
   Screen.drawBitmap(x, y, skin_front, 16, 16, BLACK);
@@ -349,7 +590,7 @@ void deleteRed_front(int x,int y) {
   Screen.drawBitmap(x, y, white_front, 16, 16, BLACK);
 }
 
-void deleteGreen_front(int x,int y) {
+void deleteGreen_front(int x, int y) {
   Screen.drawBitmap(x, y, green_front, 16, 16, BLACK);
   Screen.drawBitmap(x, y, black_front, 16, 16, BLACK);
   Screen.drawBitmap(x, y, skin_front, 16, 16, BLACK);
@@ -359,8 +600,9 @@ void deleteGreen_front(int x,int y) {
 
 
 
-//teken de zijkant
-void drawRed_right(int x, int y){
+//teken de zijkant:
+
+void drawRed_right(int x, int y) {
   Screen.drawBitmap(x, y, red_right, 16, 16, RED);
   Screen.drawBitmap(x, y, black_right, 16, 16, BLACK);
   Screen.drawBitmap(x, y, skin_right, 16, 16, SKIN);
@@ -368,7 +610,7 @@ void drawRed_right(int x, int y){
   Screen.drawBitmap(x, y, white_right, 16, 16, WHITE);
 }
 
-void drawGreen_right(int x, int y){
+void drawGreen_right(int x, int y) {
   Screen.drawBitmap(x, y, green_right, 16, 16, GREEN);
   Screen.drawBitmap(x, y, black_right, 16, 16, BLACK);
   Screen.drawBitmap(x, y, skin_right, 16, 16, SKIN);
@@ -376,7 +618,7 @@ void drawGreen_right(int x, int y){
   Screen.drawBitmap(x, y, white_right, 16, 16, WHITE);
 }
 
-void deleteRed_right(int x,int y) {
+void deleteRed_right(int x, int y) {
   Screen.drawBitmap(x, y, red_right, 16, 16, BLACK);
   Screen.drawBitmap(x, y, black_right, 16, 16, BLACK);
   Screen.drawBitmap(x, y, skin_right, 16, 16, BLACK);
@@ -384,12 +626,81 @@ void deleteRed_right(int x,int y) {
   Screen.drawBitmap(x, y, white_right, 16, 16, BLACK);
 }
 
-void deleteGreen_right(int x,int y) {
+void deleteGreen_right(int x, int y) {
   Screen.drawBitmap(x, y, green_right, 16, 16, BLACK);
   Screen.drawBitmap(x, y, black_right, 16, 16, BLACK);
   Screen.drawBitmap(x, y, skin_right, 16, 16, BLACK);
   Screen.drawBitmap(x, y, yellow_right, 16, 16, BLACK);
   Screen.drawBitmap(x, y, white_right, 16, 16, BLACK);
+}
+
+//links tekenen:
+
+void drawRed_left(int x, int y) {
+  Screen.drawBitmap(x, y, red_left, 16, 16, RED);
+  Screen.drawBitmap(x, y, black_left, 16, 16, BLACK);
+  Screen.drawBitmap(x, y, skin_left, 16, 16, SKIN);
+  Screen.drawBitmap(x, y, yellow_left, 16, 16, YELLOW);
+  Screen.drawBitmap(x, y, white_left, 16, 16, WHITE);
+}
+
+void drawGreen_left(int x, int y) {
+  Screen.drawBitmap(x, y, green_left, 16, 16, GREEN);
+  Screen.drawBitmap(x, y, black_left, 16, 16, BLACK);
+  Screen.drawBitmap(x, y, skin_left, 16, 16, SKIN);
+  Screen.drawBitmap(x, y, yellow_left, 16, 16, YELLOW);
+  Screen.drawBitmap(x, y, white_left, 16, 16, WHITE);
+}
+
+void deleteRed_left(int x, int y) {
+  Screen.drawBitmap(x, y, red_left, 16, 16, BLACK);
+  Screen.drawBitmap(x, y, black_left, 16, 16, BLACK);
+  Screen.drawBitmap(x, y, skin_left, 16, 16, BLACK);
+  Screen.drawBitmap(x, y, yellow_left, 16, 16, BLACK);
+  Screen.drawBitmap(x, y, white_left, 16, 16, BLACK);
+}
+
+void deleteGreen_left(int x, int y) {
+  Screen.drawBitmap(x, y, green_left, 16, 16, BLACK);
+  Screen.drawBitmap(x, y, black_left, 16, 16, BLACK);
+  Screen.drawBitmap(x, y, skin_left, 16, 16, BLACK);
+  Screen.drawBitmap(x, y, yellow_left, 16, 16, BLACK);
+  Screen.drawBitmap(x, y, white_left, 16, 16, BLACK);
+}
+
+
+//teken de achterkant:
+
+void drawRed_back(int x, int y) {
+  Screen.drawBitmap(100, 100, red_back, 16, 16, RED);
+  Screen.drawBitmap(100, 100, black_back, 16, 16, BLACK);
+  Screen.drawBitmap(100, 100, yellow_back, 16, 16, YELLOW);
+  Screen.drawBitmap(100, 100, skin_back, 16, 16, SKIN);
+  Screen.drawBitmap(100, 100, purple_back, 16, 16, CLR_INDICATOR);
+}
+
+void drawGreen_back(int x, int y) {
+  Screen.drawBitmap(100, 100, green_back, 16, 16, GREEN);
+  Screen.drawBitmap(100, 100, black_back, 16, 16, BLACK);
+  Screen.drawBitmap(100, 100, yellow_back, 16, 16, YELLOW);
+  Screen.drawBitmap(100, 100, skin_back, 16, 16, SKIN);
+  Screen.drawBitmap(100, 100, purple_back, 16, 16, CLR_INDICATOR);
+}
+
+void deleteRed_back(int x, int y) {
+  Screen.drawBitmap(100, 100, red_back, 16, 16, BLACK);
+  Screen.drawBitmap(100, 100, black_back, 16, 16, BLACK);
+  Screen.drawBitmap(100, 100, yellow_back, 16, 16, BLACK);
+  Screen.drawBitmap(100, 100, skin_back, 16, 16, BLACK);
+  Screen.drawBitmap(100, 100, purple_back, 16, 16, BLACK);
+}
+
+void deleteGreen_back(int x, int y) {
+  Screen.drawBitmap(100, 100, green_back, 16, 16, BLACK);
+  Screen.drawBitmap(100, 100, black_back, 16, 16, BLACK);
+  Screen.drawBitmap(100, 100, yellow_back, 16, 16, BLACK);
+  Screen.drawBitmap(100, 100, skin_back, 16, 16, BLACK);
+  Screen.drawBitmap(100, 100, purple_back, 16, 16, BLACK);
 }
 
 // Draw indicator for nunchuk position
@@ -406,7 +717,7 @@ void drawIndicatorRed_front(int x, int y) {
   old_y = y;
 
   // Draw puppet
- drawRed_front(x,y);
+  drawRed_front(x, y);
 }
 
 // Draw indicator for nunchuk position
@@ -423,10 +734,45 @@ void drawIndicatorGreen_front(int x, int y) {
   old_y = y;
 
   // Draw puppet
- drawGreen_front(x,y);
+  drawGreen_front(x, y);
 }
 
 // Draw indicator for nunchuk position
+void drawIndicatorRed_back(int x, int y) {
+  // Erase previous indicator
+  deleteRed_back(old_x, old_y);
+
+  // Map the X and Y values in the right area (center of the screen)
+  x = map(x, 0, NUNCHUK_MAX_X, 0, SCREEN_W);
+  y = map(y, 0, NUNCHUK_MAX_Y, SCREEN_H, 0);
+
+  // Set old x and y values, used to erase the indicator next time
+  old_x = x;
+  old_y = y;
+
+  // Draw puppet
+  drawRed_back(x, y);
+}
+
+
+// Draw indicator for nunchuk position
+void drawIndicatorGreen_back(int x, int y) {
+  // Erase previous indicator
+  deleteGreen_back(old_x, old_y);
+
+  // Map the X and Y values in the right area (center of the screen)
+  x = map(x, 0, NUNCHUK_MAX_X, 0, SCREEN_W);
+  y = map(y, 0, NUNCHUK_MAX_Y, SCREEN_H, 0);
+
+  // Set old x and y values, used to erase the indicator next time
+  old_x = x;
+  old_y = y;
+
+  // Draw puppet
+  drawGreen_back(x, y);
+}
+
+// Draw indicator for nunchuk position right
 void drawIndicatorRed_right(int x, int y) {
   // Erase previous indicator
   deleteRed_right(old_x, old_y);
@@ -440,7 +786,7 @@ void drawIndicatorRed_right(int x, int y) {
   old_y = y;
 
   // Draw puppet
- drawRed_right(x,y);
+  drawRed_right(x, y);
 }
 
 // Draw indicator for nunchuk position
@@ -457,8 +803,45 @@ void drawIndicatorGreen_right(int x, int y) {
   old_y = y;
 
   // Draw puppet
- drawGreen_right(x,y);
+  drawGreen_right(x, y);
 }
+
+// Draw indicator for nunchuk position
+void drawIndicatorGreen_left(int x, int y) {
+  // Erase previous indicator
+  deleteGreen_left(old_x, old_y);
+
+  // Map the X and Y values in the right area (center of the screen)
+  x = map(x, 0, NUNCHUK_MAX_X, 0, SCREEN_W);
+  y = map(y, 0, NUNCHUK_MAX_Y, SCREEN_H, 0);
+
+  // Set old x and y values, used to erase the indicator next time
+  old_x = x;
+  old_y = y;
+
+  // Draw puppet
+  drawGreen_left(x, y);
+}
+
+// Draw indicator for nunchuk position
+void drawIndicatorRed_left(int x, int y) {
+  // Erase previous indicator
+  deleteRed_left(old_x, old_y);
+
+  // Map the X and Y values in the right area (center of the screen)
+  x = map(x, 0, NUNCHUK_MAX_X, 0, SCREEN_W);
+  y = map(y, 0, NUNCHUK_MAX_Y, SCREEN_H, 0);
+
+  // Set old x and y values, used to erase the indicator next time
+  old_x = x;
+  old_y = y;
+
+  // Draw puppet
+  drawRed_left(x, y);
+}
+
+
+
 void nunchuck_Direction () {
 
   if (nunchuk.analogX >= 0 && nunchuk.analogX <= 64) { // to the left
