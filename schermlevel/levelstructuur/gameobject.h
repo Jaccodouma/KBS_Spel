@@ -1,5 +1,11 @@
 #pragma once
+
+#include "lib.h"
+
 class Gameobject {
-    private:
-        Gameobject *gameobject;
+    public:
+        Gameobject(uint8_t x, uint8_t y);
+        position getFieldPos();
+    protected:
+        position fieldPos;
 };
