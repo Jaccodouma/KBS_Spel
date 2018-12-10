@@ -21,9 +21,9 @@ int main(void)
     Control control;
     control.startGame();
 
-    List<Gameobject> gos;
-    Gameobject go = new Gameobject(1, 2);
-    gos.add(go);
+    // List<Gameobject> gos;
+    // Gameobject go = new Gameobject(1, 2);
+    // gos.add(go);
 
     while(1) {
         _delay_ms(1000);
