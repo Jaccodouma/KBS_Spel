@@ -9,10 +9,11 @@ struct node {
     node *next;
 };
 
-class List {
+class GoList {
     public:
     void add(Gameobject *go);
-    int size();
+    int length();
+    void del(Gameobject *go);
 
     private:
     node *head=NULL, *tail=NULL;

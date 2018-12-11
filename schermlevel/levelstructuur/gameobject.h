@@ -8,4 +8,5 @@ class Gameobject {
         position getFieldPos();
     protected:
         position fieldPos;
+        uint8_t flags; // delete, redraw, update
 };

@@ -69,3 +69,11 @@ bool Game::addPlayer(Player *p) {
 bool Game::isStarted() {
     return this->started;
 }
+
+uint8_t Game::getWidth() {
+    return this->width;
+}
+
+uint8_t Game::getHeight() {
+    return this->height;
+}

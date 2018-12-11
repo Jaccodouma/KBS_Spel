@@ -1,6 +1,8 @@
+#include <avr/io.h>
+#include "gfx.h"
 #include <stdlib.h>
 #include "control.h"
-#include "lib/list.h"
+#include "golist.h"
 
 void freeRam() {
   extern int __heap_start, *__brkval;
@@ -18,12 +20,14 @@ int main(void)
     Serial.begin(9600);
     Serial.println("Welkom\n");
 
-    Control control;
-    control.startGame();
+    // nunchuk
+    // DDRC |= (1 << DDC2) | (1 << DDC3);  // Set PC2 & PC3 on OUTPUT
+    // PORTC &= ~(1 << PORTC2);            // set PC2 to LOW
+    // PORTC |= (1 << PORTC3);             // Set PC3 to HIGH
 
-    // List<Gameobject> gos;
-    // Gameobject go = new Gameobject(1, 2);
-    // gos.add(go);
+    Gfx gfx;
+    Control control(&gfx);
+    control.startGame();
 
     while(1) {
         _delay_ms(1000);

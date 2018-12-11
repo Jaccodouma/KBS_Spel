@@ -1,13 +1,16 @@
 #include "control.h"
 
-Control::Control() {}
+Control::Control(Gfx *gfx) {
+    this->gfx = gfx;
+}
 
 void Control::startGame() {
-    game = new Game(15, 15);
+    game = new Game(15, 17);
     Player *p = new Player("ffk27", 1, 1);
     game->addPlayer(p);
     game->start();
     //game->printField();
+    gfx->drawLevel(game);
     Serial.println("Game started");
 }
 

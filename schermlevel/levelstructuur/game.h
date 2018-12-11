@@ -2,6 +2,7 @@
 
 #include "lib.h"
 #include "player.h"
+#include "golist.h"
 
 class Game {
    public:
@@ -13,8 +14,11 @@ class Game {
     bool hasCollision(position p);
     bool addPlayer(Player *p);
     void printField();
+    uint8_t getWidth();
+    uint8_t getHeight();
 
    private:
-    int width, height;
+    uint8_t width, height;
     bool started = false;
+    GoList gos;
 };
