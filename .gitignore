@@ -1,2 +1,6 @@
 .vscode/
 *.out
+*.cppproj
+*.cpp.old
+*.componentinfo.xml
+*.vsarduino.h
