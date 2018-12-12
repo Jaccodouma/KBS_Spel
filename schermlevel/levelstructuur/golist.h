@@ -11,10 +11,12 @@ struct node {
 
 class GoList {
     public:
+    ~GoList();
     void add(Gameobject *go);
-    int length();
     void del(Gameobject *go);
+    int length();
+    Gameobject * getNext();
 
     private:
-    node *head=NULL, *tail=NULL;
+    node *head=NULL, *tail=NULL, *next=NULL;
 };

@@ -10,6 +10,19 @@ Game::~Game() {
     if (players[1] == NULL) delete players[1];
 }
 
+void Game::update(Gfx *gfx) {
+    Gameobject *go = gos.getNext();
+    while (go != NULL) {
+        if (needsUpdate(go)) {
+            go->update();
+        } 
+        if (needsRedraw(go)) {
+            go->draw(gfx);
+        }
+        go = gos.getNext();
+    }
+}
+
 bool Game::hasCollision(position p) {
     if (p.y <= 0 || p.y >= height - 1) {
         // botsing met bovenste of onderste blokjes of buiten het speelveld
@@ -26,27 +39,6 @@ bool Game::hasCollision(position p) {
     return false;
 }
 
-void Game::printField() {
-    for (int i = 0; i < height; i++) {
-        for (int j = 0; j < width; j++) {
-            if (i == 0 || i == height - 1) {  // bovenste of onderste rij
-                Serial.print("X");
-            } else {
-                if (j == 0 || j == width - 1) {  // rand links of rechts
-                    Serial.print("X");
-                } else {
-                    if (isEven(i) && isEven(j)) {
-                        Serial.print("X");
-                    } else {
-                        Serial.print(" ");
-                    }
-                }
-            }
-        }
-        Serial.println("");
-    }
-}
-
 bool Game::start() {
     if (players[0] != NULL) {  // Start bij tenminste één speler
         this->started = true;
@@ -57,23 +49,19 @@ bool Game::start() {
 bool Game::addPlayer(Player *p) {
     if (players[0] == NULL) {
         players[0] = p;
+        gos.add(p);  // voeg toe aan de gameobject-lijst
         return true;
     }
     if (players[1] == NULL) {
         players[1] = p;
+        gos.add(p);  // voeg toe aan de gameobject-lijst
         return true;
     }
-    return false;
+    return false;  // genoeg spelers
 }
 
-bool Game::isStarted() {
-    return this->started;
-}
+bool Game::isStarted() { return this->started; }
 
-uint8_t Game::getWidth() {
-    return this->width;
-}
+uint8_t Game::getWidth() { return this->width; }
 
-uint8_t Game::getHeight() {
-    return this->height;
-}
+uint8_t Game::getHeight() { return this->height; }

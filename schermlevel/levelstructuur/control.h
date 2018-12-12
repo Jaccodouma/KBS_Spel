@@ -6,19 +6,19 @@
 #include <avr/interrupt.h>
 #include <stdlib.h>
 #include "game.h"
-#include "gfx.h"
+#include "view.h"
 #include "lib.h"
 #include "player.h"
 
 class Control {
    private:
     ArduinoNunchuk nunchuk;
-    Gfx *gfx;
+    View *view;
     Game *game;
     direction nunchuck_Direction();
 
    public:
-    Control(Gfx *gfx);
+    Control(View *view);
     void update();
     void movePlayer(direction d);
     void startGame();

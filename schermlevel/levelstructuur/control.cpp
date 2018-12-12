@@ -1,16 +1,13 @@
 #include "control.h"
 
-Control::Control(Gfx *gfx) {
-    this->gfx = gfx;
-}
+Control::Control(View *view) { this->view = view; }
 
 void Control::startGame() {
     game = new Game(15, 17);
-    Player *p = new Player("ffk27", 1, 1);
+    Player *p = new Player("ffk27", 1, 1, view->blockSize());
     game->addPlayer(p);
     game->start();
-    //game->printField();
-    gfx->drawLevel(game);
+    view->drawLevel(game);  // teken het level-grid
     Serial.println("Game started");
 }
 
@@ -18,11 +15,14 @@ void Control::update() {
     if (game->isStarted()) {
         movePlayer(direction::DIR_RIGHT);
     }
+    game->update(&view->gfx);
 }
 
 void Control::movePlayer(direction d) {
-    if (!game->hasCollision(
-            movePosition(game->players[0]->getFieldPos(), d))) {
+    // laat de alleen bewegen als de speler stilstaat en de volgende positie
+    // geen bostsing zou veroorzaken
+    if (!game->players[0]->isMoving() &&
+        !game->hasCollision(movePosition(game->players[0]->getFieldPos(), d))) {
         game->players[0]->move(d);
     }
 }
