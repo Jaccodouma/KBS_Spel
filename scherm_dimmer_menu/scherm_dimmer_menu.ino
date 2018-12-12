@@ -37,7 +37,7 @@ int main(void)
   PWM_init();
   adc_init();
   OCR0A = brightness;
-  touchScreen myTS(&touch);
+  touchScreen myTS(&tft, &touch);
   Serial.begin(9600);
   tft.begin();
   tft.setRotation(2);
@@ -45,31 +45,27 @@ int main(void)
 
   while (1)
   {
-    tft.drawRect(224, 0, 16, 16, ILI9341_WHITE);
+
     if (myTS.checkmenuButton()) {
-      Serial.println("ja");
+      Serial.println("--ja--");
     }
 
-    // screenbrightnessAuto();
-    screenbrightnessMenu(&myTS);
+    if (myTS.checkmenuCheckBox1()) {
+      brightness = myTS.checkScreenB(screenbrightnessAuto());
+    }else{
+     brightness = myTS.checkScreenB(0);
+    }
     
-  }
-}
+    //myTS.printXY();
 
-void screenbrightnessMenu(touchScreen *myTS)
-{ 
-  tft.drawRect(200, 30, 32, 150, ILI9341_WHITE);
-  
-  if (myTS->checkScreenB() > 0 && myTS->checkScreenB() != brightness_old) {
-    brightness = myTS->checkScreenB();
-    tft.drawRect(200, map(brightness_old, 5, 255, 172, 30), 32, 8, ILI9341_BLUE);
-    tft.drawRect(200, map(brightness, 5, 255, 172, 30), 32, 8, ILI9341_WHITE);
-    brightness_old = brightness;
+    // screenbrightnessAuto();
+
     OCR0A = brightness;
+   _delay_ms(50);
   }
 }
 
-void screenbrightnessAuto() {
+uint8_t screenbrightnessAuto() {
   ADCSRA |= (1 << ADSC);        //single AD-conversion
   while (ADCSRA & (1 << ADSC)); //wait for result..
   photocellReading = ((ADC / 4) - 5);
@@ -84,5 +80,5 @@ void screenbrightnessAuto() {
       }
     }
   }
-  OCR0A = brightness;
+  return brightness;
 }
