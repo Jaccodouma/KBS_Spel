@@ -1,0 +1,24 @@
+###########################################
+# Syntax Coloring Map For LiquidCrystal_I2C
+###########################################
+
+###########################################
+# Datatypes (KEYWORD1)
+###########################################
+
+IR	KEYWORD1
+
+###########################################
+# Methods and Functions (KEYWORD2)
+###########################################
+write	KEYWORD2
+available	KEYWORD2
+read	KEYWORD2
+home	KEYWORD2
+error	KEYWORD2
+timerOverflow	KEYWORD2
+pinChange	KEYWORD2
+###########################################
+# Constants (LITERAL1)
+###########################################
+MESSAGE_SIZE LITERAL1

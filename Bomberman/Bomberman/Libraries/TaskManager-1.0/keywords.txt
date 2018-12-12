@@ -1,0 +1,22 @@
+###########################################
+# Syntax Coloring Map For TaskManager
+###########################################
+
+###########################################
+# Datatypes (KEYWORD1)
+###########################################
+TaskManager KEYWORD1
+Task KEYWORD1
+###########################################
+# Methods and Functions (KEYWORD2)
+###########################################
+run	KEYWORD2
+doTask	KEYWORD2
+addTask	KEYWORD2
+addSideTask KEYWORD2
+
+###########################################
+# Constants (LITERAL1)
+###########################################
+TASK_BUSY LITERAL1
+TASK_DONE LITERAL1
