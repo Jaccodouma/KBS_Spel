@@ -6,3 +6,9 @@
 *.vsarduino.h
 Bomberman/.vs/Bomberman/v14/.atsuo
 Bomberman/Bomberman.atsln
+*.xml
+*.buildinfo
+*.d
+*.o
+*.elf
+*.hex
