@@ -33,13 +33,15 @@ IntroScreen::run() {
 		this->initialised = 1;
 	} else {
 		Serial.println("IntroScreen.run() - initialised");
+		
 		// Check if the screen is pressed. If it is, return TASK_DONE
-		if (!TouchScreen->bufferEmpty()) {
-			Serial.println("Touchscreen is touched");
-			this->initialised = 0;
-			return TASK_DONE;
-		} else {
-			Serial.println("No Touchie");
+		
+		if (TouchScreen->touched()) {
+			Serial.println("Touchscreen touchie");
+			while (!TouchScreen->bufferEmpty()) {
+				TouchScreen->readData(&x, &y, &z);
+			}
+			TouchScreen->writeRegister8(STMPE_INT_STA, 0xFF); // reset all ints
 		}
 	}
 	return TASK_BUSY;

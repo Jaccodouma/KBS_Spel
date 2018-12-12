@@ -17,6 +17,8 @@ private:
 	int initialised; // if initialised the screen is showing the right stuff 
 	Adafruit_ILI9341 *Screen;
 	Adafruit_STMPE610 *TouchScreen;
+	uint16_t x, y;
+	uint8_t z;
 };
 
 #endif
