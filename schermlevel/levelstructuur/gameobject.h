@@ -20,7 +20,7 @@ class Gameobject {
         Gameobject(uint8_t x, uint8_t y);
         position getFieldPos();
         virtual void update() = 0;
-        virtual void draw(Gfx *gfx);
+        virtual void draw(Gfx *gfx) = 0;
     protected:
         position fieldPos;
 };

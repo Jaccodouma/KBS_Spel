@@ -30,8 +30,7 @@ int main(void)
     control.startGame();
 
     while(1) {
-        _delay_ms(16);
-        //freeRam();
+        //_delay_ms(20);
         control.update();
     }
 }

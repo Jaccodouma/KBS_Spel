@@ -20,6 +20,6 @@ class Control {
    public:
     Control(View *view);
     void update();
-    void movePlayer(direction d);
+    void movePlayer(Player *p, direction d);
     void startGame();
 };

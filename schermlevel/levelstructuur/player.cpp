@@ -13,8 +13,7 @@ Player::Player(const char name[], uint8_t x, uint8_t y, uint8_t blocksize)
 void Player::move(direction d) {
     this->dir = d;
     this->fieldPos = movePosition(this->fieldPos, d);
-    printPosition(this->fieldPos);
-    flags |= (1 << B_UPDATE);  // flag for update
+    toggleUpdate(this);  // flag for update
 }
 
 void Player::update() {
@@ -33,10 +32,10 @@ void Player::update() {
 void Player::draw(Gfx *gfx) {
     // teken eerst de achtergrondkleur over de vorige positie
     gfx->tft->fillCircle(prevPos.x + *gfx->offsetX + *gfx->blocksize / 2,
-                   prevPos.y + *gfx->offsetY + *gfx->blocksize / 2, (*gfx->blocksize - 1) / 2,
+                   prevPos.y + *gfx->offsetY + *gfx->blocksize / 2, (*gfx->blocksize - 1) / 8,
                    BGCOLOR);
     gfx->tft->fillCircle(screenPos.x + *gfx->offsetX + *gfx->blocksize / 2,
-                   screenPos.y + *gfx->offsetY + *gfx->blocksize / 2, (*gfx->blocksize - 1) / 2,
+                   screenPos.y + *gfx->offsetY + *gfx->blocksize / 2, (*gfx->blocksize - 1) / 8,
                    BLACK);
     toggleRedraw(this);
 }

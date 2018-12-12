@@ -3,6 +3,17 @@
 Game::Game(uint8_t width, uint8_t height) {
     this->width = width;
     this->height = height;
+    for (int i = 1; i < height - 1; i++) {
+        for (int j = 1; j < width - 1; j++) {
+            if (!isEven(i) ||
+                !isEven(
+                    j)) {  // ga langs alle posities maar sla grid-blokjes over
+                if (random(3) == 0)
+                    gos.add(new Block(j, i));  // kans is 1 op 3 dat er een
+                                               // blokje geplaatst wordt
+            }
+        }
+    }
 }
 
 Game::~Game() {
@@ -15,7 +26,7 @@ void Game::update(Gfx *gfx) {
     while (go != NULL) {
         if (needsUpdate(go)) {
             go->update();
-        } 
+        }
         if (needsRedraw(go)) {
             go->draw(gfx);
         }
@@ -23,7 +34,7 @@ void Game::update(Gfx *gfx) {
     }
 }
 
-bool Game::hasCollision(position p) {
+bool Game::hasCollision(Gameobject *go, position p) {
     if (p.y <= 0 || p.y >= height - 1) {
         // botsing met bovenste of onderste blokjes of buiten het speelveld
         return true;
@@ -36,7 +47,17 @@ bool Game::hasCollision(position p) {
         // botsing met rasterblokjes
         return true;
     }
-    return false;
+    Gameobject *temp = gos.getNext();
+    bool collision = false;
+    while (temp != NULL) {
+        position pos = temp->getFieldPos();
+        if (p.x == pos.x && p.y == pos.y) {  // botsing met een game-object
+            collision = true;
+            break;
+        }
+        temp = gos.getNext();
+    }
+    return collision;
 }
 
 bool Game::start() {
