@@ -1,5 +1,5 @@
 #include <avr/io.h>
-#include "gfx.h"
+#include "view.h"
 #include <stdlib.h>
 #include "control.h"
 #include "golist.h"
@@ -25,13 +25,12 @@ int main(void)
     // PORTC &= ~(1 << PORTC2);            // set PC2 to LOW
     // PORTC |= (1 << PORTC3);             // Set PC3 to HIGH
 
-    Gfx gfx;
-    Control control(&gfx);
+    View view;
+    Control control(&view);
     control.startGame();
 
     while(1) {
-        _delay_ms(1000);
-        //freeRam();
+        //_delay_ms(20);
         control.update();
     }
 }

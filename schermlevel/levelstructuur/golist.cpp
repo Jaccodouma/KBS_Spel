@@ -14,24 +14,24 @@ void GoList::add(Gameobject *go) {
     }
 }
 
-int GoList::length() {
-    int length = 0;
-    if (head != NULL) {  // geen lege lijst
-        node *temp = head;
-        do {
-            length++;
-            temp = temp->next;
-        } while (temp != NULL);
+GoList::~GoList() {
+    // destructor, geef al het gealloceerde gehuegen vrij
+    node *tempprev = NULL;
+    node *temp = head;
+    while (temp != NULL) {
+        tempprev = temp;
+        temp = tempprev->next;
+        delete tempprev->data;
+        delete tempprev;  // verwijder node
     }
-    return length;
 }
-#include <stdio.h>
+
 void GoList::del(Gameobject *go) {
     node *tempprev = NULL;
     node *temp = head;
-    while (temp != NULL) {  // geen lege lijst
-        if (temp->data == go) { // gevonden
-            if (tempprev == NULL) { // go zat in de head-node
+    while (temp != NULL) {           // geen lege lijst
+        if (temp->data == go) {      // gevonden
+            if (tempprev == NULL) {  // go zat in de head-node
                 head = temp->next;
             } else {
                 tempprev->next = temp->next;
@@ -41,11 +41,37 @@ void GoList::del(Gameobject *go) {
             }
             // Geef het gealloceerde geheugen vrij
             delete temp->data;
-            delete temp; // verwijder node
+            delete temp;  // verwijder node
             temp = NULL;
         } else {
             tempprev = temp;
             temp = temp->next;
         }
     }
+}
+
+int GoList::length() {
+    // berekent de lengte van de lijst
+    int l = 0;
+    node *temp = head;
+    while (temp != NULL) {
+        l++;
+        temp = temp->next;
+    }
+    return l; 
+}
+
+Gameobject *GoList::getNext() {
+    if (head == NULL) {
+        return NULL;  // lege lijst
+    }
+    if (next == NULL) {
+        next = head;
+        return next->data;
+    }
+    next = next->next;
+    if (next != NULL) {
+        return next->data;
+    }
+    return NULL;
 }

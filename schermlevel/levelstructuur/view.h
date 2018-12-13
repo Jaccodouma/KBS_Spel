@@ -11,16 +11,12 @@
 #define TFT_DC 9
 #define TFT_CS 10
 
-#define BLACK ILI9341_BLACK
-#define BGCOLOR ILI9341_WHITE
-#define BLOCKSIZE 16
-
-class Gfx {
+class View {
     public:
-        Gfx();
+        View();
         void drawLevel(Game *g);
-        void drawPlayer(Game *g);
         uint8_t blockSize();
+        Gfx gfx;
     private:
         uint8_t offsetX, offsetY, blocksize;
         Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC);

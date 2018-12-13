@@ -3,9 +3,6 @@
 #ifndef _INTROSCREEN_h
 #define _INTROSCREEN_h
 
-#include "Adafruit_ILI9341.h"	// TFT screen
-#include "Adafruit_STMPE610.h"	// Touch screen
-
 #include "TaskManager.h"
 
 class IntroScreen: public Task
