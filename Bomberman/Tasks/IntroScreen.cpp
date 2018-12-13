@@ -46,9 +46,9 @@ IntroScreen::run() {
 	// Check if Cbutton is pressed on nunchuck. If it is, regenerate colour and redraw the screen
 	if (nunchuk->cButton) {
 		this->gameColour = Screen->color565(random(100,255),random(100,255),random(100,255));
+		Serial.println(*gameColour);
 		this->initialised = false;
 	}
-	Serial.println("Busy");
 	
 	return TASK_BUSY;
 }

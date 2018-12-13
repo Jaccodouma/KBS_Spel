@@ -88,6 +88,7 @@ int main(void) {
 	
 	while(1) {
 		settingMenu->screenBrightness(); // update screen brightness
+		Serial.println(gameColour);
 		taskManager->doTask(); // do current task
 	}
 }

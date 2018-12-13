@@ -23,7 +23,7 @@ private:
 	ArduinoNunchuk *nunchuk;
 	
 	boolean initialised; // if initialised the screen is showing the right stuff
-	colour gameColour;
+	colour *gameColour;
 	uint16_t x, y;
 	uint8_t z;
 };
