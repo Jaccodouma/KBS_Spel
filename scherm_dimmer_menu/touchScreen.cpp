@@ -32,13 +32,15 @@ uint8_t touchScreen::checkmenuButton() {
   }
 }
 
-uint8_t touchScreen::checkmenuCheckBox1() {
+uint8_t touchScreen::checkmenuCheckBox1(uint8_t EnablePrint) {
   touchScreen::updateTS();
 
-  tft->setCursor(100, 8);
-  tft->setTextColor(ILI9341_WHITE);
-  tft->setTextSize(1);
-  tft->println("AutoMode:");
+  if (EnablePrint) {
+    tft->setCursor(100, 8);
+    tft->setTextColor(ILI9341_WHITE);
+    tft->setTextSize(1);
+    tft->println("AutoMode:");
+  }
 
   if (x > STMP_CheckBox1_Xmin && x < STMP_CheckBox1_Xmax && y > STMP_CheckBox1_Ymin && y < STMP_CheckBox1_Ymax) {
     if (check1) {
@@ -49,10 +51,14 @@ uint8_t touchScreen::checkmenuCheckBox1() {
     check1 = 1;
   }
   if (checkboxbool1) {
-    tft->drawRect(150, 0, 16, 16, ILI9341_RED);
+    if (EnablePrint) {
+      tft->drawRect(150, 0, 16, 16, ILI9341_RED);
+    }
     return 1;
   } else {
-    tft->drawRect(150, 0, 16, 16, ILI9341_WHITE);
+    if (EnablePrint) {
+      tft->drawRect(150, 0, 16, 16, ILI9341_WHITE);
+    }
     return 0;
   }
 }
@@ -70,7 +76,6 @@ uint8_t touchScreen::checkScreenB(uint8_t input) {
   if (brightness > 0 && brightness != brightness_old) {
     tft->drawRect(201, map(brightness_old, 5, 255, 172, 30), 30, 8, ILI9341_BLUE);
     brightness_old = brightness;
-    OCR0A = brightness;
   }
   tft->drawRect(200, 30, 32, 150, ILI9341_WHITE);
   tft->drawRect(200, map(brightness, 5, 255, 172, 30), 32, 8, ILI9341_WHITE);
