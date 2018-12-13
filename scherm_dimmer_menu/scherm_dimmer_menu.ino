@@ -1,3 +1,4 @@
+#include "ConnectionMenu.h"
 #include <avr/io.h>
 #include <SPI.h>
 #include <Wire.h>

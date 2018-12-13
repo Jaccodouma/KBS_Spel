@@ -24,20 +24,22 @@
 #include "SPI.h"
 #include <Wire.h>
 
-// Self-made Libraries
+// Self-made Libraries and utilities
 #include "TaskManager.h"
 #include "IR.h"
+#include "Utility/touchScreen.h"
 
 // Task classes
 #include "Tasks/IntroScreen.h"
 #include "Tasks/ConnectionMenu.h"
+#include "Tasks/SettingMenu.h"
 
 // Typedefs
 typedef uint16_t colour; 
 
 // Screen objects
 Adafruit_ILI9341 Screen = Adafruit_ILI9341(TFT_CS, TFT_DC); 
-Adafruit_STMPE610 TouchScreen = Adafruit_STMPE610(8);
+Adafruit_STMPE610 Touch = Adafruit_STMPE610(8);
 
 // Nunchuk object
 ArduinoNunchuk nunchuk = ArduinoNunchuk();
@@ -52,6 +54,9 @@ int main(void) {
 	init();
 	nunchuk.init();
 	
+	// Create myTS object
+	touchScreen myTS(&Screen, &Touch);
+	
 	// Generate game colour
 	colour gameColour = Screen.color565(random(100,255),random(100,255),random(100,255));
 	
@@ -63,11 +68,13 @@ int main(void) {
 	TaskManager *taskManager = new TaskManager; 
 	
 	// Create Task objects
-	Task *introScreen = new IntroScreen(&Screen, &TouchScreen, &nunchuk, &gameColour);
-	Task *connectionMenu = new ConnectionMenu(&Screen, &TouchScreen, &nunchuk, &gameColour);
+	IntroScreen *introScreen = new IntroScreen(&Screen, &Touch, &nunchuk, &gameColour);
+	ConnectionMenu *connectionMenu = new ConnectionMenu(&Screen, &Touch, &nunchuk, &gameColour);
+	SettingMenu *settingMenu = new SettingMenu(&myTS);
 	
 	// Add tasks to taskManager
 	taskManager->addTask(introScreen);
+	taskManager->addTask(settingMenu);
 	taskManager->addTask(connectionMenu);
 	
 	
@@ -80,6 +87,7 @@ int main(void) {
 	Serial.println("Starting loop");
 	
 	while(1) {
+		settingMenu->screenBrightness(); // update screen brightness
 		taskManager->doTask(); // do current task
 	}
 }
