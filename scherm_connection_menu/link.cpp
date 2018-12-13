@@ -9,7 +9,6 @@ link::link(IR *ir, uint8_t master) {
 
 uint8_t link::checkForData(void) {
   if (master && EnableSending) {
-    Serial.print("sent data..");
     ir->write(dataOUT); //the master determines when the pransmission is being started
     EnableSending = 0;
     return 0;
@@ -44,7 +43,7 @@ uint8_t link::checkForData(void) {
     if (!master) { //slaves sent there data right after the new data is received
       ir->write(dataOUT);
     }
-    //EnableSending = 1;
+    EnableSending = 1;
     return 1;
   }
 }

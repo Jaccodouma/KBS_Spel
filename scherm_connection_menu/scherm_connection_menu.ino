@@ -6,7 +6,7 @@
 #include "link.h"
 
 #define MASTER 1
-#define TRANSMITTER_FREQ 32
+#define TRANSMITTER_FREQ 38
 #define TIMER_ADD_VAL_38 0.02631579
 #define TIMER_ADD_VAL_56 0.01785714
 
@@ -33,13 +33,13 @@ int deleteme = 0;
 
   while (1) {
 
-    if(deleteme<30){
+    if(deleteme<16){
       deleteme++;
     }else{
       deleteme = 0;
     }
     
-    myLink.UpdatePlayerInfo(4,deleteme,0,0); //X,Y,BOMB,LIFES
+    myLink.UpdatePlayerInfo(2,deleteme,0,0); //X,Y,BOMB,LIFES
 
     Serial.print(" ! x:");
     Serial.print(myLink.otherplayer_x);
@@ -52,6 +52,7 @@ int deleteme = 0;
 
     myLink.checkForData(); //keep repeating this in the loop to stay connected
 
+_delay_ms(50);
 
   }
 }

@@ -1,7 +1,7 @@
 #ifndef link_H
 #define link_H
 
-#define MESSAGE_SIZE 8
+#define MESSAGE_SIZE 9
 
 class link
 {
