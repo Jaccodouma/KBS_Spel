@@ -34,9 +34,10 @@ IntroScreen::run() {
 		Serial.println("IntroScreen.run() - not initialised");
 		
 		this->initialised = true;
-		} else {
+	} else {
 		// Check if a button is pressed. If it is, return TASK_DONE
 		// TODO: fix this, touch screen doesn't work for some odd reason
+		/*
 		if (TouchScreen->touched()) {
 			Serial.println("Touchscreen touchie");
 			while (!TouchScreen->bufferEmpty()) {
@@ -46,7 +47,7 @@ IntroScreen::run() {
 			
 			this->initialised = false;
 			return TASK_DONE;
-		}
+		}*/
 		
 		// Check if Zbutton is pressed on nunchuck. If it is, return TASK_DONE
 		nunchuk->update();
