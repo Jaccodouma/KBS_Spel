@@ -30,6 +30,7 @@
 
 // Task classes
 #include "Tasks/IntroScreen.h"
+#include "Tasks/ConnectionMenu.h"
 
 // Typedefs
 typedef uint16_t colour; 
@@ -42,6 +43,12 @@ Adafruit_STMPE610 TouchScreen = Adafruit_STMPE610(8);
 ArduinoNunchuk nunchuk = ArduinoNunchuk();
 
 int main(void) {
+	
+	// Nunchuk power, needed when it's on A2-5
+	DDRC |= (1<<DDC2) | (1<<DDC3); // Set PC2 & PC3 on OUTPUT
+	PORTC &= ~(1<<PORTC2); // set PC2 to LOW
+	PORTC |= (1<<PORTC3); // Set PC3 to HIGH
+	
 	init();
 	nunchuk.init();
 	
@@ -57,9 +64,11 @@ int main(void) {
 	
 	// Create Task objects
 	Task *introScreen = new IntroScreen(&Screen, &TouchScreen, &nunchuk, &gameColour);
+	Task *connectionMenu = new ConnectionMenu(&Screen, &TouchScreen, &nunchuk, &gameColour);
 	
 	// Add tasks to taskManager
 	taskManager->addTask(introScreen);
+	taskManager->addTask(connectionMenu);
 	
 	
 	// Start screen and make it the right colour
