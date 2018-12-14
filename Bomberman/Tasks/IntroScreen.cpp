@@ -5,7 +5,7 @@
 #include <ArduinoNunchuk.h>		// Nunchuk
 
 // Constructor
-IntroScreen::IntroScreen(Adafruit_ILI9341 *Screen, Adafruit_STMPE610 *TouchScreen, ArduinoNunchuk *nunchuk, colour *gameColour) {
+IntroScreen::IntroScreen(Adafruit_ILI9341 *Screen, Adafruit_STMPE610 *TouchScreen, ArduinoNunchuk *nunchuk, GameColour *gameColour) {
 	this->Screen = Screen;
 	this->TouchScreen = TouchScreen;
 	this->nunchuk = nunchuk;
@@ -18,7 +18,7 @@ IntroScreen::run() {
 		Serial.println("Drawing screen");
 		
 		// Draw the screen
-		Screen->fillScreen(this->gameColour);
+		Screen->fillScreen(this->gameColour->getGameColour());
 		
 		// Draw "Bomberman" text
 		Screen->setTextColor(Screen->color565(0,0,0));
@@ -45,8 +45,7 @@ IntroScreen::run() {
 		
 	// Check if Cbutton is pressed on nunchuck. If it is, regenerate colour and redraw the screen
 	if (nunchuk->cButton) {
-		this->gameColour = Screen->color565(random(100,255),random(100,255),random(100,255));
-		Serial.println(*gameColour);
+		this->gameColour->generateNewColour();
 		this->initialised = false;
 	}
 	

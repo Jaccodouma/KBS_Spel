@@ -5,6 +5,7 @@
 #include "Adafruit_STMPE610.h"	// Touch screen
 
 #include "../Utility/touchScreen.h"
+#include "../Utility/GameColour.h"
 #include "TaskManager.h"
 
 class SettingMenu: public Task

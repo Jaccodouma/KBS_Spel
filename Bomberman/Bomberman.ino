@@ -1,3 +1,4 @@
+
 /*
     Name:       Bomberman.ino
     Created:	12/12/2018 12:02:28
@@ -23,19 +24,18 @@
 // Other libraries
 #include "SPI.h"
 #include <Wire.h>
+#include <stdlib.h> // for the random() function
 
 // Self-made Libraries and utilities
 #include "TaskManager.h"
 #include "IR.h"
 #include "Utility/touchScreen.h"
+#include "Utility/GameColour.h"
 
 // Task classes
 #include "Tasks/IntroScreen.h"
 #include "Tasks/ConnectionMenu.h"
 #include "Tasks/SettingMenu.h"
-
-// Typedefs
-typedef uint16_t colour; 
 
 // Screen objects
 Adafruit_ILI9341 Screen = Adafruit_ILI9341(TFT_CS, TFT_DC); 
@@ -58,7 +58,7 @@ int main(void) {
 	touchScreen myTS(&Screen, &Touch);
 	
 	// Generate game colour
-	colour gameColour = Screen.color565(random(100,255),random(100,255),random(100,255));
+	GameColour gameColour;
 	
 	// Set pin 10 to output for touchScreen
 	DDRB |= (1<<DDB2);
@@ -81,14 +81,16 @@ int main(void) {
 	// Start screen and make it the right colour
 	Screen.begin();
 	Screen.setRotation(2);
-	Screen.fillScreen(gameColour);
+	Screen.fillScreen(gameColour.getGameColour());
 	
 	Serial.begin(9600);
 	Serial.println("Starting loop");
 	
+	long int highest = 0; 
+	long int lowest = 99999999999999999999;
+	
 	while(1) {
 		settingMenu->screenBrightness(); // update screen brightness
-		Serial.println(gameColour);
 		taskManager->doTask(); // do current task
 	}
 }

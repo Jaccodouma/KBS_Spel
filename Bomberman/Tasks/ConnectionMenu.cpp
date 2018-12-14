@@ -5,7 +5,7 @@
 #include <ArduinoNunchuk.h>		// Nunchuk
 
 // Constructor
-ConnectionMenu::ConnectionMenu(Adafruit_ILI9341 *Screen, Adafruit_STMPE610 *TouchScreen, ArduinoNunchuk *nunchuk, colour *gameColour) {
+ConnectionMenu::ConnectionMenu(Adafruit_ILI9341 *Screen, Adafruit_STMPE610 *TouchScreen, ArduinoNunchuk *nunchuk, GameColour *gameColour) {
 	this->Screen = Screen;
 	this->TouchScreen = TouchScreen;
 	this->nunchuk = nunchuk;
@@ -16,7 +16,7 @@ ConnectionMenu::ConnectionMenu(Adafruit_ILI9341 *Screen, Adafruit_STMPE610 *Touc
 ConnectionMenu:: run() {
 	if (!this->initialised) {
 		// Draw the screen
-		Screen->fillScreen(this->gameColour); // Reset the screen to background colour
+		Screen->fillScreen(this->gameColour->getGameColour()); // Reset the screen to background colour
 		
 		// Draw "Bombermenu" text
 		Screen->setTextColor(Screen->color565(0,0,0));
