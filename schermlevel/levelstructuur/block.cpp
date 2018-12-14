@@ -9,11 +9,7 @@ void Block::update() {
 }
 
 void Block::draw(Gfx *gfx) {
-    gfx->tft->fillRect(fieldPos.x * *gfx->blocksize + *gfx->offsetX,
-                       fieldPos.y * *gfx->blocksize + *gfx->offsetY,
-                       *gfx->blocksize, *gfx->blocksize, ILI9341_PURPLE);
-    gfx->tft->drawRect(fieldPos.x * *gfx->blocksize + *gfx->offsetX,
-                       fieldPos.y * *gfx->blocksize + *gfx->offsetY,
-                       *gfx->blocksize, *gfx->blocksize, BLACK);
+    gfx->drawRect(fieldPos.x, fieldPos.y, PURPLE, true); // fill
+    gfx->drawRect(fieldPos.x, fieldPos.y, BLACK, false); //draw
     toggleRedraw(this);
 }
