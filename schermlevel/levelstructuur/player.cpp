@@ -31,12 +31,8 @@ void Player::update() {
 
 void Player::draw(Gfx *gfx) {
     // teken eerst de achtergrondkleur over de vorige positie
-    gfx->tft->fillCircle(prevPos.x + *gfx->offsetX + *gfx->blocksize / 2,
-                   prevPos.y + *gfx->offsetY + *gfx->blocksize / 2, (*gfx->blocksize - 1) / 8,
-                   BGCOLOR);
-    gfx->tft->fillCircle(screenPos.x + *gfx->offsetX + *gfx->blocksize / 2,
-                   screenPos.y + *gfx->offsetY + *gfx->blocksize / 2, (*gfx->blocksize - 1) / 8,
-                   BLACK);
+    gfx->drawCircle(prevPos.x, prevPos.y, BGCOLOR);
+    gfx->drawCircle(screenPos.x, screenPos.y, BGCOLOR);
     toggleRedraw(this);
 }
 
