@@ -11,7 +11,7 @@ Gfx::Gfx(Adafruit_ILI9341 *tft, uint8_t *offsetX, uint8_t *offsetY,
 void Gfx::drawCircle(int x, int y, uint16_t color) {
     tft->fillCircle(x + *offsetX + *blocksize / 2,
                     y + *offsetY + *blocksize / 2, (*blocksize - 1) / 8,
-                    BGCOLOR);
+                    color);
 }
 
 void Gfx::drawRect(int x, int y, uint16_t color, bool fill) {

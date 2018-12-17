@@ -1,12 +1,13 @@
 #include "player.h"
 
 Player::Player(const char name[], uint8_t x, uint8_t y, uint8_t blocksize)
-    : Gameobject(x, y) {
+    : Gameobject(x, y, false) {
     strcpy(this->name, name);
     // stel de pixelposities in
-    prevPos = {(uint8_t)(x * blocksize), (uint8_t)(y * blocksize)};
+    prevPos = {x * blocksize, y * blocksize};
     screenPos = prevPos;
     this->blocksize = blocksize;
+    this->lives = NUMLIVES;
     toggleRedraw(this);
 }
 
@@ -32,7 +33,7 @@ void Player::update() {
 void Player::draw(Gfx *gfx) {
     // teken eerst de achtergrondkleur over de vorige positie
     gfx->drawCircle(prevPos.x, prevPos.y, BGCOLOR);
-    gfx->drawCircle(screenPos.x, screenPos.y, BGCOLOR);
+    gfx->drawCircle(screenPos.x, screenPos.y, BLACK);
     toggleRedraw(this);
 }
 

@@ -9,7 +9,7 @@
 typedef enum { DIR_NO, DIR_UP, DIR_DOWN, DIR_LEFT, DIR_RIGHT } direction;
 
 typedef struct {
-    uint8_t x, y;
+    int x, y;
 } position;
 
 position movePosition(position p, direction d);

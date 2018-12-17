@@ -4,6 +4,8 @@
 #include <string.h>
 #include "lib.h"
 
+#define NUMLIVES 3 // 3 levens als de speler start
+
 class Player : public Gameobject {
    public:
     Player(const char name[], uint8_t x, uint8_t y, uint8_t blocksize);
@@ -21,4 +23,5 @@ class Player : public Gameobject {
     position screenPos;
     position prevPos;
     uint8_t blocksize;
+    uint8_t lives;
 };

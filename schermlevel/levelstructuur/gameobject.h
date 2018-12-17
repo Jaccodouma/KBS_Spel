@@ -18,10 +18,11 @@ class Gameobject {
     public:
         uint8_t flags = 0x00; // b3 = redraw, b2 = delete, b1 = update
 
-        Gameobject(uint8_t x, uint8_t y);
+        Gameobject(uint8_t x, uint8_t y, bool solid);
         position getFieldPos();
         virtual void update() = 0;
         virtual void draw(Gfx *gfx) = 0;
+        bool solid;
     protected:
         position fieldPos;
 };
