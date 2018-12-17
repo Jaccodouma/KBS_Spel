@@ -32,8 +32,7 @@ void Player::update() {
 
 void Player::draw(Gfx *gfx) {
     // teken eerst de achtergrondkleur over de vorige positie
-    gfx->drawCircle(prevPos.x, prevPos.y, BGCOLOR);
-    gfx->drawCircle(screenPos.x, screenPos.y, BLACK);
+    gfx->drawPlayerRed_still(prevPos, screenPos);
     toggleRedraw(this);
 }
 

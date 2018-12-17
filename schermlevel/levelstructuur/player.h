@@ -6,6 +6,9 @@
 
 #define NUMLIVES 3 // 3 levens als de speler start
 
+
+
+
 class Player : public Gameobject {
    public:
     Player(const char name[], uint8_t x, uint8_t y, uint8_t blocksize);

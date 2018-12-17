@@ -23,3 +23,35 @@ void Gfx::drawRect(int x, int y, uint16_t color, bool fill) {
                       *blocksize, *blocksize, color);
     }
 }
+
+// Draw indicator for nunchuk position
+void Gfx::drawPlayerRed_still(position oldpos, position newpos) {
+  // Erase previous indicator
+  deleteRed_still(oldpos.x, oldpos.y);
+
+  
+  // Draw puppet
+  drawRed_still(newpos.x, newpos.y);
+}
+
+
+void Gfx::drawRed_still(int x, int y) {
+    x = x + *offsetX;
+    y = y + *offsetY;
+
+  tft->drawBitmap(x, y, red_still, *blocksize, *blocksize, RED);
+  tft->drawBitmap(x, y, black_still, *blocksize, *blocksize, BLACK);
+  tft->drawBitmap(x, y, skin_still, *blocksize, *blocksize, SKIN);
+  tft->drawBitmap(x, y, yellow_still, *blocksize, *blocksize, YELLOW);
+  tft->drawBitmap(x, y, white_still, *blocksize, *blocksize, WHITE);
+}
+
+void Gfx::deleteRed_still(int x, int y) {
+        x = x + *offsetX;
+    y = y + *offsetY;
+  tft->drawBitmap(x, y, red_still, *blocksize, *blocksize, CLR_BACKGROUND);
+  tft->drawBitmap(x, y, black_still, *blocksize, *blocksize, CLR_BACKGROUND);
+  tft->drawBitmap(x, y, skin_still, *blocksize, *blocksize, CLR_BACKGROUND);
+  tft->drawBitmap(x, y, yellow_still, *blocksize, *blocksize, CLR_BACKGROUND);
+  tft->drawBitmap(x, y, white_still, *blocksize, *blocksize, CLR_BACKGROUND);
+}

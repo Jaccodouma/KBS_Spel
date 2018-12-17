@@ -3,7 +3,7 @@
 
 View::View() {
     tft.begin();
-    tft.fillScreen(ILI9341_CYAN);
+    tft.fillScreen(CLR_BACKGROUND);
 }
 
 View::~View() {
@@ -17,7 +17,7 @@ void View::drawLevel(Game *g) {
     offsetX = (tft.width() - g->getWidth() * blocksize) / 2;
     offsetY = (tft.height() - g->getHeight() * blocksize) / 2;
     tft.fillRect(offsetX, offsetY, tft.width() - offsetX * 2,
-                 tft.height() - offsetY * 2, BGCOLOR);
+                 tft.height() - offsetY * 2, CLR_BACKGROUND);
     tft.drawRect(offsetX, offsetY, tft.width() - offsetX * 2,
                  tft.height() - offsetY * 2, BLACK);
     drawGrid(g);
