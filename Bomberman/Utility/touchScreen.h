@@ -1,42 +1,66 @@
+// TouchScreen.h
+
 #ifndef touchScreen_H
 #define touchScreen_H
 
-#define STMP_MENU_Xmin 180
-#define STMP_MENU_Xmax 600
-#define STMP_MENU_Ymin 3500
-#define STMP_MENU_Ymax 3900
+#include "../Utility/GameColour.h"
+#include <ArduinoNunchuk.h>
 
-#define STMP_CheckBox1_Xmin 1300
-#define STMP_CheckBox1_Xmax 1600
-#define STMP_CheckBox1_Ymin 3500
-#define STMP_CheckBox1_Ymax 3700
+// These defines throw up an error when used to create struct arrays
+#define MAX_BUTTONS 10;
+#define MAX_SLIDERS 5;
 
-#define STMP_ScreenB_Xmin 180
-#define STMP_ScreenB_Xmax 1000
-#define STMP_ScreenB_Ymin 1700
-#define STMP_ScreenB_Ymax 3400
+#define BUTTON_BORDER_WIDTH 3
+#define BUTTON_ROUNDING 3
 
-class touchScreen
+struct Button{
+	uint16_t x, y, w, h;
+	boolean *value;
+	char text[21];
+	uint8_t textSize;
+	int offset_x, offset_y; 
+};
+
+struct Slider{
+	uint16_t x, y, w, h;
+	uint8_t *sliderValue;
+};
+
+class TouchScreen
 {
-	public:
-	touchScreen(Adafruit_ILI9341 *tft, Adafruit_STMPE610 *touch);
-	uint8_t checkmenuButton(void);
-	uint8_t checkmenuCheckBox1(uint8_t EnablePrint);
-	uint8_t checkScreenB(uint8_t input);
-	void printXY(void);
+public:
+	TouchScreen(Adafruit_ILI9341 *tft, Adafruit_STMPE610 *touch, GameColour *gameColour, ArduinoNunchuk *nunchuk);
+	~TouchScreen();
+	void handleInput(void);
+	void newTextBotton(uint16_t x, uint16_t y, uint16_t w, uint16_t h, char *text, uint8_t textSize, int text_offset_x, int text_offset_y, boolean *buttonValue);
+	void newCheckBox(uint16_t x, uint16_t y, uint8_t *checkBoxValue);
+	void newSlider(uint16_t x, uint16_t y, uint16_t w, uint16_t h, uint8_t *sliderValue);
 
-	private:
+private:
+	// private functions
+	void drawSelectedButton(uint8_t button);
+
+	// other objects
 	Adafruit_STMPE610 *touch;
 	Adafruit_ILI9341 *tft;
-	void updateTS();
-	uint8_t checkboxbool1 = 1;
-	uint8_t check = 1;
-	uint8_t check1 = 1;
-	uint16_t x;
-	uint16_t y;
+	GameColour *gameColour;
+	ArduinoNunchuk *nunchuk;
+	
+	// Arrays, the MAX_BUTTONS and MAX_SLIDERS defines seem to throw up errors
+	Button *buttons[10];
+	uint8_t buttonCount;
+	Slider *sliders[5];
+	uint8_t sliderCount;
+	
+	// Other values
+	uint16_t x, y;
 	uint8_t z;
-	uint8_t brightness = 150;
-	uint8_t brightness_old = 150;
+	boolean isTouched;
+	boolean wasTouched; 
+	boolean usingNunchukSelection; // checks whether nunchuk selection is being used
+	uint8_t selectedButton; 
+	boolean selectionChanged;
+	boolean usedNunchuk;
 };
 
 #endif
