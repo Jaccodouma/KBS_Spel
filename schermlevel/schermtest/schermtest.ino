@@ -2,9 +2,6 @@
 #include "gfx.h"
 #include "control.h"
 
-// ISR(TIMER2_OVF_vect) { 
-// }
-
 int main(void) {
     init();
     Serial.begin(9600);
