@@ -13,14 +13,13 @@ class GameColour
 public:
 	GameColour();
 	void generateNewColour(); // Randomly generates a new colour
-	void setGameColour(colour gameColour);
 	void setGameColour(uint8_t red, uint8_t green, uint8_t blue);
 	colour color565(uint8_t red, uint8_t green, uint8_t blue);
 	
 	// getters
 	colour getGameColour();
 	colour getGameColour_050();
-	colour getBackgroundColour(); 
+	colour getBackgroundColour();
 	colour getGameColour_negative();
 private:
 	colour gameColour;
