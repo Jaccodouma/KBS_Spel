@@ -57,12 +57,18 @@ void TouchScreen::handleInput(void){
 			) {
 				selectedButton = i;
 				selectionChanged = true;
+				hasSelectedButton = true;
+				break; // break out of the for loop
 			}
+			hasSelectedButton = false; // only reached if no button selected
 		}
 	} else { // !touch->touched()
 		if (wasTouched) {
 			wasTouched = false; // reset wasTouched so this only happens once
-			*buttons[selectedButton]->buttonValue = true; 
+			if(hasSelectedButton) {
+				*buttons[selectedButton]->buttonValue = true;
+				selectionChanged = false;
+			}
 		}
 	}
 	
@@ -127,7 +133,7 @@ void TouchScreen::newTextBotton(uint16_t x, uint16_t y, uint16_t w, uint16_t h, 
 	//create button 
 	Button_press *newButton = new Button_press(x, y, w, h, text, textSize, text_offset_x, text_offset_y, tft, touch, gameColour, buttonValue);
 
-	//put struct in array
+	//put button in array
 	buttons[buttonCount] = newButton;
 	buttonCount++;
 }
@@ -140,18 +146,20 @@ void TouchScreen::newCheckBox(uint16_t x, uint16_t y, uint8_t *checkBoxValue) {
 	//put struct in array
 }
 
-void TouchScreen::newSlider(uint16_t x, uint16_t y, uint16_t w, uint16_t h, uint8_t *sliderValue) {
-	//draw button on screen
-
-	//create button struct
-
-	//put struct in array
+void TouchScreen::newSlider(uint16_t x, uint16_t y, uint16_t w, uint16_t h, char* text, uint8_t textSize, int text_offset_x, int text_offset_y, uint8_t *buttonValue)
+{
+	// create Slider
+	Button_slider *newButton = new Button_slider(x, y, w, h, text, textSize, text_offset_x, text_offset_y, tft, touch, gameColour, buttonValue);
+	
+	// put slider in array
+	buttons[buttonCount] = newButton;
+	buttonCount++;
 }
 
-void TouchScreen::drawSelectedButton(uint8_t button) {
+void TouchScreen::drawSelectedButton(uint8_t buttonNumber) {
 	// redraw buttons with the right one selected
 	for (uint8_t i=0; i<buttonCount; i++) {
-		if (i==button) {
+		if (i==buttonNumber) {
 			buttons[i]->draw(true, false);
 		} else {
 			buttons[i]->draw(false, false);
@@ -218,3 +226,4 @@ void Button_press::draw(boolean enabled, boolean drawBackGround) {
 	tft->setCursor(x+(h/2)+5+text_offset_x, y+10+text_offset_y);
 	tft->println(text);
 }
+

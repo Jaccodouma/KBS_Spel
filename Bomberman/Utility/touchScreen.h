@@ -49,6 +49,17 @@ public:
 private:
 	typedef Button super;
 };
+
+class Button_slider: public Button 
+{
+public:
+	Button_slider(uint16_t x, uint16_t y, uint16_t w, uint16_t h, char *text, uint8_t textSize, int text_offset_x, int text_offset_y, Adafruit_ILI9341 *tft, Adafruit_STMPE610 *touch, GameColour *gameColour, uint8_t *buttonValue);
+	void draw();
+	void draw(boolean enabled);
+	void draw(boolean enabled, boolean drawBackground);
+private:
+	typedef Button super;
+};
 	
 class TouchScreen
 {
@@ -59,7 +70,7 @@ public:
 	void draw();
 	void newTextBotton(uint16_t x, uint16_t y, uint16_t w, uint16_t h, char *text, uint8_t textSize, int text_offset_x, int text_offset_y, uint8_t *buttonValue);
 	void newCheckBox(uint16_t x, uint16_t y, uint8_t *checkBoxValue);
-	void newSlider(uint16_t x, uint16_t y, uint16_t w, uint16_t h, uint8_t *sliderValue);
+	void newSlider(uint16_t x, uint16_t y, uint16_t w, uint16_t h, char* text, uint8_t textSize, int text_offset_x, int text_offset_y, uint8_t *buttonValue);
 
 private:
 	// private functions
@@ -82,6 +93,7 @@ private:
 	boolean wasTouched; 
 	boolean usingNunchukSelection; // checks whether nunchuk selection is being used
 	uint8_t selectedButton; 
+	boolean hasSelectedButton; 
 	boolean selectionChanged;
 	boolean usedNunchuk;
 };

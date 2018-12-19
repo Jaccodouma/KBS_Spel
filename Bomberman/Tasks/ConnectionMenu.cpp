@@ -35,14 +35,14 @@ ConnectionMenu::run() {
 		// Create buttons		  x   y   w    h   text      size	offset_x	offset_y	value	
 		touchScreen.newTextBotton(20, 60, 200, 40, "CREATE", 3,		20,			0,			&createGame);
 		touchScreen.newTextBotton(20, 105, 200, 40, "JOIN",	 3,		35,			0,			&joinGame);
-		touchScreen.newTextBotton(20, 150, 95, 40, "NOG",	 3,		-3,			0,			&joinGame);
+		/*touchScreen.newTextBotton(20, 150, 95, 40, "NOG",	 3,		-3,			0,			&joinGame);
 		touchScreen.newTextBotton(125, 150, 95, 40, "MEER",  3,		-10,		0,			&joinGame);
 		touchScreen.newTextBotton(20, 195, 200, 40, "KNOPJES!", 3,	10,			0,			&joinGame);
 		touchScreen.newTextBotton(20, 240, 45, 40, "1",		 3,		-10,			0,			&joinGame);
 		touchScreen.newTextBotton(75, 240, 45, 40, "2",		 3,		-10,			0,			&joinGame);
 		touchScreen.newTextBotton(130, 240, 45, 40, "3",	 3,		-10,			0,			&joinGame);
 		touchScreen.newTextBotton(175, 240, 45, 40, "4",	 3,		-10,			0,			&joinGame);
-		
+		*/
 		touchScreen.draw();
 		
 		this->initialised = true;
