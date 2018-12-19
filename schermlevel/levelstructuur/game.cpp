@@ -17,7 +17,13 @@ void Game::addRandomBlocks() {
             // ga langs alle posities maar sla grid-blokjes over
             if (!isEven(i) || !isEven(j)) {
                 // kans is 1 op 3 dat er een blokje geplaatst wordt
-                if (random(3) == 0) gos.add(new Block(j, i));
+                if (random(3) == 0) {
+                    if (!(i == 1 && j == 1) && 
+                    // mag niet helemaal linksonder of rechtsonder omdat players hier komen
+                        !(i == height - 2 && j == width - 2)) {
+                        gos.add(new Block(j, i));
+                    }
+                }
             }
         }
     }
@@ -37,7 +43,7 @@ void Game::update(Gfx *gfx) {
 }
 
 bool Game::gridCollision(position p) {
-   if (p.y <= 0 || p.y >= height - 1) {
+    if (p.y <= 0 || p.y >= height - 1) {
         // botsing met bovenste of onderste blokjes of buiten het speelveld
         return true;
     }
@@ -52,7 +58,7 @@ bool Game::gridCollision(position p) {
     return false;
 }
 
-Gameobject * Game::hasCollision(Gameobject *go, position p) {
+Gameobject *Game::hasCollision(Gameobject *go, position p) {
     Gameobject *temp = gos.getNext();
     Gameobject *collision = NULL;
     while (temp != NULL) {

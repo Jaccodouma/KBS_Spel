@@ -29,8 +29,13 @@ int main(void)
     Control control(&view);
     control.startGame();
 
+    //randomSeed(analogRead(0));
+
+    unsigned long tijd;
     while(1) {
-        //_delay_ms(20);
+        //_delay_ms(8);
+        tijd = millis();
         control.update();
+        Serial.println(millis() - tijd);
     }
 }

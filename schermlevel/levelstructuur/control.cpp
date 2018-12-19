@@ -22,12 +22,12 @@ void Control::update() {
     this->nunchuk.update();
     direction dir = nunchuck_Direction();
     if (game->isStarted()) {
+        game->update(&view->gfx);
         movePlayer(game->players[0], static_cast<direction>(random(5)));
         movePlayer(game->players[1], static_cast<direction>(random(5)));
         // movePlayer(game->players[0], dir);
         // movePlayer(game->players[1], dir);
     }
-    game->update(view->gfx);
 }
 
 void Control::movePlayer(Player *p, direction d) {
@@ -35,6 +35,7 @@ void Control::movePlayer(Player *p, direction d) {
     // geen bostsing zou veroorzaken
     if (!p->isMoving()) {
         position nextpos = movePosition(p->getFieldPos(), d);
+
         if (game->gridCollision(nextpos)) {
             return; // heeft een botsing tegen de vast blokjes
         }
@@ -43,11 +44,9 @@ void Control::movePlayer(Player *p, direction d) {
             p->move(d);
             return;
         }
-        printPosition(collision->getFieldPos());
         if (!collision->solid) {
             p->move(d);
             toggleRedraw(collision);
-            toggleRedraw(p);
         }
     }
 }

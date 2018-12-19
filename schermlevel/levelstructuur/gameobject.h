@@ -1,7 +1,6 @@
 #pragma once
 
 #include "lib.h"
-#include "gfx.h"
 
 #define B_UPDATE 0
 #define B_DELETE 1

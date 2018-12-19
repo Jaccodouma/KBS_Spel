@@ -2,26 +2,21 @@
 #include "view.h"
 
 View::View() {
-    tft.begin();
-    tft.fillScreen(CLR_BACKGROUND);
-}
-
-View::~View() {
-    delete this->gfx;
+    gfx.tft.begin();
+    gfx.tft.fillScreen(CLR_BACKGROUND);
 }
 
 void View::drawLevel(Game *g) {
-    blocksize = tft.width() / g->getWidth();
+    gfx.blocksize = gfx.tft.width() / g->getWidth();
     // stel de offset in zodat het speelveld gecentreerd op het scherm te zien
     // is
-    offsetX = (tft.width() - g->getWidth() * blocksize) / 2;
-    offsetY = (tft.height() - g->getHeight() * blocksize) / 2;
-    tft.fillRect(offsetX, offsetY, tft.width() - offsetX * 2,
-                 tft.height() - offsetY * 2, CLR_BACKGROUND);
-    tft.drawRect(offsetX, offsetY, tft.width() - offsetX * 2,
-                 tft.height() - offsetY * 2, BLACK);
+    gfx.offsetX = (gfx.tft.width() - g->getWidth() * gfx.blocksize) / 2;
+    gfx.offsetY = (gfx.tft.height() - g->getHeight() * gfx.blocksize) / 2;
+    gfx.tft.fillRect(gfx.offsetX,gfx. offsetY, gfx.tft.width() - gfx.offsetX * 2,
+                 gfx.tft.height() - gfx.offsetY * 2, CLR_BACKGROUND);
+    gfx.tft.drawRect(gfx.offsetX, gfx.offsetY, gfx.tft.width() - gfx.offsetX * 2,
+                 gfx.tft.height() - gfx.offsetY * 2, BLACK);
     drawGrid(g);
-    this->gfx = new Gfx(&tft, &offsetX, &offsetY, &blocksize);
 }
 
 void View::drawGrid(Game *g) {
@@ -44,10 +39,10 @@ void View::drawGrid(Game *g) {
 }
 
 void View::drawGridBlock(int x, int y) {
-    tft.fillRect(x * blocksize + offsetX, y * blocksize + offsetY, blocksize,
-                 blocksize, ILI9341_LIGHTGREY);
-    tft.drawRect(x * blocksize + offsetX, y * blocksize + offsetY, blocksize,
-                 blocksize, BLACK);
+    gfx.tft.fillRect(x * gfx.blocksize + gfx.offsetX, y * gfx.blocksize + gfx.offsetY, gfx.blocksize,
+                 gfx.blocksize, ILI9341_LIGHTGREY);
+    gfx.tft.drawRect(x * gfx.blocksize + gfx.offsetX, y * gfx.blocksize + gfx.offsetY, gfx.blocksize,
+                 gfx.blocksize, BLACK);
 }
 
-uint8_t View::blockSize() { return this->blocksize; }
+uint8_t View::blockSize() { return gfx.blocksize; }
