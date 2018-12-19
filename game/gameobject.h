@@ -24,4 +24,7 @@ class Gameobject {
         bool solid;
     protected:
         position fieldPos;
+    private:
+        private uint8_t state = 0; // voor de bitmaps
+
 };
