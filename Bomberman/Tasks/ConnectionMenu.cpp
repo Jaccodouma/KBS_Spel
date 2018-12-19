@@ -43,6 +43,8 @@ ConnectionMenu::run() {
 		touchScreen.newTextBotton(130, 240, 45, 40, "3",	 3,		-10,			0,			&joinGame);
 		touchScreen.newTextBotton(175, 240, 45, 40, "4",	 3,		-10,			0,			&joinGame);
 		
+		touchScreen.draw();
+		
 		this->initialised = true;
 	}
 	
