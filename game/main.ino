@@ -2,17 +2,6 @@
 #include "view.h"
 #include <stdlib.h>
 #include "control.h"
-#include "golist.h"
-
-void freeRam() {
-  extern int __heap_start, *__brkval;
-  int v;
-  Serial.print("Vrij geheugen: ");
-  Serial.print((int) &v - (__brkval == 0 ? (int) &__heap_start : (int) __brkval), DEC);
-  Serial.println(" kB");
-}
-
-
 
 int main(void)
 {
@@ -34,6 +23,7 @@ int main(void)
         //_delay_ms(8);
         tijd = millis();
         control.update();
-        Serial.println(millis() - tijd);
+        //freeRam();
+       // Serial.println(millis() - tijd);
     }
 }

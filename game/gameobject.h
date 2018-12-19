@@ -1,5 +1,6 @@
 #pragma once
 
+#include "gfx.h"
 #include "lib.h"
 
 #define B_UPDATE 0
@@ -25,6 +26,6 @@ class Gameobject {
     protected:
         position fieldPos;
     private:
-        private uint8_t state = 0; // voor de bitmaps
+        uint8_t state = 0; // voor de bitmaps
 
 };
