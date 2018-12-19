@@ -9,20 +9,13 @@ GameColour::GameColour() {
 
 void GameColour::generateNewColour() {
 	randomSeed(random());
-	uint8_t r = random(100,255);
-	uint8_t g = random(100,255);
-	uint8_t b = random(100,255);
-	this->gameColour = GameColour::color565(r, g, b);
-	this->gameColour_050 = GameColour::color565(0.5*r, 0.5*g, 0.5*b);
-	this->gameColour_negative = GameColour::color565(255-r, 255-g, 255-b);
-}
-
-void GameColour::setGameColour(colour gameColour) {
-	this->gameColour = gameColour;
+	this->setGameColour(random(100,255),random(100,255),random(100,255));
 }
 
 void GameColour::setGameColour(uint8_t red, uint8_t green, uint8_t blue) {
-	setGameColour(color565(red, green, blue));
+	this->gameColour = GameColour::color565(red, green, blue);
+	this->gameColour_050 = GameColour::color565(0.5*red, 0.5*green, 0.5*blue);
+	this->gameColour_negative = GameColour::color565(255-red, 255-green, 255-blue);
 }
 
 colour GameColour::color565(uint8_t red, uint8_t green, uint8_t blue) {

@@ -26,6 +26,33 @@ struct Slider{
 	uint8_t *sliderValue;
 };
 
+/*
+class Button
+{};
+
+class Button_press: public Button
+{
+public:
+
+private:
+	uint16_t x; 
+	uint16_t y;
+	uint16_t w; // width
+	uint16_t h; // height
+	
+	char *text[21]; 
+	uint8_t textSize;
+	int text_offset_x;
+	int text_offset_y;
+	
+	boolean *buttonValue; 
+	
+	Adafruit_ILI9341 *tft; 
+	Adafruit_STMPE610 *touch;
+	GameColour *gameColour; 
+	
+};*/
+
 class TouchScreen
 {
 public:

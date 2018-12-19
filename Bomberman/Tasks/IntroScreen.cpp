@@ -21,15 +21,30 @@ IntroScreen::run() {
 		Screen->fillScreen(this->gameColour->getGameColour());
 		
 		// Draw "Bomberman" text
-		Screen->setTextColor(Screen->color565(0,0,0));
+		Screen->setTextColor(gameColour->getGameColour_050());
+		Screen->setTextSize(4);
+		Screen->setCursor(13,39);
+		Screen->print("BOMBERMAN");
+		Screen->setTextColor(gameColour->getGameColour_negative());
 		Screen->setTextSize(4);
 		Screen->setCursor(14,40);
 		Screen->print("BOMBERMAN");
 		
 		// Draw other text
 		Screen->setTextSize(2);
+	
+		
+		Screen->setTextColor(gameColour->getGameColour_050());
+		Screen->setCursor(24,259);
+		Screen->print("C: change colour");
+		Screen->setTextColor(gameColour->getGameColour_negative());
 		Screen->setCursor(25,260);
 		Screen->print("C: change colour");
+		
+		Screen->setTextColor(gameColour->getGameColour_050());
+		Screen->setCursor(56,279);
+		Screen->print("Z: continue");
+		Screen->setTextColor(gameColour->getGameColour_negative());
 		Screen->setCursor(57,280);
 		Screen->print("Z: continue");
 		
