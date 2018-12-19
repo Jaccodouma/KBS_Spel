@@ -22,6 +22,11 @@
 #define PURPLE 0x780F
 #define WHITE 0xFFFF
 #define SKIN 0xFEB8
+#define DARKGREY 0x4A6A
+#define LIGHTGREY 0xAD56
+#define DARKORANGE 0xF3E2
+
+
 
 // For the Adafruit shield, these are the default.
 #define TFT_DC 9

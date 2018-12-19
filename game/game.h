@@ -4,6 +4,7 @@
 #include "player.h"
 #include "block.h"
 #include "golist.h"
+#include "bomb.h"
 
 class Game {
    public:

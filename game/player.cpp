@@ -44,7 +44,6 @@ void Player::drawColors(Gfx *gfx) {
     drawBitmap(gfx, screenPos.x, screenPos.y, player_still[2], SKIN);
     drawBitmap(gfx, screenPos.x, screenPos.y, player_still[3], YELLOW);
     drawBitmap(gfx, screenPos.x, screenPos.y, player_still[4], WHITE);
-
 }
 
 void Player::erasePlayer(Gfx *gfx) {
