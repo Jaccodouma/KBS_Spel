@@ -8,20 +8,27 @@
 #include <ArduinoNunchuk.h>		// Nunchuk
 
 #include "../Utility/GameColour.h"
+#include "../Utility/touchScreen.h"
 #include "TaskManager.h"
 
 class ConnectionMenu: public Task 
 {
 public: 
-	ConnectionMenu(Adafruit_ILI9341 *Screen, Adafruit_STMPE610 *TouchScreen, ArduinoNunchuk *nunchuk, GameColour *gameColour);
+	ConnectionMenu(Adafruit_ILI9341 *Screen, Adafruit_STMPE610 *touch, ArduinoNunchuk *nunchuk, GameColour *gameColour);
 	int run(); 
 private:
 	Adafruit_ILI9341 *Screen;
-	Adafruit_STMPE610 *TouchScreen;
+	Adafruit_STMPE610 *touch;
 	ArduinoNunchuk *nunchuk;
+	
+	TouchScreen touchScreen;
 	
 	boolean initialised; // if initialised the screen is showing the right stuff
 	GameColour *gameColour;
+	
+	// button values
+	boolean createGame;
+	boolean joinGame;
 };
 
 #endif

@@ -1,3 +1,4 @@
+/*
 #include <SPI.h>
 #include <Wire.h>
 #include <Adafruit_STMPE610.h>
@@ -7,7 +8,7 @@
 
 #include "settingMenu.h"
 
-SettingMenu::SettingMenu(touchScreen *ts) {
+SettingMenu::SettingMenu(TouchScreen *ts) {
 	this->ts = ts;
 	SettingMenu::PWM_init();
 	SettingMenu::adc_init();
@@ -68,3 +69,4 @@ void SettingMenu::adc_init()
 	DDRC &= ~(1 << DDC1); // set A1 as input
 	PORTC &= ~(1 << PIN1); // A1 pulldown off
 }
+*/

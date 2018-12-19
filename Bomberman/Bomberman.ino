@@ -1,4 +1,3 @@
-
 /*
     Name:       Bomberman.ino
     Created:	12/12/2018 12:02:28
@@ -35,7 +34,7 @@
 // Task classes
 #include "Tasks/IntroScreen.h"
 #include "Tasks/ConnectionMenu.h"
-#include "Tasks/SettingMenu.h"
+//#include "Tasks/SettingMenu.h"
 
 // Screen objects
 Adafruit_ILI9341 Screen = Adafruit_ILI9341(TFT_CS, TFT_DC); 
@@ -45,6 +44,8 @@ Adafruit_STMPE610 Touch = Adafruit_STMPE610(8);
 ArduinoNunchuk nunchuk = ArduinoNunchuk();
 
 int main(void) {
+	Serial.begin(9600); // Serial for debugging
+	Serial.println("Start");
 	
 	// Nunchuk power, needed when it's on A2-5
 	DDRC |= (1<<DDC2) | (1<<DDC3); // Set PC2 & PC3 on OUTPUT
@@ -53,9 +54,6 @@ int main(void) {
 	
 	init();
 	nunchuk.init();
-	
-	// Create myTS object
-	touchScreen myTS(&Screen, &Touch);
 	
 	// Generate game colour
 	GameColour gameColour;
@@ -70,27 +68,30 @@ int main(void) {
 	// Create Task objects
 	IntroScreen *introScreen = new IntroScreen(&Screen, &Touch, &nunchuk, &gameColour);
 	ConnectionMenu *connectionMenu = new ConnectionMenu(&Screen, &Touch, &nunchuk, &gameColour);
-	SettingMenu *settingMenu = new SettingMenu(&myTS);
+	//SettingMenu *settingMenu = new SettingMenu(&myTS);
 	
 	// Add tasks to taskManager
 	taskManager->addTask(introScreen);
-	taskManager->addTask(settingMenu);
+	//taskManager->addTask(settingMenu);
 	taskManager->addTask(connectionMenu);
-	
 	
 	// Start screen and make it the right colour
 	Screen.begin();
 	Screen.setRotation(2);
 	Screen.fillScreen(gameColour.getGameColour());
 	
-	Serial.begin(9600);
-	Serial.println("Starting loop");
+	Serial.begin(9600); // Serial for debugging
+	Serial.println("Start");
 	
-	long int highest = 0; 
-	long int lowest = 99999999999999999999;
+	// Start touch screen
+	if(!Touch.begin()) {
+		Serial.println("TOUCH SCREEN NOT FOUND");
+		while(1); // Touch screen doesn't work!
+	}
 	
+	// Loop
 	while(1) {
-		settingMenu->screenBrightness(); // update screen brightness
+		//settingMenu->screenBrightness(); // update screen brightness
 		taskManager->doTask(); // do current task
 	}
 }
