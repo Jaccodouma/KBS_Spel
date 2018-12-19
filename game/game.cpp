@@ -3,7 +3,6 @@
 Game::Game(uint8_t width, uint8_t height) {
     this->width = width;
     this->height = height;
-    addRandomBlocks();
 }
 
 Game::~Game() {
@@ -72,6 +71,8 @@ Gameobject *Game::hasCollision(Gameobject *go, position p) {
 }
 
 bool Game::start() {
+    addRandomBlocks();
+    randomSeed(millis());
     if (players[0] != NULL) {  // Start bij tenminste één speler
         this->started = true;
     }
