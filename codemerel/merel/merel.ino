@@ -184,10 +184,10 @@ const uint8_t white_still[32] PROGMEM = {
 const uint8_t red_back_walk_one[32] PROGMEM = {
   0b00011111, 0b11111000,
   0b00011111, 0b11111000,
+  0b00011111, 0b11111000,
+  0b00011111, 0b11111000,
   0b00001111, 0b11110000,
   0b00000111, 0b11100000,
-  0b00000000, 0b00000000,
-  0b00000000, 0b00000000,
   0b00000000, 0b00000000,
   0b00000000, 0b00000000,
   0b00000000, 0b00000000,
@@ -203,10 +203,10 @@ const uint8_t red_back_walk_one[32] PROGMEM = {
 const uint8_t green_back_walk_one[32] PROGMEM = {
   0b00011111, 0b11111000,
   0b00011111, 0b11111000,
+  0b00011111, 0b11111000,
+  0b00011111, 0b11111000,
   0b00001111, 0b11110000,
   0b00000111, 0b11100000,
-  0b00000000, 0b00000000,
-  0b00000000, 0b00000000,
   0b00000000, 0b00000000,
   0b00000000, 0b00000000,
   0b00000000, 0b00000000,
@@ -215,16 +215,16 @@ const uint8_t green_back_walk_one[32] PROGMEM = {
   0b00111111, 0b11111100,
   0b00001111, 0b11110000,
   0b00001111, 0b11110000,
+  0b00000000, 0b00000000,
   0b10100000, 0b00000101,
 };
-
 
 const uint8_t black_back_walk_one[32] PROGMEM = {
   0b00000000, 0b00000000,
   0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
   0b00010000, 0b00001000,
-  0b00011000, 0b00011000,
-  0b00010111, 0b11101000,
   0b00010000, 0b00001000,
   0b00011000, 0b00011000,
   0b00001111, 0b11110000,
@@ -235,18 +235,18 @@ const uint8_t black_back_walk_one[32] PROGMEM = {
   0b01110000, 0b00001110,
   0b00010000, 0b00001000,
   0b00010011, 0b11001000,
-  0b00010010, 0b01001000,
+  0b00010010, 0b01111000,
 };
 
 const uint8_t skin_back_walk_one[32] PROGMEM = {
   0b00000000, 0b00000000,
   0b00000000, 0b00000000,
-  0b00010000, 0b00001000,
-  0b00011000, 0b00011000,
-  0b00001111, 0b11110000,
-  0b00001111, 0b11110000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00001000, 0b00010000,
   0b00000111, 0b11100000,
-  0b00000001, 0b10000000,
+  0b00000000, 0b00000000,
   0b00000001, 0b10000000,
   0b00000001, 0b10000000,
   0b00000000, 0b00000000,
@@ -273,10 +273,105 @@ const uint8_t yellow_back_walk_one[32] PROGMEM = {
   0b00000000, 0b00000000,
   0b00000000, 0b00000000,
   0b00001100, 0b00110000,
-  0b00001100, 0b00110000,
+  0b00001100, 0b00000000,
 };
 
+//achterkant loopje 2:
 
+const uint8_t red_back_walk_two[32] PROGMEM = {
+  0b00011111, 0b11111000,
+  0b00011111, 0b11111000,
+  0b00011111, 0b11111000,
+  0b00011111, 0b11111000,
+  0b00001111, 0b11110000,
+  0b00000111, 0b11100000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00011111, 0b11111000,
+  0b00111111, 0b11111100,
+  0b00001111, 0b11110000,
+  0b00001111, 0b11110000,
+  0b00000000, 0b00000000,
+  0b10100000, 0b00000101,
+};
+
+const uint8_t green_back_walk_two[32] PROGMEM = {
+  0b00011111, 0b11111000,
+  0b00011111, 0b11111000,
+  0b00011111, 0b11111000,
+  0b00011111, 0b11111000,
+  0b00001111, 0b11110000,
+  0b00000111, 0b11100000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00011111, 0b11111000,
+  0b00111111, 0b11111100,
+  0b00001111, 0b11110000,
+  0b00001111, 0b11110000,
+  0b00000000, 0b00000000,
+  0b10100000, 0b00000101,
+};
+
+const uint8_t black_back_walk_two[32] PROGMEM = {
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00010000, 0b00001000,
+  0b00010000, 0b00001000,
+  0b00011000, 0b00011000,
+  0b00001111, 0b11110000,
+  0b00000010, 0b01000000,
+  0b00111110, 0b01111100,
+  0b01100000, 0b00000110,
+  0b01000000, 0b00000010,
+  0b01110000, 0b00001110,
+  0b00010000, 0b00001000,
+  0b00010011, 0b11001000,
+  0b00011110, 0b01001000,
+};
+
+const uint8_t skin_back_walk_two[32] PROGMEM = {
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00001000, 0b00010000,
+  0b00000111, 0b11100000,
+  0b00000000, 0b00000000,
+  0b00000001, 0b10000000,
+  0b00000001, 0b10000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b01000000, 0b00000010,
+  0b01000000, 0b00000010,
+  0b00000000, 0b00000000,
+};
+
+const uint8_t yellow_back_walk_two[32] PROGMEM = {
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00000000, 0b00000000,
+  0b00001100, 0b00110000,
+  0b00000000, 0b00110000,
+};
 //de pixels van de zijkant van het poppetje (rechts) loopje 1:
 
 const uint8_t red_right_walk_one[32] PROGMEM = {
@@ -986,47 +1081,80 @@ int main(void) {
   // LOOP
   for (;;) {
     nunchuk.update();
-    drawGreen_right_walk_one(10, 10);
-    drawRed_right_walk_one(30, 30);
-    drawRed_left_walk_one(50, 50);
-    drawGreen_left_walk_one(70, 70);
-    drawRed_still(90, 90);
-    drawGreen_still(110, 110);
-    drawGreen_back_walk_one(130, 130);
-    drawRed_back_walk_one(150, 150);
-    
-    drawRed_walk_one_front(10,170);
-    drawRed_walk_two_front(10,190);
-    drawGreen_walk_one_front(10,210);
-    drawGreen_walk_two_front(10,230);
-
-    drawRed_left_walk_one(30, 170 );
-    drawRed_left_walk_two(30, 190);
-    drawGreen_left_walk_one(30, 210);
-    drawGreen_left_walk_two(30, 230);
-    
-    drawRed_right_walk_one(50, 170);
-    drawRed_right_walk_two(50, 190);
-    drawGreen_right_walk_one(50, 210);
-    drawGreen_right_walk_two(50, 230);
-
-    drawRed_back_walk_one(70, 170);
-    
-    drawGreen_back_walk_one(70, 210);
-    
+//    
+//    drawGreen_right_walk_one(10, 10);
+//    drawRed_right_walk_one(30, 30);
+//    drawRed_left_walk_one(50, 50);
+//    drawGreen_left_walk_one(70, 70);
+//    drawRed_still(90, 90);
+//    drawGreen_still(110, 110);
+//    drawGreen_back_walk_one(130, 130);
+//    drawRed_back_walk_one(150, 150);
+//    
+//    drawRed_walk_one_front(10,170);
+//    drawRed_walk_two_front(10,190);
+//    drawGreen_walk_one_front(10,210);
+//    drawGreen_walk_two_front(10,230);
+//
+//    drawRed_left_walk_one(30, 170 );
+//    drawRed_left_walk_two(30, 190);
+//    drawGreen_left_walk_one(30, 210);
+//    drawGreen_left_walk_two(30, 230);
+//    
+//    drawRed_right_walk_one(50, 170);
+//    drawRed_right_walk_two(50, 190);
+//    drawGreen_right_walk_one(50, 210);
+//    drawGreen_right_walk_two(50, 230);
+//
+//    drawRed_back_walk_one(70, 170);
+//    drawRed_back_walk_two(70, 190);
+//    drawGreen_back_walk_one(70, 210);
+//    drawGreen_back_walk_two(70, 230);
+//    
     //  drawIndicatorRed_right(nunchuk.analogX , nunchuk.analogY);
     //  drawIndicatorGreen_right(nunchuk.analogX , nunchuk.analogY);
     //  drawIndicatorGreen_left(nunchuk.analogX , nunchuk.analogY);
     //  drawIndicatorRed_left(nunchuk.analogX , nunchuk.analogY);
-    //  drawIndicatorRed_front(nunchuk.analogX , nunchuk.analogY);
+      drawIndicatorRed_still(nunchuk.analogX , nunchuk.analogY);
+      
+  
+
+      
     //  drawIndicatorGreen_front(nunchuk.analogX , nunchuk.analogY);
     //  drawIndicatorRed_back(nunchuk.analogX , nunchuk.analogY);
     //  drawIndicatorGreen_back(nunchuk.analogX , nunchuk.analogY);
     //
-    //    nunchuck_Direction();
-    //delay(250);
+        nunchuck_Direction();
+//    delay(250);
   }
 }
+
+//// Draw indicator for nunchuk position
+//void drawBombtest(int x, int y) {
+////  // Erase previous indicator
+////  deleteBomb(old_x, old_y);
+////  
+//  // Set old x and y values, used to erase the indicator next time
+//  old_x = x;
+//  old_y = y;
+//
+//  // Draw puppet
+//  drawBomb(x, y);
+//}
+
+//bomb
+
+void drawBomb(int x, int y) {
+Screen.fillCircle(x, y, 4, BLUE);
+}
+
+void deleteBomb(int x, int y) {
+Screen.fillCircle(x, y, 4, BLACK);
+}
+
+
+
+
 
 //de voorkant van het poppetje:
 
@@ -1258,11 +1386,44 @@ void deleteGreen_back_walk_one(int x, int y) {
   Screen.drawBitmap(x, y, skin_back_walk_one, 16, 16, BLACK);
 }
 
+void drawRed_back_walk_two(int x, int y) {
+  Screen.drawBitmap(x, y, red_back_walk_two, 16, 16, RED);
+  Screen.drawBitmap(x, y, black_back_walk_two, 16, 16, BLACK);
+  Screen.drawBitmap(x, y, yellow_back_walk_two, 16, 16, YELLOW);
+  Screen.drawBitmap(x, y, skin_back_walk_two, 16, 16, SKIN);
+}
+
+void drawGreen_back_walk_two(int x, int y) {
+  Screen.drawBitmap(x, y, green_back_walk_two, 16, 16, GREEN);
+  Screen.drawBitmap(x, y, black_back_walk_two, 16, 16, BLACK);
+  Screen.drawBitmap(x, y, yellow_back_walk_two, 16, 16, YELLOW);
+  Screen.drawBitmap(x, y, skin_back_walk_two, 16, 16, SKIN);
+}
+
+void deleteRed_back_walk_two(int x, int y) {
+  Screen.drawBitmap(x, y, red_back_walk_two, 16, 16, BLACK);
+  Screen.drawBitmap(x, y, black_back_walk_two, 16, 16, BLACK);
+  Screen.drawBitmap(x, y, yellow_back_walk_two, 16, 16, BLACK);
+  Screen.drawBitmap(x, y, skin_back_walk_two, 16, 16, BLACK);
+}
+
+void deleteGreen_back_walk_two(int x, int y) {
+  Screen.drawBitmap(x, y, green_back_walk_two, 16, 16, BLACK);
+  Screen.drawBitmap(x, y, black_back_walk_two, 16, 16, BLACK);
+  Screen.drawBitmap(x, y, yellow_back_walk_two, 16, 16, BLACK);
+  Screen.drawBitmap(x, y, skin_back_walk_two, 16, 16, BLACK);
+}
+
 // Draw indicator for nunchuk position
 void drawIndicatorRed_still(int x, int y) {
   // Erase previous indicator
   deleteRed_still(old_x, old_y);
-
+  
+  
+  if(nunchuk.zButton == 1){ //als zbutton ingedrukt wordt: doe dit
+  drawBomb(old_x,old_y);
+  }
+  
   // Map the X and Y values in the right area (center of the screen)
   x = map(x, 0, NUNCHUK_MAX_X, 0, SCREEN_W);
   y = map(y, 0, NUNCHUK_MAX_Y, SCREEN_H, 0);
@@ -1270,6 +1431,9 @@ void drawIndicatorRed_still(int x, int y) {
   // Set old x and y values, used to erase the indicator next time
   old_x = x;
   old_y = y;
+
+
+
 
   // Draw puppet
   drawRed_still(x, y);
