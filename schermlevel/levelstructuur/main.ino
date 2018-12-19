@@ -21,16 +21,21 @@ int main(void)
     Serial.println("Welkom\n");
 
     // nunchuk
-    // DDRC |= (1 << DDC2) | (1 << DDC3);  // Set PC2 & PC3 on OUTPUT
-    // PORTC &= ~(1 << PORTC2);            // set PC2 to LOW
-    // PORTC |= (1 << PORTC3);             // Set PC3 to HIGH
+    DDRC |= (1 << DDC2) | (1 << DDC3);  // Set PC2 & PC3 on OUTPUT
+    PORTC &= ~(1 << PORTC2);            // set PC2 to LOW
+    PORTC |= (1 << PORTC3);             // Set PC3 to HIGH
 
     View view;
     Control control(&view);
     control.startGame();
 
+    //randomSeed(analogRead(0));
+
+    unsigned long tijd;
     while(1) {
-        //_delay_ms(20);
+        //_delay_ms(8);
+        tijd = millis();
         control.update();
+        Serial.println(millis() - tijd);
     }
 }

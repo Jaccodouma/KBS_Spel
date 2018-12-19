@@ -12,7 +12,8 @@ class Game {
     ~Game();
     bool start();
     bool isStarted();
-    bool hasCollision(Gameobject *go, position p);
+    bool gridCollision(position p);
+    Gameobject * hasCollision(Gameobject *go, position p);
     bool addPlayer(Player *p);
     void update(Gfx *gfx);
     uint8_t getWidth();
@@ -22,4 +23,5 @@ class Game {
    private:
     uint8_t width, height;
     bool started = false;
+    void addRandomBlocks();
 };
