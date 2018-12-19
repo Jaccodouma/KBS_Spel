@@ -6,16 +6,16 @@
 #include "link.h"
 
 #define MASTER 1
-#define TRANSMITTER_FREQ 38
-#define TIMER_ADD_VAL_38 0.02631579
-#define TIMER_ADD_VAL_56 0.01785714
+#define TRANSMITTER_FREQ 56
 
-float ms_timer = 0; //ms_timer die boven in de hoek van het scherm staat
+unsigned long sent_timer;
+unsigned long speed_timer;
+unsigned long ping_timer;
+uint8_t deleteme = 0;
 
 IR myIR(TRANSMITTER_FREQ, 12); //38KHz or 56KHz Transmitter Fq, pulse size (45 default)
 
 ISR(TIMER2_OVF_vect) {
-  ms_timer += TIMER_ADD_VAL_38;
   myIR.timerOverflow();
 }
 
@@ -26,33 +26,37 @@ ISR(PCINT2_vect) {
 int main(void) {
   Serial.begin(9600);
   Serial.println("start");
-
   link myLink(&myIR, MASTER);
 
-int deleteme = 0;
+  while (!myLink.ping()) {
+    Serial.println("wait for reply");
+  }
 
   while (1) {
-
-    if(deleteme<16){
+    if (myIR.getTime_ms() > sent_timer) { //do this every 100ms
+      myLink.UpdatePlayerInfo(deleteme, 2, 0, 1); //X,Y,BOMB,LIVES
+      sent_timer = (myIR.getTime_ms() + 100);
       deleteme++;
-    }else{
-      deleteme = 0;
+      if (deleteme > 10) {
+        deleteme = 1;
+      }
     }
-    
-    myLink.UpdatePlayerInfo(2,deleteme,0,0); //X,Y,BOMB,LIFES
 
-    Serial.print(" ! x:");
-    Serial.print(myLink.otherplayer_x);
-    Serial.print("  y:");
-    Serial.print(myLink.otherplayer_y);
-    Serial.print("  bomb:");
-    Serial.print(myLink.otherplayer_bomb);
-    Serial.print("  lifes:");
-    Serial.println(myLink.otherplayer_lifes);
+    if (myIR.getTime_ms() > speed_timer) { //do this every 2000ms
+      Serial.print("                                speed:");
+      Serial.println(myIR.getByteRate());
+      speed_timer = (myIR.getTime_ms() + 2000);
+    }
 
-    myLink.checkForData(); //keep repeating this in the loop to stay connected
-
-_delay_ms(50);
-
+    if (myLink.checkForData()) { //keep repeating this in the loop to stay connected
+      Serial.print(" ! x:");
+      Serial.print(myLink.otherplayer_x);
+      Serial.print("  y:");
+      Serial.print(myLink.otherplayer_y);
+      Serial.print("  bomb:");
+      Serial.print(myLink.otherplayer_bomb);
+      Serial.print("  lives:");
+      Serial.println(myLink.otherplayer_lives);
+    }
   }
 }

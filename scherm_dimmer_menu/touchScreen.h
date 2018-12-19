@@ -18,25 +18,25 @@
 
 class touchScreen
 {
-  public:
-    touchScreen(Adafruit_ILI9341 *tft, Adafruit_STMPE610 *touch);
-    uint8_t checkmenuButton(void);
-    uint8_t checkmenuCheckBox1(uint8_t EnablePrint);
-    uint8_t checkScreenB(uint8_t input);
-    void printXY(void);
+	public:
+	touchScreen(Adafruit_ILI9341 *tft, Adafruit_STMPE610 *touch);
+	uint8_t checkmenuButton(void);
+	uint8_t checkmenuCheckBox1(uint8_t EnablePrint);
+	uint8_t checkScreenB(uint8_t input);
+	void printXY(void);
 
-  private:
-    Adafruit_STMPE610 *touch;
-    Adafruit_ILI9341 *tft;
-    void updateTS();
-    uint8_t checkboxbool1 = 1;
-    uint8_t check = 1;
-    uint8_t check1 = 1;
-    uint16_t x;
-    uint16_t y;
-    uint8_t z;
-    uint8_t brightness = 150;
-    uint8_t brightness_old = 150;
+	private:
+	Adafruit_STMPE610 *touch;
+	Adafruit_ILI9341 *tft;
+	void updateTS();
+	uint8_t checkboxbool1 = 1;
+	uint8_t check = 1;
+	uint8_t check1 = 1;
+	uint16_t x;
+	uint16_t y;
+	uint8_t z;
+	uint8_t brightness = 150;
+	uint8_t brightness_old = 150;
 };
 
 #endif

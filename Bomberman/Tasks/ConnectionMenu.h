@@ -26,9 +26,8 @@ private:
 	boolean initialised; // if initialised the screen is showing the right stuff
 	GameColour *gameColour;
 	
-	// button values
-	boolean createGame;
-	boolean joinGame;
+	uint8_t createGame;
+	uint8_t joinGame;
 };
 
 #endif

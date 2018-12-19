@@ -15,7 +15,6 @@ TouchScreen::TouchScreen(Adafruit_ILI9341 *tft, Adafruit_STMPE610 *touch, GameCo
 	
 	// set button & slider counters
 	this->buttonCount = 0;
-	this->sliderCount = 0;
 	
 	this->isTouched = false;
 	this->wasTouched = false; 
@@ -57,13 +56,19 @@ void TouchScreen::handleInput(void){
 			(y < buttons[i]->y + (buttons[i]->h))
 			) {
 				selectedButton = i;
-				TouchScreen::drawSelectedButton(selectedButton);
+				selectionChanged = true;
+				hasSelectedButton = true;
+				break; // break out of the for loop
 			}
+			hasSelectedButton = false; // only reached if no button selected
 		}
 	} else { // !touch->touched()
 		if (wasTouched) {
 			wasTouched = false; // reset wasTouched so this only happens once
-			*buttons[selectedButton]->value = true; 
+			if(hasSelectedButton) {
+				*buttons[selectedButton]->buttonValue = true;
+				selectionChanged = false;
+			}
 		}
 	}
 	
@@ -72,7 +77,6 @@ void TouchScreen::handleInput(void){
 	if (this->usingNunchukSelection) {
 		// Check for input and handle it
 		// TODO: Create some better way of taking input from nunchuk
-		
 		if ((nunchuk->analogY < 64 || nunchuk->analogY > 191 || nunchuk->zButton || nunchuk->cButton) ) {
 			if (!usedNunchuk) {
 				usedNunchuk = true;
@@ -92,7 +96,7 @@ void TouchScreen::handleInput(void){
 				
 				if (nunchuk->cButton || nunchuk->zButton) {
 					// make selection
-					*buttons[selectedButton]->value = true;
+					*buttons[selectedButton]->buttonValue = true;
 				}
 			}
 		} else {
@@ -112,44 +116,24 @@ void TouchScreen::handleInput(void){
 	}
 	
 	if (this->selectionChanged) {
-		TouchScreen::drawSelectedButton(selectedButton);
+		this->drawSelectedButton(selectedButton);
 		selectionChanged = false;
 	}
 
 }
 
-void TouchScreen::newTextBotton(uint16_t x, uint16_t y, uint16_t w, uint16_t h, char* text, uint8_t textSize, int text_offset_x, int text_offset_y, boolean *buttonValue) {
-	//draw button on screen
-	tft->fillRoundRect(x, y, w, h,/*radius: */ BUTTON_ROUNDING, gameColour->getBackgroundColour());
-	tft->drawRoundRect(
-		x+BUTTON_BORDER_WIDTH,
-		y+BUTTON_BORDER_WIDTH,
-		w-2*BUTTON_BORDER_WIDTH,
-		h-2*BUTTON_BORDER_WIDTH,
-		BUTTON_ROUNDING,
-		this->gameColour->getGameColour()
-	);
-  
-	tft->setTextSize(textSize);
-	tft->setTextColor(this->gameColour->getGameColour());
-	tft->setCursor(x+(h/2)+5+text_offset_x, y+10+text_offset_y);
-	tft->println(text);
+void TouchScreen::draw() {
+	// draw the buttons
+	for (uint8_t i=0; i<buttonCount; i++) {
+		buttons[i]->draw(false, true);
+	}
+}
 
-	//create button struct
-	struct Button *newButton = (struct Button*) malloc(sizeof(struct Button));
-	newButton->x = x;
-	newButton->y = y;
-	newButton->w = w;
-	newButton->h = h;
-	newButton->value = buttonValue;
-	
-	newButton->text[0] = '\0'; // empty the text first, just in case
-	strcat(newButton->text, text);
-	newButton->textSize = textSize;
-	newButton->offset_x = text_offset_x;
-	newButton->offset_y = text_offset_y;
+void TouchScreen::newTextBotton(uint16_t x, uint16_t y, uint16_t w, uint16_t h, char* text, uint8_t textSize, int text_offset_x, int text_offset_y, uint8_t *buttonValue) {
+	//create button 
+	Button_press *newButton = new Button_press(x, y, w, h, text, textSize, text_offset_x, text_offset_y, tft, touch, gameColour, buttonValue);
 
-	//put struct in array
+	//put button in array
 	buttons[buttonCount] = newButton;
 	buttonCount++;
 }
@@ -162,32 +146,84 @@ void TouchScreen::newCheckBox(uint16_t x, uint16_t y, uint8_t *checkBoxValue) {
 	//put struct in array
 }
 
-void TouchScreen::newSlider(uint16_t x, uint16_t y, uint16_t w, uint16_t h, uint8_t *sliderValue) {
-	//draw button on screen
-
-	//create button struct
-
-	//put struct in array
+void TouchScreen::newSlider(uint16_t x, uint16_t y, uint16_t w, uint16_t h, char* text, uint8_t textSize, int text_offset_x, int text_offset_y, uint8_t *buttonValue)
+{
+	// create Slider
+	Button_slider *newButton = new Button_slider(x, y, w, h, text, textSize, text_offset_x, text_offset_y, tft, touch, gameColour, buttonValue);
+	
+	// put slider in array
+	buttons[buttonCount] = newButton;
+	buttonCount++;
 }
 
-void TouchScreen::drawSelectedButton(uint8_t button) {
-	// Draw outlines around the buttons
+void TouchScreen::drawSelectedButton(uint8_t buttonNumber) {
+	// redraw buttons with the right one selected
 	for (uint8_t i=0; i<buttonCount; i++) {
-		colour outlineColour = gameColour->getGameColour();
-		if (i == button) {
-			outlineColour = gameColour->getGameColour_negative();
+		if (i==buttonNumber) {
+			buttons[i]->draw(true, false);
+		} else {
+			buttons[i]->draw(false, false);
 		}
-		tft->drawRoundRect(
-		buttons[i]->x+BUTTON_BORDER_WIDTH,
-		buttons[i]->y+BUTTON_BORDER_WIDTH,
-		buttons[i]->w-2*BUTTON_BORDER_WIDTH,
-		buttons[i]->h-2*BUTTON_BORDER_WIDTH,
-		BUTTON_ROUNDING,
-		outlineColour
-		);
-		tft->setTextSize(buttons[i]->textSize);
-		tft->setTextColor(outlineColour);
-		tft->setCursor(buttons[i]->x+(buttons[i]->h/2)+5+buttons[i]->offset_x, buttons[i]->y+10+buttons[i]->offset_y);
-		tft->println(buttons[i]->text);
 	}
 }
+
+Button::Button(uint16_t x, uint16_t y, uint16_t w, uint16_t h, char *text, uint8_t textSize, int text_offset_x, int text_offset_y, 	Adafruit_ILI9341 *tft, Adafruit_STMPE610 *touch, GameColour *gameColour, uint8_t *buttonValue) {
+	this->x = x; 
+	this->y = y; 
+	this->w = w; 
+	this->h = h; 
+	
+	this->text[0] = '\0'; // make sure text is empty
+	strcat(this->text, text);
+	this->textSize = textSize; 
+	this->text_offset_x = text_offset_x; 
+	this->text_offset_y = text_offset_y;
+	
+	this->tft = tft; 
+	this->touch = touch;
+	this->gameColour = gameColour;
+	this->buttonValue = buttonValue;
+}
+
+Button_press::Button_press(uint16_t x, uint16_t y, uint16_t w, uint16_t h, char *text, uint8_t textSize, int text_offset_x, int text_offset_y, Adafruit_ILI9341 *tft, Adafruit_STMPE610 *touch, GameColour *gameColour, uint8_t *buttonValue) 
+:Button(x,y,w,h,text,textSize,text_offset_x,text_offset_y,tft,touch,gameColour, buttonValue)
+{}
+
+void Button_press::draw() {
+	this->draw(false);
+}
+
+void Button_press::draw(boolean enabled) {
+this->draw(enabled, true);
+}
+
+void Button_press::draw(boolean enabled, boolean drawBackGround) {
+	colour accentColour;
+	if (enabled) {
+		accentColour = super::gameColour->getGameColour_negative();
+		} else {
+		accentColour = super::gameColour->getGameColour();
+	}
+		
+	// background
+	if (drawBackGround) {
+		tft->fillRoundRect(x, y, w, h,/*radius: */ BUTTON_ROUNDING, gameColour->getBackgroundColour());
+	}
+		
+	// outline
+	tft->drawRoundRect(
+	x+BUTTON_BORDER_WIDTH,
+	y+BUTTON_BORDER_WIDTH,
+	w-2*BUTTON_BORDER_WIDTH,
+	h-2*BUTTON_BORDER_WIDTH,
+	BUTTON_ROUNDING,
+	accentColour
+	);
+		
+	// text
+	tft->setTextSize(textSize);
+	tft->setTextColor(accentColour);
+	tft->setCursor(x+(h/2)+5+text_offset_x, y+10+text_offset_y);
+	tft->println(text);
+}
+
