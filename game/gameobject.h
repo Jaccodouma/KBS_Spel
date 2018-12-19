@@ -25,6 +25,6 @@ class Gameobject {
     protected:
         position fieldPos;
     private:
-        private uint8_t state = 0; // voor de bitmaps
+         uint8_t state = 0; // voor de bitmaps
 
 };
