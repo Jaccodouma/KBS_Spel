@@ -21,6 +21,8 @@ ISR(PCINT2_vect) {
 }
 
 int main(void) {
+  init();
+  myIR.IRinit(TRANSMITTER_FREQ, 12);
   Serial.begin(9600);
   Serial.println("start");
   link myLink(&myIR, MASTER, 500); //ir obj, master/slave, broadcast interval (miliseconds)
