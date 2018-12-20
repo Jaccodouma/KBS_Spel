@@ -34,8 +34,8 @@ void IR::IRinit(uint8_t KHz, uint8_t Psize) {
   dataAvailable = 0;
 
   // PWM
-  TCCR2A |= (1 << COM2B1) | (1 << WGM20) | (1 << WGM21); //set compare B
-  TCCR2B |= (1 << CS21) | (1 << WGM22); //set clock prescaler to 8 and Fast PWM
+  TCCR2A = (1 << COM2B1) | (1 << WGM20) | (1 << WGM21); //set compare B
+  TCCR2B = (1 << CS21) | (1 << WGM22); //set clock prescaler to 8 and Fast PWM
   if (Fq56mode) {
     OCR2A = PWMTOP_56;
     if (TURN_PULSEMODE_ON) { //turn the 34 or 56 KHz PWM mode ON or OFF (debug only)
@@ -56,10 +56,24 @@ void IR::IRinit(uint8_t KHz, uint8_t Psize) {
   TCCR2A &= ~(1 << COM2B1); //pin d3 LOW
 
   // Interrupt
-  PCICR |= (1 << PCIE2);  // Set pin-change interrupt for pins
-  PCMSK2 |= (1 << PCINT20); // Set mask to PCINT20 (4/PD4)
+  PCICR = (1 << PCIE2);  // Set pin-change interrupt for pins
+  PCMSK2 = (1 << PCINT20); // Set mask to PCINT20 (4/PD4)
   sei();
 } //IR
+
+float IR::getByteRate() {
+  byteRate = ((message_size * 100) / ((time_ms - speed_timer)/10)); //update the byteRate value
+  speed_timer = time_ms;
+  message_size = 0;
+  if(byteRate > 0 && byteRate<200){
+    return byteRate;
+  }
+  return 0;
+}
+
+long IR::getTime_ms() {
+  return time_ms;
+}
 
 
 void IR::write(uint8_t byteIn[MESSAGE_SIZE]) {    //transform the massage into a "array with pulses"
@@ -96,10 +110,9 @@ void IR::write(uint8_t byteIn[MESSAGE_SIZE]) {    //transform the massage into a
 }
 
 uint8_t IR::available() {
-  if (dataAvailable && ((((timerCounter / PWMTOP_RATIO) > RECEIVE_DELAY)&&Fq56mode) || ((timerCounter > RECEIVE_DELAY)&&!Fq56mode))){ //wait a few overflows 
-    uint8_t x = dataAvailable;
+  if (dataAvailable && ((((timerCounter / PWMTOP_RATIO) > RECEIVE_DELAY) && Fq56mode) || ((timerCounter > RECEIVE_DELAY) && !Fq56mode))) { //wait a few overflows
     dataAvailable = 0;
-    return x;
+    return 1;
   } else {
     return 0;
   }
@@ -164,11 +177,23 @@ void IR::timerOverflow() {
     } else {
       Pulse_value = 0;
       commandCounter = 0;
-      StopRec = 0; //enables the receiver 
+      StopRec = 0; //enables the receiver
       TCCR2A &= ~(1 << COM2B1);
     }
   }
   OVF_counter++; //add 1 every time the timer reaches the top (PWMTOP)
+  timer_ovf++;
+  if (Fq56mode) {
+    if (timer_ovf >= 58) {
+      time_ms++;
+      timer_ovf = 0;
+    }
+  } else {
+    if (timer_ovf >= 38) {
+      time_ms++;
+      timer_ovf = 0;
+    }
+  }
 }
 
 void IR::pinChange() {
@@ -188,6 +213,7 @@ void IR::pinChange() {
           for (uint8_t n = dataNr; n <= MESSAGE_SIZE; n++) { //clear the unused positions in the array
             data[n] = 0;
           }
+          message_size += dataNr;
           dataAvailable = true; //the freshly received array is ready ;)
         } else {
           if (has_even_parity(receiveChar)) {

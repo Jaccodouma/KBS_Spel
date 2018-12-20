@@ -48,11 +48,16 @@ class IR
   public:
     IR(uint8_t KHz); // KHz can be 56 or 38
     IR(uint8_t KHz, uint8_t Psize); // KHz can be 56 or 38
+    void IRinit(uint8_t KHz, uint8_t Psize);
 
     void write(uint8_t byteIn[MESSAGE_SIZE]);
     uint8_t available();
     void read(char *s);
     int error();
+
+    float getByteRate(); //get the speed
+    long getTime_ms();
+    
 
     //  Functions called on interrupts
     void timerOverflow();
@@ -60,7 +65,6 @@ class IR
 
   private:
     // private functions
-    void IRinit(uint8_t KHz, uint8_t Psize);
     int detectBitType(double counter);
     uint8_t has_even_parity(uint8_t x);
 
@@ -68,7 +72,6 @@ class IR
     uint8_t BIT_BASEVALUE;
     uint8_t Fq56mode;
     uint8_t StopRec = 0;
-
 
     // Variables used for sending data
     uint16_t OVF_counter = 0;       //pulse length counter
@@ -81,6 +84,13 @@ class IR
     uint8_t  receiveCharCounter = 0;
     uint8_t receiveChar = 0;
     int receivingChar = 0;
+
+    // Variables used for timer and speed
+    unsigned long time_ms = 0; //game timer in miliseconds
+    uint8_t timer_ovf = 0;
+    uint8_t message_size = 0;
+    float byteRate = 0;
+    unsigned long speed_timer = 0;
 
     int dataAvailable = 0;
     uint8_t data[MESSAGE_SIZE + 1];

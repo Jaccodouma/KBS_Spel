@@ -34,8 +34,8 @@ void IR::IRinit(uint8_t KHz, uint8_t Psize) {
   dataAvailable = 0;
 
   // PWM
-  TCCR2A |= (1 << COM2B1) | (1 << WGM20) | (1 << WGM21); //set compare B
-  TCCR2B |= (1 << CS21) | (1 << WGM22); //set clock prescaler to 8 and Fast PWM
+  TCCR2A = (1 << COM2B1) | (1 << WGM20) | (1 << WGM21); //set compare B
+  TCCR2B = (1 << CS21) | (1 << WGM22); //set clock prescaler to 8 and Fast PWM
   if (Fq56mode) {
     OCR2A = PWMTOP_56;
     if (TURN_PULSEMODE_ON) { //turn the 34 or 56 KHz PWM mode ON or OFF (debug only)
@@ -56,8 +56,8 @@ void IR::IRinit(uint8_t KHz, uint8_t Psize) {
   TCCR2A &= ~(1 << COM2B1); //pin d3 LOW
 
   // Interrupt
-  PCICR |= (1 << PCIE2);  // Set pin-change interrupt for pins
-  PCMSK2 |= (1 << PCINT20); // Set mask to PCINT20 (4/PD4)
+  PCICR = (1 << PCIE2);  // Set pin-change interrupt for pins
+  PCMSK2 = (1 << PCINT20); // Set mask to PCINT20 (4/PD4)
   sei();
 } //IR
 
