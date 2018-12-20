@@ -47,9 +47,7 @@ void Player::drawColors(Gfx *gfx) {
 }
 
 void Player::erasePlayer(Gfx *gfx) {
-    for (int i = 0; i < 5; i++) {
-        drawBitmap(gfx, prevPos.x, prevPos.y, player_still[i], CLR_BACKGROUND);
-    }
+    gfx->tft.fillRect(prevPos.x + gfx->offsetX, prevPos.y + gfx->offsetY, gfx->blocksize, gfx->blocksize, BLACK);
 }
 
 void Player::drawBitmap(Gfx *gfx, int x, int y, const uint8_t *bitmap,

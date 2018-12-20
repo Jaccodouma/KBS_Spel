@@ -1,5 +1,6 @@
 #pragma once
 
+#include "gfx.h"
 #include "lib.h"
 
 #define B_UPDATE 0
@@ -12,6 +13,7 @@
 
 #define toggleUpdate(go) (go->flags ^= (1 << B_UPDATE))
 #define toggleRedraw(go) (go->flags ^= (1 << B_REDRAW))
+#define deleteObject(go) (go->flags |= (1 << B_DELETE))
 
 class Gameobject {
     public:
@@ -24,7 +26,6 @@ class Gameobject {
         bool solid;
     protected:
         position fieldPos;
-    private:
-         uint8_t state = 0; // voor de bitmaps
+        uint8_t state = 0; // voor de bitmaps
 
 };

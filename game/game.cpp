@@ -37,9 +37,14 @@ void Game::update(Gfx *gfx) {
         if (needsRedraw(go)) {
             go->draw(gfx);
         }
+        if (needsDelete(go)) {
+            gos.del(go);
+            Serial.println("joe");
+        }
         go = gos.getNext();
-    }
-}
+    } 
+} 
+
 
 bool Game::gridCollision(position p) {
     if (p.y <= 0 || p.y >= height - 1) {
@@ -73,7 +78,7 @@ Gameobject *Game::hasCollision(Gameobject *go, position p) {
 bool Game::start() {
     addRandomBlocks();
     gos.add(new Bomb(5,1, players[0]));
-    randomSeed(millis());
+    randomSeed(millis()); // voor de random-functie
     if (players[0] != NULL) {  // Start bij tenminste één speler
         this->started = true;
     }
