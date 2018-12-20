@@ -54,6 +54,10 @@ class IR
     void read(char *s);
     int error();
 
+    float getByteRate(); //get the speed
+    long getTime_ms();
+    
+
     //  Functions called on interrupts
     void timerOverflow();
     void pinChange();
@@ -69,7 +73,6 @@ class IR
     uint8_t Fq56mode;
     uint8_t StopRec = 0;
 
-
     // Variables used for sending data
     uint16_t OVF_counter = 0;       //pulse length counter
     uint16_t Pulse_value = 0;       //value to set the pulse length
@@ -81,6 +84,13 @@ class IR
     uint8_t  receiveCharCounter = 0;
     uint8_t receiveChar = 0;
     int receivingChar = 0;
+
+    // Variables used for timer and speed
+    unsigned long time_ms = 0; //game timer in miliseconds
+    uint8_t timer_ovf = 0;
+    uint8_t message_size = 0;
+    float byteRate = 0;
+    unsigned long speed_timer = 0;
 
     int dataAvailable = 0;
     uint8_t data[MESSAGE_SIZE + 1];

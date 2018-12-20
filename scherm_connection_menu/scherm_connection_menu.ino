@@ -8,10 +8,7 @@
 #define MASTER 1
 #define TRANSMITTER_FREQ 56
 
-unsigned long sent_timer;
 unsigned long speed_timer;
-unsigned long ping_timer;
-uint8_t deleteme = 0;
 
 IR myIR(TRANSMITTER_FREQ, 12); //38KHz or 56KHz Transmitter Fq, pulse size (45 default)
 
@@ -26,30 +23,24 @@ ISR(PCINT2_vect) {
 int main(void) {
   Serial.begin(9600);
   Serial.println("start");
-  link myLink(&myIR, MASTER);
-
-  while (!myLink.ping()) {
-    Serial.println("wait for reply");
-  }
+  link myLink(&myIR, MASTER, 500); //ir obj, master/slave, broadcast interval (miliseconds)
 
   while (1) {
-    if (myIR.getTime_ms() > sent_timer) { //do this every 100ms
-      myLink.UpdatePlayerInfo(deleteme, 2, 0, 1); //X,Y,BOMB,LIVES
-      sent_timer = (myIR.getTime_ms() + 100);
-      deleteme++;
-      if (deleteme > 10) {
-        deleteme = 1;
+
+    if ((myIR.getTime_ms() % 1000) == 0) { //do this every 2000ms
+      uint16_t kleur = 61234;
+
+      if (myLink.updateColorData(kleur)) {
+        Serial.println("color add to buffer");
       }
+
+      //if (myLink.updatePlayerData(7, 2, 0, 1)) { //X,Y,BOMB,LIVES
+      //  Serial.println("player add to buffer");
+      // }
     }
 
-    if (myIR.getTime_ms() > speed_timer) { //do this every 2000ms
-      Serial.print("                                speed:");
-      Serial.println(myIR.getByteRate());
-      speed_timer = (myIR.getTime_ms() + 2000);
-    }
-
-    if (myLink.checkForData()) { //keep repeating this in the loop to stay connected
-      Serial.print(" ! x:");
+    if (myLink.checkForData() > 0) { //keep repeating this in the loop to stay connected
+      Serial.print(" x:");
       Serial.print(myLink.otherplayer_x);
       Serial.print("  y:");
       Serial.print(myLink.otherplayer_y);
@@ -57,6 +48,15 @@ int main(void) {
       Serial.print(myLink.otherplayer_bomb);
       Serial.print("  lives:");
       Serial.println(myLink.otherplayer_lives);
+      Serial.print("  color:");
+      Serial.println(myLink.otherplayer_color);
+    }
+
+
+    if (myIR.getTime_ms() > speed_timer) { //do this every 2000ms
+      Serial.print("                                speed:");
+      Serial.println(myIR.getByteRate());
+      speed_timer = (myIR.getTime_ms() + 2000);
     }
   }
 }
