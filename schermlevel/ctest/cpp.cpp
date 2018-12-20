@@ -7,7 +7,7 @@
 using namespace std;
 
 int main(int argc, char const *argv[]) {
-    List list;
+    GoList list;
 
     Gameobject *ggoo = new Gameobject(1);
     Gameobject *ggoo2 = new Gameobject(2);

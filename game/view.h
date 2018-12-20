@@ -6,6 +6,7 @@
 #include "SPI.h"
 #include "game.h"
 #include "lib.h"
+#include "gfx.h"
 
 class View {
    public:
