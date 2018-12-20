@@ -48,6 +48,7 @@ class IR
   public:
     IR(uint8_t KHz); // KHz can be 56 or 38
     IR(uint8_t KHz, uint8_t Psize); // KHz can be 56 or 38
+    void IRinit(uint8_t KHz, uint8_t Psize);
 
     void write(uint8_t byteIn[MESSAGE_SIZE]);
     uint8_t available();
@@ -64,7 +65,6 @@ class IR
 
   private:
     // private functions
-    void IRinit(uint8_t KHz, uint8_t Psize);
     int detectBitType(double counter);
     uint8_t has_even_parity(uint8_t x);
 
