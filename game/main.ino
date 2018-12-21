@@ -2,10 +2,23 @@
 #include "view.h"
 #include <stdlib.h>
 #include "control.h"
+#include "IR.h"
+
+IR myIR(56, 13); //38KHz or 56KHz Transmitter Fq, pulse size (45 default)
+
+ISR(TIMER2_OVF_vect) {
+  myIR.timerOverflow();
+}
+
+ISR(PCINT2_vect) {
+  myIR.pinChange();
+}
 
 int main(void)
 {
     init();
+    myIR.IRinit(56, 13);
+    
     Serial.begin(9600);
     Serial.println("Welkom\n");
 
@@ -24,6 +37,6 @@ int main(void)
         tijd = millis();
         control.update();
         //freeRam();
-       // Serial.println(millis() - tijd);
+        //Serial.println(millis() - tijd);
     }
 }

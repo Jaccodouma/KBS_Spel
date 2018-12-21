@@ -3,6 +3,6 @@
 class Block : public Gameobject {
     public:
         Block(uint8_t x, uint8_t y);
-        void update();
+        void update(int prevUpdate);
         void draw(Gfx *gfx);
 };

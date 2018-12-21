@@ -23,6 +23,7 @@ class Game {
 
    private:
     uint8_t width, height;
+    unsigned long prevUpdate = millis();
     bool started = false;
     void addRandomBlocks();
 };

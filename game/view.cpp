@@ -39,10 +39,8 @@ void View::drawGrid(Game *g) {
 }
 
 void View::drawGridBlock(int x, int y) {
-    gfx.tft.fillRect(x * gfx.blocksize + gfx.offsetX, y * gfx.blocksize + gfx.offsetY, gfx.blocksize,
-                 gfx.blocksize, ILI9341_LIGHTGREY);
-    gfx.tft.drawRect(x * gfx.blocksize + gfx.offsetX, y * gfx.blocksize + gfx.offsetY, gfx.blocksize,
-                 gfx.blocksize, BLACK);
+    gfx.drawRectField(x, y, LIGHTGREY);
+    gfx.drawRectField(x, y, DARKGREY, false);
 }
 
 uint8_t View::blockSize() { return gfx.blocksize; }

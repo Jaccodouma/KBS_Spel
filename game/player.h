@@ -4,13 +4,14 @@
 #include "gameobject.h"
 
 #define NUMLIVES 3 // 3 levens als de speler start
+#define PIXELSPEED 2
 
 class Player : public Gameobject
 {
   public:
     Player(const char name[], uint8_t x, uint8_t y, uint8_t blocksize);
     void move(direction d);
-    void update();
+    void update(int prevUpdate);
     void draw(Gfx *gfx);
     bool isMoving();
     position getScreenPos();
@@ -24,9 +25,6 @@ class Player : public Gameobject
     position prevPos;
     uint8_t blocksize;
     uint8_t lives = NUMLIVES;
-    void drawColors(Gfx *gfx);
-    void erasePlayer(Gfx *gfx);
-    void drawBitmap(Gfx *gfx, int x, int y, const uint8_t *bitmap, uint16_t color);
 };
 
 // de pixels van de voorkant van het poppetje:

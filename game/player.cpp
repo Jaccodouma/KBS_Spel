@@ -18,10 +18,10 @@ void Player::move(direction d) {
     }
 }
 
-void Player::update() {
+void Player::update(int prevUpdate) {
     if (dir != direction::DIR_NO) {
         this->prevPos = this->screenPos;  // sla vorige schermpositie op
-        this->screenPos = movePosition(this->screenPos, dir, 2);
+        this->screenPos = movePosition(this->screenPos, dir, PIXELSPEED);
         if (this->screenPos.x % blocksize ==
                 0 &&  // naar midden van gridpunt gelopen
             this->screenPos.y % blocksize == 0) {
@@ -33,28 +33,18 @@ void Player::update() {
 }
 
 void Player::draw(Gfx *gfx) {
-    erasePlayer(gfx);
-    drawColors(gfx);
+    // Teken een zwart vierkant over de vorige positie van het poppetje
+    gfx->drawRect(prevPos.x, prevPos.y, BLACK);
+
+    // Teken alle kleuren van het poppetje
+    gfx->drawBitmap(screenPos.x, screenPos.y, player_still[0], RED);
+    gfx->drawBitmap(screenPos.x, screenPos.y, player_still[1], BLACK);
+    gfx->drawBitmap(screenPos.x, screenPos.y, player_still[2], SKIN);
+    gfx->drawBitmap(screenPos.x, screenPos.y, player_still[3], YELLOW);
+    gfx->drawBitmap(screenPos.x, screenPos.y, player_still[4], WHITE);
+
+    // Zet opnieuw tekenen uit
     toggleRedraw(this);
-}
-
-void Player::drawColors(Gfx *gfx) {
-    drawBitmap(gfx, screenPos.x, screenPos.y, player_still[0], RED);
-    drawBitmap(gfx, screenPos.x, screenPos.y, player_still[1], BLACK);
-    drawBitmap(gfx, screenPos.x, screenPos.y, player_still[2], SKIN);
-    drawBitmap(gfx, screenPos.x, screenPos.y, player_still[3], YELLOW);
-    drawBitmap(gfx, screenPos.x, screenPos.y, player_still[4], WHITE);
-}
-
-void Player::erasePlayer(Gfx *gfx) {
-    gfx->tft.fillRect(prevPos.x + gfx->offsetX, prevPos.y + gfx->offsetY, gfx->blocksize, gfx->blocksize, BLACK);
-}
-
-void Player::drawBitmap(Gfx *gfx, int x, int y, const uint8_t *bitmap,
-                        uint16_t color) {
-    x += gfx->offsetX;
-    y += gfx->offsetY;
-    gfx->tft.drawBitmap(x, y, bitmap, gfx->blocksize, gfx->blocksize, color);
 }
 
 bool Player::isMoving() { return !!this->dir; }

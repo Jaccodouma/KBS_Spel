@@ -9,15 +9,13 @@
 
 class Bomb : public Gameobject {
     public:
-
     Bomb(int x, int y, Player *p);  
-    void update();
+    void update(int prevUpdate);
     void draw(Gfx *gfx);
-    private:
-    long prev_millis = millis();
-    int countdown = EXPLOSION_TIME; 
-    
+    void onDelete(Gfx *gfx);
 
+    private:
+    int countdown = EXPLOSION_TIME; 
 };
 
 

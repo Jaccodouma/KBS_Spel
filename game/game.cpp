@@ -32,17 +32,18 @@ void Game::update(Gfx *gfx) {
     Gameobject *go = gos.getNext();
     while (go != NULL) {
         if (needsUpdate(go)) {
-            go->update();
+            go->update(millis() - prevUpdate);
         }
         if (needsRedraw(go)) {
             go->draw(gfx);
         }
         if (needsDelete(go)) {
+            go->onDelete(gfx);
             gos.del(go);
-            Serial.println("joe");
         }
         go = gos.getNext();
-    } 
+    }
+    prevUpdate = millis();
 } 
 
 

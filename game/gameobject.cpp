@@ -9,3 +9,5 @@ Gameobject::Gameobject(uint8_t x, uint8_t y, bool solid) {
 position Gameobject::getFieldPos() {
     return this->fieldPos;
 }
+
+void Gameobject::onDelete(Gfx *gfx) {}

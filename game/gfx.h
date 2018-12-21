@@ -32,4 +32,9 @@ class Gfx {
     uint8_t offsetX;
     uint8_t offsetY;
     uint8_t blocksize;
+    
+    void drawRect(int x, int y, uint16_t color, bool fill = true);
+    void drawRectField(int fieldX, int fieldY, uint16_t color, bool fill = true);
+    void drawBitmap(int x, int y, const uint8_t *bitmap, uint16_t color);
+    void drawBitmapField(int x, int y, const uint8_t *bitmap, uint16_t color);
 };

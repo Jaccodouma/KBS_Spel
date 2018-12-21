@@ -18,12 +18,14 @@
 class Gameobject {
     public:
         uint8_t flags = 0x00; // b3 = redraw, b2 = delete, b1 = update
+        bool solid;
 
         Gameobject(uint8_t x, uint8_t y, bool solid);
         position getFieldPos();
-        virtual void update() = 0;
+        virtual void update(int prevUpdate) = 0; // geef tijd in ms sinds vorige update mee
         virtual void draw(Gfx *gfx) = 0;
-        bool solid;
+        virtual void onDelete(Gfx *gfx);
+
     protected:
         position fieldPos;
         uint8_t state = 0; // voor de bitmaps
