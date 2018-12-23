@@ -8,10 +8,10 @@ Control::Control(View *view) {
 }
 
 void Control::startGame() {
-    game = new Game(15, 17);
-    Player *p = new Player("ffk27", 1, 1, view->blockSize());
+    game = new Game(15, 15);
+    Player *p = new Player("ffk27", 1, 1);
     game->addPlayer(p);
-    Player *p2 = new Player("Merel", 13, 15, view->blockSize());
+    Player *p2 = new Player("Merel", 13, 13);
     game->addPlayer(p2);
     game->start();
     view->drawLevel(game);  // teken het level-grid
@@ -23,32 +23,15 @@ void Control::update() {
     direction dir = nunchuck_Direction();
     if (game->isStarted()) {
         game->update(&view->gfx);
-        movePlayer(game->players[0], static_cast<direction>(random(5)));
-        movePlayer(game->players[1], static_cast<direction>(random(5)));
+        movePlayer(static_cast<direction>(random(5)));
+        game->movePlayer(game->players[1], static_cast<direction>(random(5)));
         // movePlayer(game->players[0], dir);
         // movePlayer(game->players[1], dir);
     }
 }
 
-void Control::movePlayer(Player *p, direction d) {
-    // laat de alleen bewegen als de speler stilstaat en de volgende positie
-    // geen bostsing zou veroorzaken
-    if (!p->isMoving()) {
-        position nextpos = movePosition(p->getFieldPos(), d);
-
-        if (game->gridCollision(nextpos)) {
-            return; // heeft een botsing tegen de vast blokjes
-        }
-        Gameobject * collision = game->hasCollision(p, nextpos);
-        if (collision == NULL) {
-            p->move(d);
-            return;
-        }
-        if (!collision->solid) {
-            p->move(d);
-            toggleRedraw(collision);
-        }
-    }
+void Control::movePlayer(direction d) {
+    game->movePlayer(game->players[0], d);
 }
 
 direction Control::nunchuck_Direction() {

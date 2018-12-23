@@ -32,6 +32,7 @@ int main(void)
     control.startGame();
 
     unsigned long tijd;
+    Serial.println(sizeof(bool));
     while(1) {
         //_delay_ms(8);
         tijd = millis();

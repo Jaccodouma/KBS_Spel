@@ -3,9 +3,12 @@
 #include "gfx.h"
 #include "lib.h"
 
-#define B_UPDATE 0
-#define B_DELETE 1
-#define B_REDRAW 2
+class Game;
+
+#define B_UPDATE 4
+#define B_DELETE 5
+#define B_REDRAW 6
+#define B_SOLID 7
 
 #define needsUpdate(go) (go->flags & (1 << B_UPDATE))
 #define needsDelete(go) (go->flags & (1 << B_DELETE))
@@ -15,10 +18,12 @@
 #define toggleRedraw(go) (go->flags ^= (1 << B_REDRAW))
 #define deleteObject(go) (go->flags |= (1 << B_DELETE))
 
+#define isSolid(go) (go->flags & (1 << B_SOLID))
+
 class Gameobject {
     public:
-        uint8_t flags = 0x00; // b3 = redraw, b2 = delete, b1 = update
-        bool solid;
+        // b7 = solid, b6 = redraw, b5 = delete, b4 = update
+        uint8_t flags = (1<<B_REDRAW); // Herteken initieel standaard 
 
         Gameobject(uint8_t x, uint8_t y, bool solid);
         position getFieldPos();
@@ -28,6 +33,4 @@ class Gameobject {
 
     protected:
         position fieldPos;
-        uint8_t state = 0; // voor de bitmaps
-
 };

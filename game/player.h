@@ -9,20 +9,20 @@
 class Player : public Gameobject
 {
   public:
-    Player(const char name[], uint8_t x, uint8_t y, uint8_t blocksize);
+    Player(const char name[], uint8_t x, uint8_t y, uint8_t blocksize=16);
     void move(direction d);
     void update(int prevUpdate);
     void draw(Gfx *gfx);
     bool isMoving();
-    position getScreenPos();
-    position getPrevPos();
+    point getScreenPos();
+    point getPrevPos();
 
   private:
     char name[9];
     direction dir = direction::DIR_NO;
     // pixelposities:
-    position screenPos;
-    position prevPos;
+    point screenPos;
+    point prevPos;
     uint8_t blocksize;
     uint8_t lives = NUMLIVES;
 };

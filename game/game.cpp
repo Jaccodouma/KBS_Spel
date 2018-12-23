@@ -1,4 +1,5 @@
 #include "game.h"
+#include "explosion.h"
 
 Game::Game(uint8_t width, uint8_t height) {
     this->width = width;
@@ -78,7 +79,7 @@ Gameobject *Game::hasCollision(Gameobject *go, position p) {
 
 bool Game::start() {
     addRandomBlocks();
-    gos.add(new Bomb(5,1, players[0]));
+    gos.add(new Bomb(this, 5, 1, players[0]));
     randomSeed(millis()); // voor de random-functie
     if (players[0] != NULL) {  // Start bij tenminste één speler
         this->started = true;
@@ -98,6 +99,54 @@ bool Game::addPlayer(Player *p) {
         return true;
     }
     return false;  // genoeg spelers
+}
+
+void Game::movePlayer(Player *p, direction d) {
+    // laat de alleen bewegen als de speler stilstaat en de volgende positie
+    // geen bostsing zou veroorzaken
+    if (!p->isMoving()) {
+        position nextpos = movePosition(p->getFieldPos(), d);
+
+        if (gridCollision(nextpos)) {
+            return; // heeft een botsing tegen de vast blokjes
+        }
+        Gameobject * collision = hasCollision(p, nextpos);
+        if (collision == NULL) {
+            p->move(d);
+            return;
+        }
+        if (!isSolid(collision)) {
+            p->move(d);
+            toggleRedraw(collision);
+        }
+    }
+}
+
+void Game::bombExplosion(Bomb *bomb) {
+    char x = bomb->getFieldPos().x;
+    char y = bomb->getFieldPos().y;
+    gos.add(new Explosion(x, y, bomb->player)); // vuur op plaast van bom
+    for (char i=x; i > x - EXPLOSION_RANGE; i--) { // vuur links
+        if (!addExplosion(i-1, y, bomb->player)) break;
+    }
+    for (char i=x; i < x + EXPLOSION_RANGE; i++) { // vuur rechts
+        if (!addExplosion(i+1, y, bomb->player)) break;
+    }
+    for (char i=y; i > y - EXPLOSION_RANGE; i--) { // vuur boven
+        if (!addExplosion(x, i-1, bomb->player)) break;
+    }
+    for (char i=y; i < y + EXPLOSION_RANGE; i++) { // vuur onder
+        if (!addExplosion(x, i+1, bomb->player)) break;
+    }
+}
+
+bool Game::addExplosion(char x, char y, Player *p) {
+    position pos = {x,y};
+    if (!gridCollision(pos) && !hasCollision(p, pos)) {
+        gos.add(new Explosion(x, y, p));
+        return true;
+    }
+    return false;
 }
 
 bool Game::isStarted() { return this->started; }

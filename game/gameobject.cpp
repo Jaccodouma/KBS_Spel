@@ -3,7 +3,7 @@
 Gameobject::Gameobject(uint8_t x, uint8_t y, bool solid) {
     this->fieldPos.x = x;
     this->fieldPos.y = y;
-    this->solid = solid;
+    if (solid) flags |= (1<<B_SOLID);
 }
 
 position Gameobject::getFieldPos() {

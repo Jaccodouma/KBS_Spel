@@ -3,11 +3,10 @@
 Player::Player(const char name[], uint8_t x, uint8_t y, uint8_t blocksize)
     : Gameobject(x, y, false) {
     strcpy(this->name, name);
-    // stel de pixelposities in
-    prevPos = {x * blocksize, y * blocksize};
-    screenPos = prevPos;
+    // ongeinistaliseerd, stel de pixelposities in
     this->blocksize = blocksize;
-    toggleRedraw(this);
+    prevPos = {fieldPos.x * blocksize, fieldPos.y * blocksize};
+    screenPos = prevPos;
 }
 
 void Player::move(direction d) {
@@ -21,10 +20,11 @@ void Player::move(direction d) {
 void Player::update(int prevUpdate) {
     if (dir != direction::DIR_NO) {
         this->prevPos = this->screenPos;  // sla vorige schermpositie op
-        this->screenPos = movePosition(this->screenPos, dir, PIXELSPEED);
-        if (this->screenPos.x % blocksize ==
-                0 &&  // naar midden van gridpunt gelopen
+        this->screenPos = movePoint(this->screenPos, dir, PIXELSPEED);
+
+        if (this->screenPos.x % blocksize == 0 &&
             this->screenPos.y % blocksize == 0) {
+                        // naar midden van gridpunt gelopen
             toggleUpdate(this);
             this->dir = direction::DIR_NO;
         }
@@ -49,6 +49,6 @@ void Player::draw(Gfx *gfx) {
 
 bool Player::isMoving() { return !!this->dir; }
 
-position Player::getScreenPos() { return this->screenPos; }
+point Player::getScreenPos() { return this->screenPos; }
 
-position Player::getPrevPos() { return this->prevPos; }
+point Player::getPrevPos() { return this->prevPos; }
