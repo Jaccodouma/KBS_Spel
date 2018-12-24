@@ -64,6 +64,16 @@ const uint8_t player_still[5][32] PROGMEM = {
      0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000,
      0b00000000, 0b00000000}};
 
+const uint8_t dvdvideo[] PROGMEM = {
+    0x1F, 0xFE, 0x0F, 0xF8, 0x3F, 0xFE, 0x1F, 0xFE, 0x38, 0x7E, 0x3B,
+    0x8F, 0x38, 0x77, 0x7B, 0x87, 0x38, 0x77, 0x77, 0x07, 0x38, 0xE7,
+    0xE7, 0x0E, 0x7F, 0xC3, 0xC7, 0xFC, 0x7F, 0x03, 0x87, 0xF0, 0x00,
+    0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x0F, 0xFF, 0xFF, 0xC0,
+    0x7F, 0xF8, 0x7F, 0xFC, 0xFF, 0xF0, 0x3F, 0xFC, 0x07, 0xFF, 0xFF,
+    0xC0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x12, 0x4E,
+    0x33, 0x80, 0x0C, 0x4A, 0x32, 0x40, 0x04, 0x4E, 0x33, 0x80,
+};
+
 int main(void) {
     init();
     Serial.begin(9600);
@@ -74,13 +84,16 @@ int main(void) {
 
     unsigned long tijd;
 
-    int x = 1, y = 1, i = 1, j = 1;
+    int x = 1, y = 1, i = 2, j = 2;
+
+    uint16_t colors[] = {WHITE, BLUE, RED, GREEN, YELLOW};
+    uint8_t coln = 0;
 
     while (1) {
         tijd = millis();
 
         //_delay_ms(10);
-        tft.fillRect(x, y, BLOCKSIZE, BLOCKSIZE, BLACK);
+        tft.drawBitmap(x, y, dvdvideo, 32, 19, CLR_BACKGROUND);
 
         // tft.drawBitmap(0, 0, poppetjevoledig,  BLOCKSIZE,  BLOCKSIZE, BLACK);
         // tft.drawBitmap(0, 0, player_still[1],  BLOCKSIZE,  BLOCKSIZE, BLACK);
@@ -90,18 +103,28 @@ int main(void) {
 
         x += i;
         y += j;
-        if (x >= tft.width() - BLOCKSIZE || x <= 0) {
+        if (x >= tft.width() - 32 || x <= 0) {
             i = -i;
+            if (coln + 1 > 4) {
+                coln = 0;
+            } else {
+                coln++;
+            }
         }
-        if (y >= tft.height() - BLOCKSIZE || y <= 0) {
+        if (y >= tft.height() - 19 || y <= 0) {
             j = -j;
+            if (coln + 1 > 4) {
+                coln = 0;
+            } else {
+                coln++;
+            }
         }
-
-        tft.drawBitmap(x, y, player_still[0], BLOCKSIZE, BLOCKSIZE, RED);
-        tft.drawBitmap(x, y, player_still[1], BLOCKSIZE, BLOCKSIZE, BLACK);
-        tft.drawBitmap(x, y, player_still[2], BLOCKSIZE, BLOCKSIZE, SKIN);
-        tft.drawBitmap(x, y, player_still[3], BLOCKSIZE, BLOCKSIZE, YELLOW);
-        tft.drawBitmap(x, y, player_still[4], BLOCKSIZE, BLOCKSIZE, WHITE);
+        tft.drawBitmap(x, y, dvdvideo, 32, 19, colors[coln]);
+        // tft.drawBitmap(x, y, player_still[0], BLOCKSIZE, BLOCKSIZE, RED);
+        // tft.drawBitmap(x, y, player_still[1], BLOCKSIZE, BLOCKSIZE, BLACK);
+        // tft.drawBitmap(x, y, player_still[2], BLOCKSIZE, BLOCKSIZE, SKIN);
+        // tft.drawBitmap(x, y, player_still[3], BLOCKSIZE, BLOCKSIZE, YELLOW);
+        // tft.drawBitmap(x, y, player_still[4], BLOCKSIZE, BLOCKSIZE, WHITE);
 
         Serial.println(millis() - tijd);
     }

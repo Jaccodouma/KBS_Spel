@@ -18,8 +18,9 @@ void Game::addRandomBlocks() {
             if (!isEven(i) || !isEven(j)) {
                 // kans is 1 op 3 dat er een blokje geplaatst wordt
                 if (random(3) == 0) {
-                    if (!(i == 1 && j == 1) && 
-                    // mag niet helemaal linksonder of rechtsonder omdat players hier komen
+                    if (!(i == 1 && j == 1) &&
+                        // mag niet helemaal linksonder of rechtsonder omdat
+                        // players hier komen
                         !(i == height - 2 && j == width - 2)) {
                         gos.add(new Block(j, i));
                     }
@@ -45,8 +46,7 @@ void Game::update(Gfx *gfx) {
         go = gos.getNext();
     }
     prevUpdate = millis();
-} 
-
+}
 
 bool Game::gridCollision(position p) {
     if (p.y <= 0 || p.y >= height - 1) {
@@ -79,8 +79,7 @@ Gameobject *Game::hasCollision(Gameobject *go, position p) {
 
 bool Game::start() {
     addRandomBlocks();
-    gos.add(new Bomb(this, 5, 1, players[0]));
-    randomSeed(millis()); // voor de random-functie
+    randomSeed(millis());      // voor de random-functie
     if (players[0] != NULL) {  // Start bij tenminste één speler
         this->started = true;
     }
@@ -108,13 +107,14 @@ void Game::movePlayer(Player *p, direction d) {
         position nextpos = movePosition(p->getFieldPos(), d);
 
         if (gridCollision(nextpos)) {
-            return; // heeft een botsing tegen de vast blokjes
+            return;  // heeft een botsing tegen de vast blokjes
         }
-        Gameobject * collision = hasCollision(p, nextpos);
+        Gameobject *collision = hasCollision(p, nextpos);
         if (collision == NULL) {
             p->move(d);
             return;
         }
+        collision->onPlayerCollision(p);
         if (!isSolid(collision)) {
             p->move(d);
             toggleRedraw(collision);
@@ -122,31 +122,41 @@ void Game::movePlayer(Player *p, direction d) {
     }
 }
 
+void Game::addGameobject(Gameobject *go) { gos.add(go); }
+
 void Game::bombExplosion(Bomb *bomb) {
     char x = bomb->getFieldPos().x;
     char y = bomb->getFieldPos().y;
-    gos.add(new Explosion(x, y, bomb->player)); // vuur op plaast van bom
-    for (char i=x; i > x - EXPLOSION_RANGE; i--) { // vuur links
-        if (!addExplosion(i-1, y, bomb->player)) break;
+    gos.add(new Explosion(x, y, bomb->player));       // vuur op plaast van bom
+    for (char i = x; i > x - EXPLOSION_RANGE; i--) {  // vuur links
+        if (!addExplosion(i - 1, y, bomb->player)) break;
     }
-    for (char i=x; i < x + EXPLOSION_RANGE; i++) { // vuur rechts
-        if (!addExplosion(i+1, y, bomb->player)) break;
+    for (char i = x; i < x + EXPLOSION_RANGE; i++) {  // vuur rechts
+        if (!addExplosion(i + 1, y, bomb->player)) break;
     }
-    for (char i=y; i > y - EXPLOSION_RANGE; i--) { // vuur boven
-        if (!addExplosion(x, i-1, bomb->player)) break;
+    for (char i = y; i > y - EXPLOSION_RANGE; i--) {  // vuur boven
+        if (!addExplosion(x, i - 1, bomb->player)) break;
     }
-    for (char i=y; i < y + EXPLOSION_RANGE; i++) { // vuur onder
-        if (!addExplosion(x, i+1, bomb->player)) break;
+    for (char i = y; i < y + EXPLOSION_RANGE; i++) {  // vuur onder
+        if (!addExplosion(x, i + 1, bomb->player)) break;
     }
 }
 
 bool Game::addExplosion(char x, char y, Player *p) {
-    position pos = {x,y};
-    if (!gridCollision(pos) && !hasCollision(p, pos)) {
-        gos.add(new Explosion(x, y, p));
-        return true;
+    position pos = {x, y};
+    if (gridCollision(pos)) {
+        return false;
     }
-    return false;
+    Gameobject *co = hasCollision(p, pos);  // tegenaan botsend object
+    if (co) {
+        co->onExplosion(p);
+        if (isSolid(co)) {
+            gos.add(new Explosion(x, y, p));
+            return false;
+        }
+    }
+    gos.add(new Explosion(x, y, p));
+    return true;
 }
 
 bool Game::isStarted() { return this->started; }

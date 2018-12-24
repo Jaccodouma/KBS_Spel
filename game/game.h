@@ -22,6 +22,8 @@ class Game {
     void update(Gfx *gfx);
     void movePlayer(Player *p, direction d);
     void bombExplosion(Bomb *bomb);
+    void plantBomb(Player *p);
+    void addGameobject(Gameobject *go);
     uint8_t getWidth();
     uint8_t getHeight();
 

@@ -1,4 +1,5 @@
 #include "player.h"
+#include "game.h"
 
 Player::Player(const char name[], uint8_t x, uint8_t y, uint8_t blocksize)
     : Gameobject(x, y, false) {
@@ -24,7 +25,7 @@ void Player::update(int prevUpdate) {
 
         if (this->screenPos.x % blocksize == 0 &&
             this->screenPos.y % blocksize == 0) {
-                        // naar midden van gridpunt gelopen
+            // naar midden van gridpunt gelopen
             toggleUpdate(this);
             this->dir = direction::DIR_NO;
         }
@@ -45,6 +46,17 @@ void Player::draw(Gfx *gfx) {
 
     // Zet opnieuw tekenen uit
     toggleRedraw(this);
+}
+
+void Player::onExplosion(Player *p) { lives--; }
+
+void Player::giveBomb() { nbombs++; }
+
+void Player::plantBomb(Game *game) {
+    if (nbombs > 0) {
+        game->addGameobject(new Bomb(game, fieldPos.x, fieldPos.y, this));
+        nbombs--;
+    }
 }
 
 bool Player::isMoving() { return !!this->dir; }

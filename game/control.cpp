@@ -25,6 +25,12 @@ void Control::update() {
         game->update(&view->gfx);
         movePlayer(static_cast<direction>(random(5)));
         game->movePlayer(game->players[1], static_cast<direction>(random(5)));
+        if (random(100)==1) {
+            game->players[0]->plantBomb(game);
+        }
+        if (random(100)==1) {
+            game->players[1]->plantBomb(game);
+        }
         // movePlayer(game->players[0], dir);
         // movePlayer(game->players[1], dir);
     }

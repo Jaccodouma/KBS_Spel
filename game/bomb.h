@@ -2,6 +2,7 @@
 #include "gameobject.h"
 #include "player.h"
 
+#define B_STATE_BURN 0
 #define STATE_BURN_1 0
 #define STATE_BURN_2 1
 #define STATE_EXPLODE
@@ -16,7 +17,6 @@ class Bomb : public Gameobject {
     void onDelete(Gfx *gfx);
 
    private:
-    uint8_t state = 0;  // voor de bitmaps
     Game *game;
     int countdown = EXPLOSION_TIME;
 };

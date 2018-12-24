@@ -3,21 +3,28 @@
 #include <string.h>
 #include "gameobject.h"
 
-#define NUMLIVES 3 // 3 levens als de speler start
-#define PIXELSPEED 2
+class Game;
 
-class Player : public Gameobject
-{
-  public:
-    Player(const char name[], uint8_t x, uint8_t y, uint8_t blocksize=16);
+#define NUMLIVES 3    // 3 levens als de speler start
+#define PIXELSPEED 2  // 2 pixels lopen per update
+#define MAXNBOMBS 1   // 1 bom tegelijkertijd kan branden
+
+class Player : public Gameobject {
+   public:
+    Player(const char name[], uint8_t x, uint8_t y, uint8_t blocksize = 16);
+
     void move(direction d);
     void update(int prevUpdate);
     void draw(Gfx *gfx);
+    void onExplosion(Player *p);
+
     bool isMoving();
     point getScreenPos();
     point getPrevPos();
+    void giveBomb();
+    void plantBomb(Game *game);
 
-  private:
+   private:
     char name[9];
     direction dir = direction::DIR_NO;
     // pixelposities:
@@ -25,9 +32,15 @@ class Player : public Gameobject
     point prevPos;
     uint8_t blocksize;
     uint8_t lives = NUMLIVES;
+    uint8_t nbombs = MAXNBOMBS;
 };
 
 // de pixels van de voorkant van het poppetje:
+const uint8_t poppetjevoledig[] PROGMEM = {
+    0x1F, 0xF8, 0x1F, 0xF8, 0x18, 0x18, 0x10, 0x08, 0x14, 0x48, 0x10,
+    0x08, 0x18, 0x18, 0x0F, 0xF0, 0x02, 0x40, 0x3E, 0x7C, 0x7F, 0xFE,
+    0x7F, 0xFE, 0x7F, 0xFE, 0x1F, 0xF8, 0x13, 0xC8, 0xBE, 0x4D};
+
 const uint8_t player_still[5][32] PROGMEM = {
     {0b00011111, 0b11111000, 0b00010000, 0b00001000, 0b00000000, 0b00000000,
      0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000,
@@ -122,11 +135,12 @@ const uint8_t player_still[5][32] PROGMEM = {
 
 // const uint8_t player_right_walk_two[5][32] PROGMEM = {
 //     {
-//         0b00000111, 0b11100000, 0b00001000, 0b00010000, 0b00000000, 0b00000000,
-//         0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000,
-//         0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000,
-//         0b00000011, 0b10000000, 0b00000111, 0b10000000, 0b00000101, 0b10000000,
-//         0b00000001, 0b10000000, 0b00000000, 0b00000000, 0b00001000, 0b00000000,
+//         0b00000111, 0b11100000, 0b00001000, 0b00010000, 0b00000000,
+//         0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000,
+//         0b00000000, 0b00000000, 0b00000000, 0b00000000, 0b00000000,
+//         0b00000000, 0b00000000, 0b00000000, 0b00000011, 0b10000000,
+//         0b00000111, 0b10000000, 0b00000101, 0b10000000, 0b00000001,
+//         0b10000000, 0b00000000, 0b00000000, 0b00001000, 0b00000000,
 //         0b00000000, 0b00000000,},
 //     {
 //         0b00000000,
@@ -259,8 +273,7 @@ const uint8_t player_still[5][32] PROGMEM = {
 //         0b00000000,
 //     }};
 
-
-//   const uint8_t player_left[5][32] PROGMEM = {  
+//   const uint8_t player_left[5][32] PROGMEM = {
 // {
 //   0b00000111, 0b11100000,
 //   0b00001000, 0b00010000,

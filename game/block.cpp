@@ -11,3 +11,12 @@ void Block::draw(Gfx *gfx) {
 
     toggleRedraw(this);
 }
+
+void Block::onExplosion(Player *p) {
+    deleteObject(this);
+}
+
+void Block::onDelete(Gfx *gfx) {
+    // teken zwart vierkant over bom
+    gfx->drawRectField(fieldPos.x, fieldPos.y, CLR_BACKGROUND);
+}

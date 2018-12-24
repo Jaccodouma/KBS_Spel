@@ -4,6 +4,7 @@
 #include "lib.h"
 
 class Game;
+class Player;
 
 #define B_UPDATE 4
 #define B_DELETE 5
@@ -20,6 +21,8 @@ class Game;
 
 #define isSolid(go) (go->flags & (1 << B_SOLID))
 
+#define getState(go) (go->flags & 0x0F)
+
 class Gameobject {
     public:
         // b7 = solid, b6 = redraw, b5 = delete, b4 = update
@@ -30,6 +33,8 @@ class Gameobject {
         virtual void update(int prevUpdate) = 0; // geef tijd in ms sinds vorige update mee
         virtual void draw(Gfx *gfx) = 0;
         virtual void onDelete(Gfx *gfx);
+        virtual void onExplosion(Player *p);
+        virtual void onPlayerCollision(Player *p);
 
     protected:
         position fieldPos;
