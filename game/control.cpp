@@ -8,10 +8,10 @@ Control::Control(View *view) {
 }
 
 void Control::startGame() {
-    game = new Game(15, 15);
-    Player *p = new Player("ffk27", 1, 1);
+    game = new Game(15, 17);
+    Player *p = new Player("ffk27", 1, 1, RED);
     game->addPlayer(p);
-    Player *p2 = new Player("Merel", 13, 13);
+    Player *p2 = new Player("Merel", 13, 13, GREEN);
     game->addPlayer(p2);
     game->start();
     view->drawLevel(game);  // teken het level-grid

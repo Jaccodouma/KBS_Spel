@@ -8,10 +8,10 @@ View::View() {
 
 void View::drawLevel(Game *g) {
     gfx.blocksize = gfx.tft.width() / g->getWidth();
-    // stel de offset in zodat het speelveld gecentreerd op het scherm te zien
-    // is
+    // stel de offsetX in zodat het speelveld horizontaal gecentreerd is.
     gfx.offsetX = (gfx.tft.width() - g->getWidth() * gfx.blocksize) / 2;
-    gfx.offsetY = (gfx.tft.height() - g->getHeight() * gfx.blocksize) / 2;
+    // stel de offsetY in zodat het speelveld onderin het scherm eindigt.
+    gfx.offsetY = (gfx.tft.height() - g->getHeight() * gfx.blocksize);
     gfx.tft.fillRect(gfx.offsetX,gfx. offsetY, gfx.tft.width() - gfx.offsetX * 2,
                  gfx.tft.height() - gfx.offsetY * 2, CLR_BACKGROUND);
     gfx.tft.drawRect(gfx.offsetX, gfx.offsetY, gfx.tft.width() - gfx.offsetX * 2,

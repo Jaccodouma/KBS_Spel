@@ -12,7 +12,6 @@ void GoList::add(Gameobject *go) {
         tail->next = n;
         tail = n;
     }
-    freeRam();
 }
 
 GoList::~GoList() {
@@ -49,8 +48,6 @@ void GoList::del(Gameobject *go) {
             temp = temp->next;
         }
     }
-        freeRam();
-
 }
 
 int GoList::length() {

@@ -13,7 +13,7 @@ void Gfx::drawRectField(int fieldX, int fieldY, uint16_t color, bool fill) {
 }
 
 void Gfx::drawBitmap(int x, int y, const uint8_t *bitmap, uint16_t color) {
-    tft.drawBitmap(x + offsetX, y + offsetY, bitmap, 16, 16, color);
+    tft.drawXBitmap(x + offsetX, y + offsetY, bitmap, 16, 16, color);
 }
 
 void Gfx::drawBitmapField(int x, int y, const uint8_t *bitmap, uint16_t color) {
