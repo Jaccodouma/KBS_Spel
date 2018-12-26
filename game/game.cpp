@@ -12,7 +12,7 @@ Game::~Game() {
 }
 
 void Game::addRandomBlocks() {
-    randomSeed(analogRead(0));      // voor de random-functie
+    randomSeed(analogRead(0));  // voor de random-functie
     for (int i = 1; i < height - 1; i++) {
         for (int j = 1; j < width - 1; j++) {
             // ga langs alle posities maar sla grid-blokjes over
@@ -31,17 +31,17 @@ void Game::addRandomBlocks() {
     }
 }
 
-void Game::update(Gfx *gfx) {
+void Game::update() {
     Gameobject *go = gos.getNext();
     while (go != NULL) {
         if (needsUpdate(go)) {
             go->update(millis() - prevUpdate);
         }
         if (needsRedraw(go)) {
-            go->draw(gfx);
+            go->draw(&gfx);
         }
         if (needsDelete(go)) {
-            go->onDelete(gfx);
+            go->onDelete(&gfx);
             gos.del(go);
         }
         go = gos.getNext();
@@ -79,7 +79,9 @@ Gameobject *Game::hasCollision(Gameobject *go, position p) {
 }
 
 bool Game::start() {
+    drawLevel();
     addRandomBlocks();
+    drawScoreboard();
     if (players[0] != NULL) {  // Start bij tenminste één speler
         this->started = true;
     }
@@ -157,6 +159,63 @@ bool Game::addExplosion(char x, char y, Player *p) {
     }
     gos.add(new Explosion(x, y, p));
     return true;
+}
+
+void Game::drawLevel() {
+    gfx.blocksize = gfx.tft.width() / width;
+    // stel de offsetX in zodat het speelveld horizontaal gecentreerd is.
+    gfx.offsetX = (gfx.tft.width() - width * gfx.blocksize) / 2;
+    // stel de offsetY in zodat het speelveld onderin het scherm eindigt.
+    gfx.offsetY = (gfx.tft.height() - height * gfx.blocksize);
+    gfx.tft.fillRect(gfx.offsetX, gfx.offsetY,
+                     gfx.tft.width() - gfx.offsetX * 2,
+                     gfx.tft.height() - gfx.offsetY * 2, CLR_BACKGROUND);
+    gfx.tft.drawRect(gfx.offsetX, gfx.offsetY,
+                     gfx.tft.width() - gfx.offsetX * 2,
+                     gfx.tft.height() - gfx.offsetY * 2, BLACK);
+    drawGrid();
+}
+
+void Game::drawGrid() {
+    for (int i = 0; i < height; i++) {
+        for (int j = 0; j < width; j++) {
+            if (i == 0 || i == height - 1) {  // bovenste of onderste rij
+                drawGridBlock(j, i);
+            } else {
+                if (j == 0 || j == width - 1) {  // rand links of rechts
+                    drawGridBlock(j, i);
+                } else {
+                    if (isEven(i) && isEven(j)) {
+                        drawGridBlock(j, i);
+                    }
+                }
+            }
+        }
+    }
+}
+
+void Game::drawGridBlock(int x, int y) {
+    gfx.drawRectField(x, y, LIGHTGREY);
+    gfx.drawRectField(x, y, DARKGREY, false);
+}
+
+void Game::drawScoreboard() {
+    uint8_t posX = MAXNAMELENGTH * 10, posY = 0;
+    gfx.drawXBitmap(0 - gfx.offsetX + posX, 0 - gfx.offsetY + posY, hearth[0], DARKBROWN);
+    gfx.drawXBitmap(0 - gfx.offsetX + posX, 0 - gfx.offsetY + posY, hearth[1], RED);
+    gfx.drawXBitmap(0 - gfx.offsetX + posX, 0 - gfx.offsetY + posY, hearth[2], WHITE);
+    gfx.drawChar(posX + 22, 0, 'X');
+
+
+    updateScores(players[0]);
+    // updateScores(players[1]);
+}
+
+void Game::updateScores(Player *p) {
+    playerinfo pinfo = p->getPlayerinfo();
+    gfx.drawChar(120, 0, pinfo.lives + 48);
+    gfx.drawText(0, 0, pinfo.name);
+    gfx.drawChar(MAXNAMELENGTH * 8, 0, ':');
 }
 
 bool Game::isStarted() { return this->started; }

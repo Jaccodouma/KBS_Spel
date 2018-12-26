@@ -21,6 +21,11 @@
 #define LIGHTGREY 0xAD56
 #define DARKORANGE 0xF3E2
 #define LIGHTORANGE 0xEDE8
+#define DARKBROWN 0x5900
+
+// standaard tekstopmaak
+#define TEXTSIZE 2
+#define TEXTCOLOR WHITE
 
 // For the Adafruit shield, these are the default.
 #define TFT_DC 9
@@ -33,8 +38,12 @@ class Gfx {
     uint8_t offsetY;
     uint8_t blocksize;
     
+    Gfx();
     void drawRect(int x, int y, uint16_t color, bool fill = true);
     void drawRectField(int fieldX, int fieldY, uint16_t color, bool fill = true);
     void drawBitmap(int x, int y, const uint8_t *bitmap, uint16_t color);
+    void drawXBitmap(int x, int y, const uint8_t *bitmap, uint16_t color);
     void drawBitmapField(int x, int y, const uint8_t *bitmap, uint16_t color);
+    void drawChar(int x, int y, char c, uint8_t size = TEXTSIZE, uint16_t color = TEXTCOLOR);
+    void drawText(int x, int y, char *text, uint8_t size = TEXTSIZE, uint16_t color = TEXTCOLOR);
 };

@@ -1,5 +1,4 @@
 #include <avr/io.h>
-#include "view.h"
 #include <stdlib.h>
 #include "control.h"
 #include "IR.h"
@@ -27,8 +26,7 @@ int main(void)
     PORTC &= ~(1 << PORTC2);            // set PC2 to LOW
     PORTC |= (1 << PORTC3);             // Set PC3 to HIGH
 
-    View view;
-    Control control(&view);
+    Control control;
     control.startGame();
 
     unsigned long tijd;

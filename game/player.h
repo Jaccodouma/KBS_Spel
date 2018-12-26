@@ -8,10 +8,17 @@ class Game;
 #define NUMLIVES 3    // 3 levens als de speler start
 #define PIXELSPEED 2  // 2 pixels lopen per update
 #define MAXNBOMBS 1   // 1 bom tegelijkertijd kan branden
+#define MAXNAMELENGTH 8
+
+typedef struct {
+    char *name;
+    uint8_t lives;
+    uint8_t nbombs;
+} playerinfo;
 
 class Player : public Gameobject {
    public:
-    Player(const char name[], uint8_t x, uint8_t y, uint16_t color,
+    Player(Game *game, const char name[], uint8_t x, uint8_t y, uint16_t color,
            uint8_t blocksize = 16);
 
     void move(direction d);
@@ -23,10 +30,12 @@ class Player : public Gameobject {
     point getScreenPos();
     point getPrevPos();
     void giveBomb();
-    void plantBomb(Game *game);
+    void plantBomb();
+    playerinfo getPlayerinfo();
 
    private:
-    char name[9];
+    Game *g;
+    char name[MAXNAMELENGTH + 1];
     direction dir = direction::DIR_NO;
     // pixelposities:
     point screenPos;
@@ -53,7 +62,11 @@ const uint8_t player_still[][32] PROGMEM = {
     {
    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-   0x00, 0x00, 0x00, 0x00, 0x30, 0x0c, 0x00, 0x00 }};
+   0x00, 0x00, 0x00, 0x00, 0x30, 0x0c, 0x00, 0x00 },
+{
+   0x07, 0xe0, 0x07, 0xe0, 0x07, 0xe0, 0x07, 0xe0, 0x07, 0xe0, 0x07, 0xe0,
+   0x07, 0xe0, 0x0f, 0xf0, 0x3f, 0xfc, 0x03, 0xc0, 0x01, 0x80, 0x01, 0x80,
+   0x01, 0x80, 0x01, 0x80, 0x05, 0xa0, 0x80, 0x01 }};
 
 const uint8_t player_right_walk_one[5][32] PROGMEM = {
     {0b00000111, 0b11100000, 0b00001000, 0b00010000, 0b00000000, 0b00000000,

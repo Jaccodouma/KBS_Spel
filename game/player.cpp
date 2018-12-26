@@ -1,8 +1,9 @@
 #include "player.h"
 #include "game.h"
 
-Player::Player(const char name[], uint8_t x, uint8_t y, uint16_t color, uint8_t blocksize)
+Player::Player(Game *game, const char name[], uint8_t x, uint8_t y, uint16_t color, uint8_t blocksize)
     : Gameobject(x, y, false) {
+    this->g = game;
     strcpy(this->name, name);
     // ongeinistaliseerd, stel de pixelposities in
     this->blocksize = blocksize;
@@ -39,24 +40,35 @@ void Player::draw(Gfx *gfx) {
     gfx->drawRect(prevPos.x, prevPos.y, BLACK);
 
     // Teken alle kleuren van het poppetje
-    gfx->drawBitmap(screenPos.x, screenPos.y,  player_still[0], color);
-    gfx->drawBitmap(screenPos.x, screenPos.y,  player_still[1], BLACK);
-    gfx->drawBitmap(screenPos.x, screenPos.y,  player_still[2], SKIN);
-    gfx->drawBitmap(screenPos.x, screenPos.y,  player_still[3], YELLOW);
+    gfx->drawXBitmap(screenPos.x, screenPos.y,  player_still[0], color);
+    gfx->drawXBitmap(screenPos.x, screenPos.y,  player_still[1], DARKBROWN);
+    gfx->drawXBitmap(screenPos.x, screenPos.y,  player_still[2], SKIN);
+    gfx->drawXBitmap(screenPos.x, screenPos.y,  player_still[3], YELLOW);
 
     // Zet opnieuw tekenen uit
     toggleRedraw(this);
 }
 
-void Player::onExplosion(Player *p) { lives--; }
+void Player::onExplosion(Player *p) { 
+    lives--; 
+    g->updateScores(this);
+}
 
-void Player::giveBomb() { nbombs++; }
+void Player::giveBomb() { 
+    nbombs++;
+    g->updateScores(this);
+}
 
-void Player::plantBomb(Game *game) {
+void Player::plantBomb() {
     if (nbombs > 0) {
-        game->addGameobject(new Bomb(game, fieldPos.x, fieldPos.y, this));
+        g->addGameobject(new Bomb(g, fieldPos.x, fieldPos.y, this));
         nbombs--;
+        g->updateScores(this);
     }
+}
+
+playerinfo Player::getPlayerinfo() {
+    return {name, lives, nbombs};
 }
 
 bool Player::isMoving() { return !!this->dir; }
