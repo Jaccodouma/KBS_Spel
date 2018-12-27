@@ -8,11 +8,75 @@ GameColour::GameColour() {
 }
 
 void GameColour::generateNewColour() {
-	randomSeed(random()); // set seed for random() function, maybe shouldn't use random() for this but time or some more 'random' value 
+	//randomSeed(random()); // set seed for random() function, maybe shouldn't use random() for this but time or some more 'random' value 
 	
+	rgb newColourRGB =getRGBfromHue(random(0,360));
 	
+	uint8_t r,g,b;
 	
-	//this->setGameColour(random(100,255),random(100,255),random(100,255));
+	r = newColourRGB.r;
+	g = newColourRGB.g;
+	b = newColourRGB.b;
+	
+	this->setGameColour(r,g,b);
+}
+
+rgb GameColour::getRGBfromHue(uint16_t hue) {
+	rgb out; 
+	uint8_t segment;
+	uint8_t slope;
+	
+	// filter the hue value, just in case (also takes care of 360 == 0)
+	hue%=360;
+	
+	// get the slope value and map it to 0-255 range 
+	slope = hue % 60 * (255/60);
+	
+	// Get segment, divide the hue into 6 segments (0 to 5)
+	segment = hue / 60; // 360/6 = 60
+	
+	switch (segment) {
+	case 0: 
+		out.r = 255;
+		out.g = slope;
+		out.b = 0;
+		break;
+	case 1:
+		out.r = 1-slope;
+		out.g = 255;
+		out.b = 0;
+		break;
+	case 2:
+		out.r = 0;
+		out.g = 255;
+		out.b = slope;
+		break;
+	case 3:
+		out.r = 0;
+		out.g = 1-slope;
+		out.b = 255;
+		break;
+	case 4:
+		out.r = slope;
+		out.g = 0;
+		out.b = 255;
+		break;
+	case 5:
+	default:
+		out.r = 255;
+		out.g = 0;
+		out.b = 1-slope;
+		break;
+	}
+	
+	// Print output for debugging
+	Serial.print("Hue: "); Serial.println(hue);
+	//Serial.println(segment);
+	Serial.print("R: "); Serial.println(out.r);
+	Serial.print("G: "); Serial.println(out.g);
+	Serial.print("B: "); Serial.println(out.b);
+	
+	return out;
 }
 
 void GameColour::setGameColour(uint8_t red, uint8_t green, uint8_t blue) {

@@ -8,6 +8,13 @@
 // Typedefs
 typedef uint16_t colour;
 
+// Struct
+struct rgb {
+	uint8_t r; 
+	uint8_t g; 
+	uint8_t b; 
+};
+
 class GameColour
 {
 public:
@@ -26,6 +33,8 @@ public:
 	colour getBackgroundColour();
 	colour getBackgroundColour_light();
 private:
+	rgb getRGBfromHue(uint16_t hue);
+
 	colour gameColour;
 	colour gameColour_025;
 	colour gameColour_050;
