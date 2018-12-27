@@ -25,7 +25,7 @@ TouchScreen::TouchScreen(Adafruit_ILI9341 *tft, Adafruit_STMPE610 *touch, GameCo
 
 TouchScreen::~TouchScreen() {
 	// DESTRUCTOR
-	// TODO: free used memory (buttons)
+	cleanUp();
 }
 
 void TouchScreen::handleInput(void){
@@ -147,6 +147,22 @@ void TouchScreen::draw() {
 	for (uint8_t i=0; i<buttonCount; i++) {
 		buttons[i]->draw(false, true);
 	}
+}
+
+void TouchScreen::cleanUp() {
+	// Delete button objectss
+	for (uint8_t i=0; i<buttonCount; i++) {
+		delete buttons[i];
+	}
+	
+	// Reset values
+	this->buttonCount = 0;
+	
+	this->isTouched = false;
+	this->wasTouched = false;
+	this->usingNunchukSelection = false;
+	this->selectedButton = 0;
+	this->usedNunchuk = false;
 }
 
 void TouchScreen::newTextBotton(uint16_t x, uint16_t y, uint16_t w, uint16_t h, char* text, uint8_t textSize, int text_offset_x, int text_offset_y, uint8_t *buttonValue) 
@@ -389,7 +405,6 @@ boolean Button_Slider::input_nunchuk(uint8_t analogX) {
 	
 	return inputChanged;
 }
-
 boolean Button_Slider::input_touch(uint16_t touchX) {
 	Serial.println(touchX);
 	

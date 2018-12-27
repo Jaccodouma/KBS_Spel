@@ -103,8 +103,10 @@ class TouchScreen
 public:
 	TouchScreen(Adafruit_ILI9341 *tft, Adafruit_STMPE610 *touch, GameColour *gameColour, ArduinoNunchuk *nunchuk);
 	~TouchScreen();
-	void handleInput();
-	void draw();
+	void handleInput(); // Handles input, should be called in a loop whenever buttons should be checked
+	void draw(); // Draws the buttons, should be called after adding buttons
+	void cleanUp(); // Cleans up memory used, call before going to the next task if you don't delete touchScreen object
+					// Destructor calls this
 	void newTextBotton(uint16_t x, uint16_t y, uint16_t w, uint16_t h, char *text, uint8_t textSize, int text_offset_x, int text_offset_y, uint8_t *buttonValue);
 	void newToggleButton(uint16_t x, uint16_t y, uint16_t w, uint16_t h, char* text, uint8_t textSize, int text_offset_x, int text_offset_y, uint8_t *buttonValue);
 	void newSlider(uint16_t x, uint16_t y, uint16_t w, uint16_t h, char* text, uint8_t textSize, int text_offset_x, int text_offset_y, uint8_t *buttonValue);
@@ -119,7 +121,7 @@ private:
 	GameColour *gameColour;
 	ArduinoNunchuk *nunchuk;
 	
-	// Arrays, the MAX_BUTTONS and MAX_SLIDERS defines seem to throw up errors
+	// Arrays, the MAX_BUTTONS define seems to throw up errors
 	Button *buttons[10];
 	uint8_t buttonCount;
 	

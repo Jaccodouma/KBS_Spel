@@ -6,7 +6,7 @@
 
 // Constructor
 ConnectionMenu::ConnectionMenu(Adafruit_ILI9341 *Screen, Adafruit_STMPE610 *touch, ArduinoNunchuk *nunchuk, GameColour *gameColour) 
-	: touchScreen(Screen, touch, gameColour, nunchuk)
+	: touchScreen(Screen, touch, gameColour, nunchuk) // initialize new touchScreen object
 {
 	this->Screen = Screen;
 	this->touch = touch;
@@ -57,6 +57,9 @@ ConnectionMenu::run() {
 		Screen->fillCircle(240,0,10,Screen->color565(0,0,255));
 		joinGame = false;
 	}
+	
+	
+	
 	if (toggleValue) {
 		// Toggled on
 	} else {
