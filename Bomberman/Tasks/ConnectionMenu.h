@@ -28,6 +28,8 @@ private:
 	
 	uint8_t createGame;
 	uint8_t joinGame;
+	uint8_t sliderValue = 120; 
+	uint8_t toggleValue;
 };
 
 #endif

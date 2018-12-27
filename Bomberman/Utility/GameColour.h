@@ -18,14 +18,22 @@ public:
 	
 	// getters
 	colour getGameColour();
+	colour getGameColour_025();
 	colour getGameColour_050();
-	colour getBackgroundColour();
 	colour getGameColour_negative();
+	colour getGameColour_negative_050();
+	
+	colour getBackgroundColour();
+	colour getBackgroundColour_light();
 private:
 	colour gameColour;
+	colour gameColour_025;
 	colour gameColour_050;
-	colour backgroundColour;
 	colour gameColour_negative;
+	colour gameColour_negative_050; 
+	
+	colour backgroundColour;
+	colour backgroundColour_light;
 };
 
 
