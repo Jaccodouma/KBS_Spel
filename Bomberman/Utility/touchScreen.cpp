@@ -29,8 +29,9 @@ TouchScreen::~TouchScreen() {
 }
 
 void TouchScreen::handleInput(void){
+	this->selectionChanged = false; // if true we need to redraw the buttons
+	
 	// TOUCH SCREEN
-	this->selectionChanged = false; 
 	// update x,y,z 
 	if (touch->touched()) { // touchscreen got touched
 		wasTouched = true; 
@@ -72,7 +73,7 @@ void TouchScreen::handleInput(void){
 			wasTouched = false; // reset wasTouched so this only happens once
 			if(hasSelectedButton) {
 				buttons[selectedButton]->input();
-				selectionChanged = false;
+				selectionChanged = true;
 			}
 		}
 	}
