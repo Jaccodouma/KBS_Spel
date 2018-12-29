@@ -34,7 +34,7 @@
 // Task classes
 #include "Tasks/IntroScreen.h"
 #include "Tasks/ConnectionMenu.h"
-//#include "Tasks/SettingMenu.h"
+#include "Tasks/SettingMenu.h"
 
 // Screen objects
 Adafruit_ILI9341 Screen = Adafruit_ILI9341(TFT_CS, TFT_DC); 
@@ -66,13 +66,13 @@ int main(void) {
 	TaskManager *taskManager = new TaskManager; 
 	
 	// Create Task objects
-	IntroScreen *introScreen = new IntroScreen(&Screen, &Touch, &nunchuk, &gameColour);
-	ConnectionMenu *connectionMenu = new ConnectionMenu(&Screen, &Touch, &nunchuk, &gameColour);
-	//SettingMenu *settingMenu = new SettingMenu(&myTS);
+	IntroScreen *introScreen =			new IntroScreen(&Screen, &Touch, &nunchuk, &gameColour);
+	ConnectionMenu *connectionMenu =	new ConnectionMenu(&Screen, &Touch, &nunchuk, &gameColour);
+	SettingMenu *settingMenu =			new SettingMenu(&Screen, &Touch, &nunchuk, &gameColour);
 	
 	// Add tasks to taskManager
 	taskManager->addTask(introScreen);
-	//taskManager->addTask(settingMenu);
+	taskManager->addTask(settingMenu);
 	taskManager->addTask(connectionMenu);
 	
 	// Start screen and make it the right colour
@@ -91,7 +91,7 @@ int main(void) {
 	
 	// Loop
 	while(1) {
-		//settingMenu->screenBrightness(); // update screen brightness
+		settingMenu->updateScreenBrightness(); // update screen brightness
 		taskManager->doTask(); // do current task
 	}
 }

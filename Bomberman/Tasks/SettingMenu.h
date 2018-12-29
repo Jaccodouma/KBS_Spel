@@ -1,4 +1,3 @@
-/*
 #ifndef settingMenu_H
 #define settingMenu_H
 
@@ -12,23 +11,28 @@
 class SettingMenu: public Task
 {
 public:
-	SettingMenu(TouchScreen *ts);
+	SettingMenu(Adafruit_ILI9341 *Screen, Adafruit_STMPE610 *touch, ArduinoNunchuk *nunchuk, GameColour *gameColour);
 	int run(void);
-	void screenBrightness(void);
+	void updateScreenBrightness(); // Called in main loop, updates screen brightness automatically
 	
 private:
-	void PWM_init(void);
-	void adc_init(void);
-	uint8_t screenbrightnessAuto(void);
+	uint8_t getSensorDesiredBrightness(); // gets desired brightness from sensor
 
-	uint8_t photocellReading;
-	uint8_t brightness = 150;
-	uint8_t brightness_old = 150;
-
-	TouchScreen *ts;
+	Adafruit_ILI9341 *Screen;
 	Adafruit_STMPE610 *touch;
-	Adafruit_ILI9341 *tft;
+	ArduinoNunchuk *nunchuk;
+	
+	TouchScreen touchScreen;
+	
+	boolean initialised; // if initialised the screen is showing the right stuff
+	GameColour *gameColour;
+
+	uint8_t autoBrightness = true;
+	uint8_t brightness_slider = 150;
+	uint8_t brightness_old = 150;
+	
+	uint8_t button_ok = false;
+
 };
 
 #endif
-*/
