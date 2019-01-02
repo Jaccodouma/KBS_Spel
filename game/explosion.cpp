@@ -28,7 +28,7 @@ void Explosion::onDelete(Gfx *gfx) {
      gfx->drawXBitmap(fieldPos.x, fieldPos.y,  explosion_middle[2], BLACK);
      gfx->drawXBitmap(fieldPos.x, fieldPos.y,  explosion_middle[3], BLACK);
 }
-}
+
 
 void Explosion::onPlayerCollision(Player *p) {
     p->onExplosion(p);
