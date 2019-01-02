@@ -40,3 +40,7 @@ void Gfx::drawText(int x, int y, char *text, uint8_t size, uint16_t color) {
     tft.setCursor(x, y);
     tft.print(text);
 }
+
+void Gfx::drawXBitmapField(int x, int y, const uint8_t *bitmap, uint16_t color) {
+    drawXBitmap(x * blocksize, y * blocksize, bitmap, color);
+}

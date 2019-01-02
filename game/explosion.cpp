@@ -15,20 +15,16 @@ void Explosion::update(int prevUpdate) {
 
 
 void Explosion::draw(Gfx *gfx) {
-     gfx->drawXBitmap(fieldPos.x, fieldPos.y,  explosion_middle[0], RED);
-     gfx->drawXBitmap(fieldPos.x, fieldPos.y,  explosion_middle[1], DARKORANGE);
-     gfx->drawXBitmap(fieldPos.x, fieldPos.y,  explosion_middle[2], LIGHTORANGE);
-     gfx->drawXBitmap(fieldPos.x, fieldPos.y,  explosion_middle[3], YELLOW);
+     gfx->drawXBitmapField(fieldPos.x, fieldPos.y,  explosion_middle[0], RED);
+     gfx->drawXBitmapField(fieldPos.x, fieldPos.y,  explosion_middle[1], DARKORANGE);
+     gfx->drawXBitmapField(fieldPos.x, fieldPos.y,  explosion_middle[2], LIGHTORANGE);
+     gfx->drawXBitmapField(fieldPos.x, fieldPos.y,  explosion_middle[3], YELLOW);
 }
 
 void Explosion::onDelete(Gfx *gfx) {
     // teken zwart vierkant erover
-     gfx->drawXBitmap(fieldPos.x, fieldPos.y,  explosion_middle[0], BLACK);
-     gfx->drawXBitmap(fieldPos.x, fieldPos.y,  explosion_middle[1], BLACK);
-     gfx->drawXBitmap(fieldPos.x, fieldPos.y,  explosion_middle[2], BLACK);
-     gfx->drawXBitmap(fieldPos.x, fieldPos.y,  explosion_middle[3], BLACK);
+    gfx->drawRectField(fieldPos.x, fieldPos.y, CLR_BACKGROUND);
 }
-
 
 void Explosion::onPlayerCollision(Player *p) {
     p->onExplosion(p);
