@@ -34,33 +34,42 @@ void Game::addRandomBlocks() {
 void Game::update() {
     int div = millis() - prevUpdate;  // verschil in ms sinds laatste verversing
     if (div >= REFRESHRATE) {
-        prevUpdate = millis(); // tijdstip van updaten
-        node *prevNode = NULL; // pointer om vorige node bij te houden
-        node *n = gos.head; // huidige node, begin bij het hoofd van de gelinkte lijst
+        prevUpdate = millis();  // tijdstip van updaten
+        node *prevNode = NULL;  // pointer om vorige node bij te houden
+        node *n = gos.head;     // huidige node, begin bij het hoofd van de
+                                // gelinkte lijst
         while (n != NULL) {
             Gameobject *go = n->data;
             if (needsUpdate(go)) {
                 go->update(div);
             }
             if (needsDelete(go)) {
-                go->onDelete(&gfx); // voer onDelete uit op desbetreffende object
-                if (prevNode == NULL) { // betekent dus dat head verwijderd wordt.
-                    gos.head = n->next; // link de volgende van de head node aan de head-pointer
+                go->onDelete(
+                    &gfx);  // voer onDelete uit op desbetreffende object
+                if (prevNode ==
+                    NULL) {  // betekent dus dat head verwijderd wordt.
+                    gos.head = n->next;  // link de volgende van de head node
+                                         // aan de head-pointer
                 } else {
-                    prevNode->next = n->next; // haal de schakel er tussen uit
+                    prevNode->next = n->next;  // haal de schakel er tussen uit
                 }
-                if (n->next == NULL) { // als de volgende van de huidige node geen volgende had
-                    gos.tail = prevNode; // betekent dit dus dat het de laatste node was, dus huidige is tevens de staart
+                if (n->next == NULL) {  // als de volgende van de huidige node
+                                        // geen volgende had
+                    gos.tail =
+                        prevNode;  // betekent dit dus dat het de laatste node
+                                   // was, dus huidige is tevens de staart
                 }
 
                 // // Geef het gealloceerde geheugen vrij
                 delete go;  // verwijder gameobject
-                node *temp = n->next; // referentie naar volgende node tijdelijk bewaren
-                delete n;        // verwijder huidige node
+                node *temp =
+                    n->next;  // referentie naar volgende node tijdelijk bewaren
+                delete n;     // verwijder huidige node
 
-                n = temp; // huidige wordt volgende
+                n = temp;  // huidige wordt volgende
 
-                continue; // sla wat hier onder verder gebeurt over en itereer verder
+                continue;  // sla wat hier onder verder gebeurt over en itereer
+                           // verder
             }
             if (needsRedraw(go)) {
                 go->draw(&gfx);
@@ -157,48 +166,73 @@ void Game::bombExplosion(Bomb *bomb) {
     char y = bomb->getFieldPos().y;
     gos.add(new Explosion(x, y, bomb->player));       // vuur op plaats van bom
     for (char i = x; i > x - EXPLOSION_RANGE; i--) {  // vuur links
-        if (!addExplosion(i - 1, y, bomb->player, DIR_LEFT)) break;
+        if (!addExplosion(i - 1, y, bomb->player, DIR_LEFT,
+                          (i == x - EXPLOSION_RANGE + 1)))
+            break;
     }
     for (char i = x; i < x + EXPLOSION_RANGE; i++) {  // vuur rechts
-        if (!addExplosion(i + 1, y, bomb->player, DIR_RIGHT)) break;
+        if (!addExplosion(i + 1, y, bomb->player, DIR_RIGHT,
+                          (i == x + EXPLOSION_RANGE - 1)))
+            break;
     }
     for (char i = y; i > y - EXPLOSION_RANGE; i--) {  // vuur boven
-        if (!addExplosion(x, i - 1, bomb->player, DIR_UP)) break;
+        if (!addExplosion(x, i - 1, bomb->player, DIR_UP,
+                          (i == y - EXPLOSION_RANGE + 1)))
+            break;
     }
     for (char i = y; i < y + EXPLOSION_RANGE; i++) {  // vuur onder
-        if (!addExplosion(x, i + 1, bomb->player, DIR_DOWN)) break;
+        if (!addExplosion(x, i + 1, bomb->player, DIR_DOWN,
+                          (i == y + EXPLOSION_RANGE - 1)))
+            break;
     }
 }
 
-bool Game::addExplosion(char x, char y, Player *p, direction dir) {
+bool Game::addExplosion(char x, char y, Player *p, direction dir, bool last) {
     // deze functie geeft false terug als de explosie moet stoppen
     position pos = {x, y};
-    if (gridCollision(pos)) { // heeft een botsing tegen een grijs blokje
+    if (gridCollision(pos)) {  // heeft een botsing tegen een grijs blokje
         return false;
     }
     Gameobject *co = hasCollision(p, pos);  // tegenaan botsend object
     if (co) {
-        co->onExplosion(p); // roep onExplosion op het desbetreffende geraakte object aan
-        if (isSolid(co)) { // als het een ondoordringbaar object is zal het gesloopt worden
-            gos.add(new Explosion(x, y, p, EX_MIDDLE));
-            return false; // voorkomt dat de explosie verder dan het gesloopte blokje gaat
+        co->onExplosion(
+            p);  // roep onExplosion op het desbetreffende geraakte object aan
+        if (isSolid(co)) {  // als het een ondoordringbaar object is zal het
+                            // gesloopt worden
+            addCornerExplosion(x, y, p, dir);
+
+            return false;  // voorkomt dat de explosie verder dan het gesloopte
+                           // blokje gaat
         }
     }
-
-    if(dir == DIR_LEFT || dir == DIR_RIGHT){
-    gos.add(new Explosion(x, y, p, EX_HORIZONTAL));
+    if (!last) {
+        if (dir == DIR_LEFT || dir == DIR_RIGHT) {
+            gos.add(new Explosion(x, y, p, EX_HORIZONTAL));
+        } else if (dir == DIR_UP || dir == DIR_DOWN) {
+            gos.add(new Explosion(x, y, p, EX_VERTICAL));
+        }
+    } else {
+        addCornerExplosion(x, y, p, dir);
     }
 
-    if(dir == DIR_UP || dir == DIR_DOWN){
-     gos.add(new Explosion(x, y, p, EX_VERTICAL));   
-    }    
+    return true;  // niks aan de hand, geen botsingen
+}
 
-    // if(dir == DIR_LEFT && dir == DIR_RIGHT && dir == DIR_UP && dir == DIR_DOWN){
-
-    // }
-
-    
-    return true; // niks aan de hand, geen botsingen
+void Game::addCornerExplosion(char x, char y, Player *p, direction dir) {
+    switch (dir) {
+        case direction::DIR_LEFT:
+            gos.add(new Explosion(x, y, p, EX_LEFT));
+            break;
+        case direction::DIR_RIGHT:
+            gos.add(new Explosion(x, y, p, EX_RIGHT));
+            break;
+        case direction::DIR_UP:
+            gos.add(new Explosion(x, y, p, EX_TOP));
+            break;
+        case direction::DIR_DOWN:
+            gos.add(new Explosion(x, y, p, EX_BOT));
+            break;
+    }
 }
 
 void Game::drawLevel() {

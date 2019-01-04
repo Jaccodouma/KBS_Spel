@@ -40,7 +40,8 @@ class Game {
     void drawScoreboard();
     void drawLevel();
     void addRandomBlocks();
-    bool addExplosion(char x, char y, Player *p);
+    bool addExplosion(char x, char y, Player *p, direction dir, bool last);
+    void addCornerExplosion(char x, char y, Player *p, direction dir);
     void drawGrid();
     void drawGridBlock(int x, int y);
 };

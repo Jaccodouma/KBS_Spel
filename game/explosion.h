@@ -10,10 +10,10 @@
 #define EX_MIDDLE 0
 #define EX_HORIZONTAL 1
 #define EX_VERTICAL 2
-#define EX_TOP 3
-#define EX_BOT 4
-#define EX_RIGHT 5
-#define EX_LEFT 6
+#define EX_LEFT 3
+#define EX_RIGHT 4
+#define EX_TOP 5
+#define EX_BOT 6
 
 
 class Explosion : public Gameobject {
@@ -24,7 +24,7 @@ class Explosion : public Gameobject {
     void draw(Gfx *gfx);
     void onDelete(Gfx *gfx);
     void onPlayerCollision(Player *p);
-   
+    const bitmap16_t *getBitmap();
 
     private:
         int countdown = FIRE_TIME;

@@ -27,12 +27,12 @@ void Control::update() {
         game->update();
         long ran = random(5);
         movePlayer(static_cast<direction>(ran));
-        //game->movePlayer(game->players[1], static_cast<direction>(ran));
+        game->movePlayer(game->players[1], static_cast<direction>(ran));
         if (random(100)==1) {
             game->players[0]->plantBomb();
         }
         if (random(100)==1) {
-            //game->players[1]->plantBomb();
+            game->players[1]->plantBomb();
         }
         // movePlayer(game->players[0], dir);
         // movePlayer(game->players[1], dir);

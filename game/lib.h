@@ -23,3 +23,5 @@ point movePoint(point p, direction d, uint8_t distance = 1);
 void printPosition(position p);
 
 void freeRam();
+
+typedef uint8_t bitmap16_t[32];

@@ -14,20 +14,34 @@ void Explosion::update(int prevUpdate) {
 }
 
 void Explosion::draw(Gfx *gfx) {
+    const bitmap16_t *bitmap = getBitmap();
 
-    // if(){
-
-    // }
-    const uint8_t bitmap[][32] = explosion_middle;
     gfx->drawXBitmapField(fieldPos.x, fieldPos.y,  bitmap[0], RED);
     gfx->drawXBitmapField(fieldPos.x, fieldPos.y,  bitmap[1], DARKORANGE);
     gfx->drawXBitmapField(fieldPos.x, fieldPos.y,  bitmap[2], LIGHTORANGE);
     gfx->drawXBitmapField(fieldPos.x, fieldPos.y,  bitmap[3], YELLOW);
+
     toggleRedraw(this); // getekend dus zet redraw nu uit
 }
 
-
-
+const bitmap16_t *Explosion::getBitmap() {
+    switch (getState(this)) {
+        case EX_MIDDLE:
+            return explosion_middle;
+        case EX_HORIZONTAL:
+            return explosion_horizontal_line;
+        case EX_VERTICAL:
+            return explosion_vertical_line;
+        case EX_TOP:
+            return explosion_corner_top;
+        case EX_BOT:
+            return explosion_corner_bottom;
+        case EX_LEFT:
+            return explosion_corner_left;
+        case EX_RIGHT:
+            return explosion_corner_right;
+    };
+}
 
 void Explosion::onDelete(Gfx *gfx) {
     // teken zwart vierkant erover
