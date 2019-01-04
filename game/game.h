@@ -7,6 +7,8 @@
 #include "block.h"
 #include "bomb.h"
 
+#define REFRESHRATE 50 // elke 50ms dus 20Hz
+
 class Game {
    public:
     Player* players[2] = {NULL, NULL};
@@ -32,7 +34,7 @@ class Game {
     Gfx gfx;
     GoList gos;
     uint8_t width, height;
-    unsigned long prevUpdate = millis();
+    unsigned long prevUpdate = 0;
     bool started = false;
 
     void drawScoreboard();

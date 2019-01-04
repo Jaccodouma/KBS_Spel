@@ -1,7 +1,8 @@
 #include "player.h"
 #include "game.h"
 
-Player::Player(Game *game, const char name[], uint8_t x, uint8_t y, uint16_t color, uint8_t blocksize)
+Player::Player(Game *game, const char name[], uint8_t x, uint8_t y,
+               uint16_t color, uint8_t blocksize)
     : Gameobject(x, y, false) {
     this->g = game;
     strcpy(this->name, name);
@@ -10,28 +11,34 @@ Player::Player(Game *game, const char name[], uint8_t x, uint8_t y, uint16_t col
     prevPos = {fieldPos.x * blocksize, fieldPos.y * blocksize};
     screenPos = prevPos;
     this->color = color;
+    toggleUpdate(this);
 }
 
 void Player::move(direction d) {
+    // beweeg alleen als er een richting wordt opgegeven.
     if (d != direction::DIR_NO) {
         this->dir = d;
         this->fieldPos = movePosition(this->fieldPos, d);
-        toggleUpdate(this);  // flag for update
     }
 }
 
 void Player::update(int prevUpdate) {
-    if (dir != direction::DIR_NO) {
+    if (dir != direction::DIR_NO) { // als de speler een looprichting heeft
         this->prevPos = this->screenPos;  // sla vorige schermpositie op
-        this->screenPos = movePoint(this->screenPos, dir, PIXELSPEED);
+        this->screenPos = movePoint(this->screenPos, dir, PIXELSPEED); // bereken de volgende pixelpunt
 
         if (this->screenPos.x % blocksize == 0 &&
             this->screenPos.y % blocksize == 0) {
             // naar midden van gridpunt gelopen
-            toggleUpdate(this);
-            this->dir = direction::DIR_NO;
+            this->dir = direction::DIR_NO; // zet de richting van de speler op GEEN
         }
-        toggleRedraw(this);
+        toggleRedraw(this); // markeer voor hertekenen
+    }
+    if (wasDead) { // speler was net geraakt door een exlosie 
+        counter -= prevUpdate;
+        if (counter <= 0) {
+            wasDead = false;
+        }
     }
 }
 
@@ -39,22 +46,38 @@ void Player::draw(Gfx *gfx) {
     // Teken een zwart vierkant over de vorige positie van het poppetje
     gfx->drawRect(prevPos.x, prevPos.y, BLACK);
 
-    // Teken alle kleuren van het poppetje
-    gfx->drawXBitmap(screenPos.x, screenPos.y,  player_still[0], color);
-    gfx->drawXBitmap(screenPos.x, screenPos.y,  player_still[1], DARKBROWN);
-    gfx->drawXBitmap(screenPos.x, screenPos.y,  player_still[2], SKIN);
-    gfx->drawXBitmap(screenPos.x, screenPos.y,  player_still[3], YELLOW);
+    if (wasDead) {
+        gfx->drawXBitmap(screenPos.x, screenPos.y, player_still[0], WHITE);
+        gfx->drawXBitmap(screenPos.x, screenPos.y, player_still[1], WHITE);
+        gfx->drawXBitmap(screenPos.x, screenPos.y, player_still[2], WHITE);
+        gfx->drawXBitmap(screenPos.x, screenPos.y, player_still[3], WHITE);
+    } else {
+        // Teken alle kleuren van het poppetje
+        gfx->drawXBitmap(screenPos.x, screenPos.y, player_still[0], color);
+        gfx->drawXBitmap(screenPos.x, screenPos.y, player_still[1], DARKBROWN);
+        gfx->drawXBitmap(screenPos.x, screenPos.y, player_still[2], SKIN);
+        gfx->drawXBitmap(screenPos.x, screenPos.y, player_still[3], YELLOW);
+    }
 
     // Zet opnieuw tekenen uit
     toggleRedraw(this);
 }
 
-void Player::onExplosion(Player *p) { 
-    lives--; 
+void Player::onExplosion(Player *p) {
+    if (wasDead) {
+        return;  // onsterverlijk
+    }
+    lives--;
+    if (lives > 0) {
+        wasDead = true;
+        counter = IMMORALTIME;
+    } else {
+        // speler dood - proces om spel stop te zetten moet worden gestart
+    }
     g->updateScores(this);
 }
 
-void Player::giveBomb() { 
+void Player::giveBomb() {
     nbombs++;
     g->updateScores(this);
 }
@@ -62,14 +85,13 @@ void Player::giveBomb() {
 void Player::plantBomb() {
     if (nbombs > 0) {
         g->addGameobject(new Bomb(g, fieldPos.x, fieldPos.y, this));
+        // bom geplaatst
         nbombs--;
         g->updateScores(this);
     }
 }
 
-playerinfo Player::getPlayerinfo() {
-    return {name, lives, nbombs};
-}
+playerinfo Player::getPlayerinfo() { return {name, lives, nbombs}; }
 
 bool Player::isMoving() { return !!this->dir; }
 

@@ -32,21 +32,43 @@ void Game::addRandomBlocks() {
 }
 
 void Game::update() {
-    Gameobject *go = gos.getNext();
-    while (go != NULL) {
-        if (needsUpdate(go)) {
-            go->update(millis() - prevUpdate);
+    int div = millis() - prevUpdate;  // verschil in ms sinds laatste verversing
+    if (div >= REFRESHRATE) {
+        prevUpdate = millis(); // tijdstip van updaten
+        node *prevNode = NULL; // pointer om vorige node bij te houden
+        node *n = gos.head; // huidige node, begin bij het hoofd van de gelinkte lijst
+        while (n != NULL) {
+            Gameobject *go = n->data;
+            if (needsUpdate(go)) {
+                go->update(div);
+            }
+            if (needsDelete(go)) {
+                go->onDelete(&gfx); // voer onDelete uit op desbetreffende object
+                if (prevNode == NULL) { // betekent dus dat head verwijderd wordt.
+                    gos.head = n->next; // link de volgende van de head node aan de head-pointer
+                } else {
+                    prevNode->next = n->next; // haal de schakel er tussen uit
+                }
+                if (n->next == NULL) { // als de volgende van de huidige node geen volgende had
+                    gos.tail = prevNode; // betekent dit dus dat het de laatste node was, dus huidige is tevens de staart
+                }
+
+                // // Geef het gealloceerde geheugen vrij
+                delete go;  // verwijder gameobject
+                node *temp = n->next; // referentie naar volgende node tijdelijk bewaren
+                delete n;        // verwijder huidige node
+
+                n = temp; // huidige wordt volgende
+
+                continue; // sla wat hier onder verder gebeurt over en itereer verder
+            }
+            if (needsRedraw(go)) {
+                go->draw(&gfx);
+            }
+            prevNode = n;
+            n = n->next;
         }
-        if (needsRedraw(go)) {
-            go->draw(&gfx);
-        }
-        if (needsDelete(go)) {
-            go->onDelete(&gfx);
-            gos.del(go);
-        }
-        go = gos.getNext();
     }
-    prevUpdate = millis();
 }
 
 bool Game::gridCollision(position p) {
@@ -111,14 +133,18 @@ void Game::movePlayer(Player *p, direction d) {
         if (gridCollision(nextpos)) {
             return;  // heeft een botsing tegen de vast blokjes
         }
+        // zoek een gameobject waar de speler tegenaan botst.
         Gameobject *collision = hasCollision(p, nextpos);
-        if (collision == NULL) {
-            p->move(d);
+        if (collision == NULL) {  // de speler botst tegen geen enkel object
+            p->move(d);           // loop 1 blokje in die richting
             return;
         }
-        collision->onPlayerCollision(p);
-        if (!isSolid(collision)) {
-            p->move(d);
+        // speler botst wel tegen een object
+        collision->onPlayerCollision(
+            p);  // roep deze functie aan op het desbetreffende object
+        if (!isSolid(collision)) {  // als het object doordringbaar is, loop er
+                                    // doorheen en herteken het
+            p->move(d);             // loop 1 blokje in die richting
             toggleRedraw(collision);
         }
     }
@@ -145,20 +171,21 @@ void Game::bombExplosion(Bomb *bomb) {
 }
 
 bool Game::addExplosion(char x, char y, Player *p) {
+    // deze functie geeft false terug als de explosie moet stoppen
     position pos = {x, y};
-    if (gridCollision(pos)) {
+    if (gridCollision(pos)) { // heeft een botsing tegen een grijs blokje
         return false;
     }
     Gameobject *co = hasCollision(p, pos);  // tegenaan botsend object
     if (co) {
-        co->onExplosion(p);
-        if (isSolid(co)) {
+        co->onExplosion(p); // roep onExplosion op het desbetreffende geraakte object aan
+        if (isSolid(co)) { // als het een ondoordringbaar object is zal het gesloopt worden
             gos.add(new Explosion(x, y, p));
-            return false;
+            return false; // voorkomt dat de explosie verder dan het gesloopte blokje gaat
         }
     }
     gos.add(new Explosion(x, y, p));
-    return true;
+    return true; // niks aan de hand, geen botsingen
 }
 
 void Game::drawLevel() {
@@ -201,11 +228,13 @@ void Game::drawGridBlock(int x, int y) {
 
 void Game::drawScoreboard() {
     uint8_t posX = MAXNAMELENGTH * 10, posY = 0;
-    gfx.drawXBitmap(0 - gfx.offsetX + posX, 0 - gfx.offsetY + posY, hearth[0], DARKBROWN);
-    gfx.drawXBitmap(0 - gfx.offsetX + posX, 0 - gfx.offsetY + posY, hearth[1], RED);
-    gfx.drawXBitmap(0 - gfx.offsetX + posX, 0 - gfx.offsetY + posY, hearth[2], WHITE);
+    gfx.drawXBitmap(0 - gfx.offsetX + posX, 0 - gfx.offsetY + posY, hearth[0],
+                    DARKBROWN);
+    gfx.drawXBitmap(0 - gfx.offsetX + posX, 0 - gfx.offsetY + posY, hearth[1],
+                    RED);
+    gfx.drawXBitmap(0 - gfx.offsetX + posX, 0 - gfx.offsetY + posY, hearth[2],
+                    WHITE);
     gfx.drawChar(posX + 22, 0, 'X');
-
 
     updateScores(players[0]);
     // updateScores(players[1]);
@@ -213,6 +242,7 @@ void Game::drawScoreboard() {
 
 void Game::updateScores(Player *p) {
     playerinfo pinfo = p->getPlayerinfo();
+    gfx.tft.fillRect(120, 0, 16, 16, CLR_BACKGROUND);
     gfx.drawChar(120, 0, pinfo.lives + 48);
     gfx.drawText(0, 0, pinfo.name);
     gfx.drawChar(MAXNAMELENGTH * 8, 0, ':');

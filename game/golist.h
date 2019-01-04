@@ -1,22 +1,22 @@
 #pragma once
 
-#include "gameobject.h"
 #include <string.h>
-
+#include "gameobject.h"
 
 struct node {
-    Gameobject *data;
-    node *next;
+    Gameobject *data = NULL;
+    node *next = NULL;
 };
 
 class GoList {
-    public:
+   public:
     ~GoList();
     void add(Gameobject *go);
     void del(Gameobject *go);
     int length();
-    Gameobject * getNext();
+    Gameobject *getNext();
+    node *head = NULL, *tail = NULL;
 
-    private:
-    node *head=NULL, *tail=NULL, *next=NULL;
+   private:
+    node *next = NULL;
 };

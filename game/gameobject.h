@@ -26,7 +26,7 @@ class Player;
 class Gameobject {
     public:
         // b7 = solid, b6 = redraw, b5 = delete, b4 = update
-        uint8_t flags = (1<<B_REDRAW); // Herteken initieel standaard 
+        uint8_t flags = (1<<B_REDRAW); // Herteken initieel 
 
         Gameobject(uint8_t x, uint8_t y, bool solid);
         position getFieldPos();

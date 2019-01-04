@@ -29,13 +29,7 @@ int main(void)
     Control control;
     control.startGame();
 
-    unsigned long tijd;
-
     while(1) {
-        //_delay_ms(8);
-        tijd = millis();
         control.update();
-        //freeRam();
-        //Serial.println(millis() - tijd);
     }
 }

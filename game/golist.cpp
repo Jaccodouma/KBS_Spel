@@ -40,7 +40,7 @@ void GoList::del(Gameobject *go) {
                 tail = tempprev;
             }
             // Geef het gealloceerde geheugen vrij
-            delete temp->data;
+            delete temp->data; // verwijder gameobject
             delete temp;  // verwijder node
             temp = NULL;
         } else {

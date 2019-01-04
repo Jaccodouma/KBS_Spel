@@ -9,6 +9,7 @@ class Game;
 #define PIXELSPEED 2  // 2 pixels lopen per update
 #define MAXNBOMBS 1   // 1 bom tegelijkertijd kan branden
 #define MAXNAMELENGTH 8
+#define IMMORALTIME 2000 // 2 seconden onstervelijkheid na aanraking met explosie
 
 typedef struct {
     char *name;
@@ -44,6 +45,8 @@ class Player : public Gameobject {
     uint8_t lives = NUMLIVES;
     uint8_t nbombs = MAXNBOMBS;
     uint16_t color;
+    int counter = IMMORALTIME;
+    bool wasDead = false; // wordt later verplaatst naar flags als er nog plaats is
 };
 
 const uint8_t player_still[][32] PROGMEM = {
