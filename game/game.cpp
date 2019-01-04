@@ -155,22 +155,22 @@ void Game::addGameobject(Gameobject *go) { gos.add(go); }
 void Game::bombExplosion(Bomb *bomb) {
     char x = bomb->getFieldPos().x;
     char y = bomb->getFieldPos().y;
-    gos.add(new Explosion(x, y, bomb->player));       // vuur op plaast van bom
+    gos.add(new Explosion(x, y, bomb->player));       // vuur op plaats van bom
     for (char i = x; i > x - EXPLOSION_RANGE; i--) {  // vuur links
-        if (!addExplosion(i - 1, y, bomb->player)) break;
+        if (!addExplosion(i - 1, y, bomb->player, DIR_LEFT)) break;
     }
     for (char i = x; i < x + EXPLOSION_RANGE; i++) {  // vuur rechts
-        if (!addExplosion(i + 1, y, bomb->player)) break;
+        if (!addExplosion(i + 1, y, bomb->player, DIR_RIGHT)) break;
     }
     for (char i = y; i > y - EXPLOSION_RANGE; i--) {  // vuur boven
-        if (!addExplosion(x, i - 1, bomb->player)) break;
+        if (!addExplosion(x, i - 1, bomb->player, DIR_UP)) break;
     }
     for (char i = y; i < y + EXPLOSION_RANGE; i++) {  // vuur onder
-        if (!addExplosion(x, i + 1, bomb->player)) break;
+        if (!addExplosion(x, i + 1, bomb->player, DIR_DOWN)) break;
     }
 }
 
-bool Game::addExplosion(char x, char y, Player *p) {
+bool Game::addExplosion(char x, char y, Player *p, direction dir) {
     // deze functie geeft false terug als de explosie moet stoppen
     position pos = {x, y};
     if (gridCollision(pos)) { // heeft een botsing tegen een grijs blokje
@@ -180,11 +180,24 @@ bool Game::addExplosion(char x, char y, Player *p) {
     if (co) {
         co->onExplosion(p); // roep onExplosion op het desbetreffende geraakte object aan
         if (isSolid(co)) { // als het een ondoordringbaar object is zal het gesloopt worden
-            gos.add(new Explosion(x, y, p));
+            gos.add(new Explosion(x, y, p, EX_MIDDLE));
             return false; // voorkomt dat de explosie verder dan het gesloopte blokje gaat
         }
     }
-    gos.add(new Explosion(x, y, p));
+
+    if(dir == DIR_LEFT || dir == DIR_RIGHT){
+    gos.add(new Explosion(x, y, p, EX_HORIZONTAL));
+    }
+
+    if(dir == DIR_UP || dir == DIR_DOWN){
+     gos.add(new Explosion(x, y, p, EX_VERTICAL));   
+    }    
+
+    // if(dir == DIR_LEFT && dir == DIR_RIGHT && dir == DIR_UP && dir == DIR_DOWN){
+
+    // }
+
+    
     return true; // niks aan de hand, geen botsingen
 }
 
