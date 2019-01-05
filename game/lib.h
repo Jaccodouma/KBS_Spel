@@ -17,10 +17,10 @@ typedef struct {
 } point;
 
 position movePosition(position p, direction d, uint8_t distance = 1);
-
 point movePoint(point p, direction d, uint8_t distance = 1);
-
 void printPosition(position p);
+void printPoint(point p);
+void printXY(int x, int y);
 
 void freeRam();
 

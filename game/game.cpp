@@ -154,7 +154,7 @@ void Game::movePlayer(Player *p, direction d) {
         if (!isSolid(collision)) {  // als het object doordringbaar is, loop er
                                     // doorheen en herteken het
             p->move(d);             // loop 1 blokje in die richting
-            toggleRedraw(collision);
+            redraw(collision);
         }
     }
 }

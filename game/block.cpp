@@ -9,7 +9,7 @@ void Block::draw(Gfx *gfx) {
     gfx->drawRectField(fieldPos.x, fieldPos.y, PURPLE);
     gfx->drawRectField(fieldPos.x, fieldPos.y, DARKGREY, false);
 
-    toggleRedraw(this);
+    disableRedraw(this);
 }
 
 void Block::onExplosion(Player *p) {
