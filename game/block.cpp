@@ -13,10 +13,11 @@ void Block::draw(Gfx *gfx) {
 }
 
 void Block::onExplosion(Player *p) {
+    // hier komt code om een speler punten te geven
     deleteObject(this);
 }
 
 void Block::onDelete(Gfx *gfx) {
-    // teken zwart vierkant over bom
-    gfx->drawRectField(fieldPos.x, fieldPos.y, CLR_BACKGROUND);
+    // teken zwart vierkant over blok
+    //gfx->drawRectField(fieldPos.x, fieldPos.y, CLR_BACKGROUND);
 }

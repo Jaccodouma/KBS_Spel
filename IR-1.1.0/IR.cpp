@@ -119,7 +119,7 @@ uint8_t IR::available() {
 }
 
 void IR::read(char *string) {
-  strcpy(string, data);
+  strcpy(string, (const char*)data);
 }
 
 int IR::error() {

@@ -21,7 +21,7 @@ void Explosion::draw(Gfx *gfx) {
     gfx->drawXBitmapField(fieldPos.x, fieldPos.y,  bitmap[2], LIGHTORANGE);
     gfx->drawXBitmapField(fieldPos.x, fieldPos.y,  bitmap[3], YELLOW);
 
-    toggleRedraw(this); // getekend dus zet redraw nu uit
+    toggleRedraw(this); // zet redraw nu uit
 }
 
 const bitmap16_t *Explosion::getBitmap() {

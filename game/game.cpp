@@ -214,7 +214,7 @@ bool Game::addExplosion(char x, char y, Player *p, direction dir, bool last) {
     } else {
         addCornerExplosion(x, y, p, dir);
     }
-
+    
     return true;  // niks aan de hand, geen botsingen
 }
 

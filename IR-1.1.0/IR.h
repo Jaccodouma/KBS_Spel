@@ -52,7 +52,7 @@ class IR
 
     void write(uint8_t byteIn[MESSAGE_SIZE]);
     uint8_t available();
-    void read(char *s);
+    void read(char *string);
     int error();
 
     float getByteRate(); //get the speed
