@@ -20,6 +20,7 @@ void Player::move(direction d) {
         this->dir = d;
         this->fieldPos = movePosition(this->fieldPos, d);
     }
+
 }
 
 void Player::update(int prevUpdate) {
@@ -39,6 +40,7 @@ void Player::update(int prevUpdate) {
             wasDead = false;
         }
     }
+    flags ^= (1<<TOGGLE_ONE);
 }
 
 void Player::draw(Gfx *gfx) {
@@ -46,16 +48,84 @@ void Player::draw(Gfx *gfx) {
     gfx->drawRect(prevPos.x, prevPos.y, BLACK);
 
     if (wasDead) {
+        if(dir == DIR_RIGHT){
+            // if(getState(this) == 0){
+    gfx->drawXBitmap(screenPos.x, screenPos.y, player_right_walk_one[0], WHITE);
+    gfx->drawXBitmap(screenPos.x, screenPos.y, player_right_walk_one[1], WHITE);
+    gfx->drawXBitmap(screenPos.x, screenPos.y, player_right_walk_one[2], WHITE);
+    gfx->drawXBitmap(screenPos.x, screenPos.y, player_right_walk_one[3], WHITE);
+    gfx->drawXBitmap(screenPos.x, screenPos.y, player_right_walk_one[4], WHITE); 
+    //         }
+    //     else {
+    // gfx->drawXBitmap(screenPos.x, screenPos.y, player_right_walk_two[0], color);
+    // gfx->drawXBitmap(screenPos.x, screenPos.y, player_right_walk_two[1], SKIN);
+    // gfx->drawXBitmap(screenPos.x, screenPos.y, player_right_walk_two[2], DARKBROWN);
+    // gfx->drawXBitmap(screenPos.x, screenPos.y, player_right_walk_two[3], YELLOW);
+    // gfx->drawXBitmap(screenPos.x, screenPos.y, player_right_walk_two[4], WHITE);
+    // }
+        }
+    
+    if(dir == DIR_LEFT){
+    gfx->drawXBitmap(screenPos.x, screenPos.y, player_left_walk_one[0], WHITE);    
+    gfx->drawXBitmap(screenPos.x, screenPos.y, player_left_walk_one[1], WHITE);
+    gfx->drawXBitmap(screenPos.x, screenPos.y, player_left_walk_one[2], WHITE);
+    gfx->drawXBitmap(screenPos.x, screenPos.y, player_left_walk_one[3], WHITE);
+    gfx->drawXBitmap(screenPos.x, screenPos.y, player_left_walk_one[4], WHITE);
+    }
+
+   if(dir == DIR_DOWN)  {
         gfx->drawXBitmap(screenPos.x, screenPos.y, player_still[0], WHITE);
         gfx->drawXBitmap(screenPos.x, screenPos.y, player_still[1], WHITE);
         gfx->drawXBitmap(screenPos.x, screenPos.y, player_still[2], WHITE);
         gfx->drawXBitmap(screenPos.x, screenPos.y, player_still[3], WHITE);
-    } else {
+    }
+
+    if(dir == DIR_UP){
+        gfx->drawXBitmap(screenPos.x, screenPos.y, player_up[0], WHITE);
+        gfx->drawXBitmap(screenPos.x, screenPos.y, player_up[1], WHITE);
+        gfx->drawXBitmap(screenPos.x, screenPos.y, player_up[2], WHITE);
+        gfx->drawXBitmap(screenPos.x, screenPos.y, player_up[3], WHITE);   
+    }
+    }  
+    
+
+   if(dir == DIR_RIGHT){
+//    if(getState(this) == 0){
+    gfx->drawXBitmap(screenPos.x, screenPos.y, player_right_walk_one[0], color);
+    gfx->drawXBitmap(screenPos.x, screenPos.y, player_right_walk_one[1], SKIN);
+    gfx->drawXBitmap(screenPos.x, screenPos.y, player_right_walk_one[2], DARKBROWN);
+    gfx->drawXBitmap(screenPos.x, screenPos.y, player_right_walk_one[3], YELLOW);
+    gfx->drawXBitmap(screenPos.x, screenPos.y, player_right_walk_one[4], WHITE);
+//    }
+//    if(getState(this) == 1){
+//     gfx->drawXBitmap(screenPos.x, screenPos.y, player_right_walk_two[0], color);
+//     gfx->drawXBitmap(screenPos.x, screenPos.y, player_right_walk_two[1], SKIN);
+//     gfx->drawXBitmap(screenPos.x, screenPos.y, player_right_walk_two[2], DARKBROWN);
+//     gfx->drawXBitmap(screenPos.x, screenPos.y, player_right_walk_two[3], YELLOW);
+//     gfx->drawXBitmap(screenPos.x, screenPos.y, player_right_walk_two[4], WHITE);
+//     }
+    }
+
+    if(dir == DIR_LEFT){
+    gfx->drawXBitmap(screenPos.x, screenPos.y, player_left_walk_one[0], color);    
+    gfx->drawXBitmap(screenPos.x, screenPos.y, player_left_walk_one[1], SKIN);
+    gfx->drawXBitmap(screenPos.x, screenPos.y, player_left_walk_one[2], DARKBROWN);
+    gfx->drawXBitmap(screenPos.x, screenPos.y, player_left_walk_one[3], YELLOW);
+    gfx->drawXBitmap(screenPos.x, screenPos.y, player_left_walk_one[4], WHITE);
+    }
+
+   if(dir == DIR_DOWN) {
         // Teken alle kleuren van het poppetje
         gfx->drawXBitmap(screenPos.x, screenPos.y, player_still[0], color);
         gfx->drawXBitmap(screenPos.x, screenPos.y, player_still[1], DARKBROWN);
         gfx->drawXBitmap(screenPos.x, screenPos.y, player_still[2], SKIN);
         gfx->drawXBitmap(screenPos.x, screenPos.y, player_still[3], YELLOW);
+    }
+    if(dir == DIR_UP){
+        gfx->drawXBitmap(screenPos.x, screenPos.y, player_up[0], color);
+        gfx->drawXBitmap(screenPos.x, screenPos.y, player_up[1], SKIN);
+        gfx->drawXBitmap(screenPos.x, screenPos.y, player_up[2], DARKBROWN);
+        gfx->drawXBitmap(screenPos.x, screenPos.y, player_up[3], YELLOW);   
     }
 
     // Zet opnieuw tekenen uit
