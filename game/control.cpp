@@ -23,23 +23,31 @@ void Control::startGame() {
 void Control::update() {
     this->nunchuk.update();
     direction dir = nunchuck_Direction();
+    
     if (game->isStarted()) {
         game->update();
-        long ran = random(5);
-        movePlayer(static_cast<direction>(ran));
-        game->movePlayer(game->players[1], static_cast<direction>(ran));
-        if (random(100)==1) {
+
+        Serial.println((int)dir, DEC);
+        // long ran = random(5);
+        // movePlayer(static_cast<direction>(ran));
+        // game->movePlayer(game->players[1], static_cast<direction>(ran));
+        // if (random(100)==1) {
+        //     game->players[0]->plantBomb();
+        // }
+        // if (random(100)==1) {
+        //     game->players[1]->plantBomb();
+        // }
+        
+        movePlayer(dir); //bedienen van speler 0 met nunchuck
+        if(nunchuk.zButton ==1){
             game->players[0]->plantBomb();
         }
-        if (random(100)==1) {
-            game->players[1]->plantBomb();
-        }
-        // movePlayer(game->players[0], dir);
+        
     }
 }
 
 void Control::movePlayer(direction d) {
-    game->movePlayer(game->players[0], d);
+     game->movePlayer(game->players[0], d);
 }
 
 direction Control::nunchuck_Direction() {
