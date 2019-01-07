@@ -52,11 +52,13 @@ class IR
 
     void write(uint8_t byteIn[MESSAGE_SIZE]);
     uint8_t available();
-    void read(char *s);
+    void read(uint8_t *stream);
     int error();
 
     float getByteRate(); //get the speed
     long getTime_ms();
+
+    uint8_t data[MESSAGE_SIZE + 1];
     
 
     //  Functions called on interrupts
@@ -93,7 +95,7 @@ class IR
     unsigned long speed_timer = 0;
 
     int dataAvailable = 0;
-    uint8_t data[MESSAGE_SIZE + 1];
+    //uint8_t data[MESSAGE_SIZE + 1];
     uint8_t dataNr; // Counter for which byte is being received & saved
 
     int parityError = 0; // Set to true when receiving parity errors

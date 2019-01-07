@@ -85,34 +85,5 @@ uint8_t SettingMenu::getSensorDesiredBrightness()
 	ADCSRA |= (1 << ADSC);        //single AD-conversion
 	while (ADCSRA & (1 << ADSC)); //wait for result..
 	
-	Serial.println(ADC);
-	
 	return (uint8_t) map(ADC, 0, 1023, 0, 255);
-	//return ((ADC / 4) - 5);
 }
-
-// void SettingMenu::screenBrightness(){
-// 	if (ts->checkmenuCheckBox1(0)) {
-// 		brightness = SettingMenu::screenbrightnessAuto();
-// 	}
-// 	OCR0A = brightness;
-// }
-
-// uint8_t SettingMenu::screenbrightnessAuto() {
-// 	ADCSRA |= (1 << ADSC);        //single AD-conversion
-// 	while (ADCSRA & (1 << ADSC)); //wait for result..
-// 	photocellReading = ((ADC / 4) - 5);
-// 	if (!((photocellReading < (brightness + 5)) && (photocellReading > (brightness - 5)))) {
-// 		if (brightness < photocellReading) {
-// 			if (brightness > 0) {
-// 				brightness++;
-// 			}
-// 			} else {
-// 			if (brightness < 255) {
-// 				brightness--;
-// 			}
-// 		}
-// 	}
-// 	return brightness;
-// }
-
