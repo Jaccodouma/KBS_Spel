@@ -2,6 +2,7 @@
 
 Gfx::Gfx() {
     tft.begin();
+    tft.setRotation(2);
     tft.fillScreen(CLR_BACKGROUND);
 }
 
