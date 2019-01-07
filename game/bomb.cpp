@@ -1,7 +1,6 @@
 #include "bomb.h"
 #include "game.h"
 
-
 Bomb::Bomb(Game *game, int x, int y, Player *p) : Gameobject(x, y, true) {
     this->player = p;
     this->game = game;

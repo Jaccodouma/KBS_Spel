@@ -8,19 +8,20 @@ class Game;
 #define NUMLIVES 3    // 3 levens als de speler start
 #define PIXELSPEED 2  // 2 pixels lopen per update
 #define MAXNBOMBS 1   // 1 bom tegelijkertijd kan branden
-#define MAXNAMELENGTH 8
+#define MAXNAMELENGTH 6
 #define IMMORALTIME 2000 // 2 seconden onstervelijkheid na aanraking met explosie
 
 typedef struct {
     char *name;
     uint8_t lives;
-    uint8_t nbombs;
+    int score;
 } playerinfo;
 
 class Player : public Gameobject {
    public:
     Player(Game *game, const char name[], uint8_t x, uint8_t y, uint16_t color,
            uint8_t blocksize = 16);
+    char name[MAXNAMELENGTH + 1];
 
     void move(direction d);
     void update(int prevUpdate);
@@ -32,16 +33,18 @@ class Player : public Gameobject {
     point getPrevPos();
     void giveBomb();
     void plantBomb();
+    void giveScore(int points);
+
     playerinfo getPlayerinfo();
 
    private:
     Game *g;
-    char name[MAXNAMELENGTH + 1];
     direction dir = direction::DIR_NO;
     // pixelposities:
     point screenPos;
     point prevPos;
     uint8_t blocksize;
+    int score = 0;
     uint8_t lives = NUMLIVES;
     uint8_t nbombs = MAXNBOMBS;
     uint16_t color;

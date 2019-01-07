@@ -2,6 +2,7 @@
 
 #include "gfx.h"
 #include "lib.h"
+#include "scoreboard.h"
 
 class Game;
 class Player;

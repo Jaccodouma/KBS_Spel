@@ -13,7 +13,7 @@ void Block::draw(Gfx *gfx) {
 }
 
 void Block::onExplosion(Player *p) {
-    // hier komt code om een speler punten te geven
+    p->giveScore(POINTSBLOCKDESTROY);
     deleteObject(this);
 }
 

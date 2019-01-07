@@ -71,7 +71,11 @@ void Player::onExplosion(Player *p) {
         wasDead = true;
         counter = IMMORALTIME;
     } else {
+        lives = NUMLIVES; //herstel leven tijdelijk
         // speler dood - proces om spel stop te zetten moet worden gestart
+    }
+    if (p != this) { // door andere speler zijn explosie geraakt
+        p->giveScore(POINTSEXPLOSIONHIT);
     }
     g->updateScores(this);
 }
@@ -90,7 +94,12 @@ void Player::plantBomb() {
     }
 }
 
-playerinfo Player::getPlayerinfo() { return {name, lives, nbombs}; }
+void Player::giveScore(int points) {
+    score += points;
+    g->updateScores(this);
+}
+
+playerinfo Player::getPlayerinfo() { return {name, lives, score}; }
 
 bool Player::isMoving() { return !!this->dir; }
 

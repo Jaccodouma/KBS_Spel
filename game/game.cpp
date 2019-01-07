@@ -7,8 +7,9 @@ Game::Game(uint8_t width, uint8_t height) {
 }
 
 Game::~Game() {
-    if (players[0] == NULL) delete players[0];
-    if (players[1] == NULL) delete players[1];
+    for (int i=0; i<MAXNPLAYER; i++) {
+        if (players[i] != NULL) delete players[i];
+    }
 }
 
 void Game::addRandomBlocks() {
@@ -110,11 +111,11 @@ Gameobject *Game::hasCollision(Gameobject *go, position p) {
 }
 
 bool Game::start() {
-    drawLevel();
-    addRandomBlocks();
-    drawScoreboard();
     if (players[0] != NULL) {  // Start bij tenminste één speler
         this->started = true;
+        drawLevel();
+        addRandomBlocks();
+        scoreboard.init(players);
     }
     return this->started;
 }
@@ -214,7 +215,7 @@ bool Game::addExplosion(char x, char y, Player *p, direction dir, bool last) {
     } else {
         addCornerExplosion(x, y, p, dir);
     }
-    
+
     return true;  // niks aan de hand, geen botsingen
 }
 
@@ -273,27 +274,7 @@ void Game::drawGridBlock(int x, int y) {
     gfx.drawRectField(x, y, DARKGREY, false);
 }
 
-void Game::drawScoreboard() {
-    uint8_t posX = MAXNAMELENGTH * 10, posY = 0;
-    gfx.drawXBitmap(0 - gfx.offsetX + posX, 0 - gfx.offsetY + posY, hearth[0],
-                    DARKBROWN);
-    gfx.drawXBitmap(0 - gfx.offsetX + posX, 0 - gfx.offsetY + posY, hearth[1],
-                    RED);
-    gfx.drawXBitmap(0 - gfx.offsetX + posX, 0 - gfx.offsetY + posY, hearth[2],
-                    WHITE);
-    gfx.drawChar(posX + 22, 0, 'X');
-
-    updateScores(players[0]);
-    // updateScores(players[1]);
-}
-
-void Game::updateScores(Player *p) {
-    playerinfo pinfo = p->getPlayerinfo();
-    gfx.tft.fillRect(120, 0, 16, 16, CLR_BACKGROUND);
-    gfx.drawChar(120, 0, pinfo.lives + 48);
-    gfx.drawText(0, 0, pinfo.name);
-    gfx.drawChar(MAXNAMELENGTH * 8, 0, ':');
-}
+void Game::updateScores(Player *p) { scoreboard.update(players); }
 
 bool Game::isStarted() { return this->started; }
 
