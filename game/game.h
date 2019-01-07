@@ -7,6 +7,7 @@
 #include "block.h"
 #include "bomb.h"
 #include "scoreboard.h"
+#include "heart.h"
 
 #define REFRESHRATE 50 // elke 50ms dus 20Hz
 #define MAXNPLAYER 2 // max number players
@@ -46,4 +47,5 @@ class Game {
     void addCornerExplosion(char x, char y, Player *p, direction dir);
     void drawGrid();
     void drawGridBlock(int x, int y);
+    // void addRandomhearts(); 
 };

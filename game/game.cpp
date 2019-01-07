@@ -1,5 +1,6 @@
 #include "game.h"
 #include "explosion.h"
+#include "heart.h"
 
 Game::Game(uint8_t width, uint8_t height) {
     this->width = width;
@@ -31,6 +32,26 @@ void Game::addRandomBlocks() {
         }
     }
 }
+
+//     void Game::addRandomhearts() {
+//     randomSeed(analogRead(0));  // voor de random-functie
+//     for (int i = 1; i < height - 1; i++) {
+//         for (int j = 1; j < width - 1; j++) {
+//             // ga langs alle posities maar sla grid-blokjes over
+//             if (!isEven(i) || !isEven(j)) {
+//                 // kans is 1 op 3 dat er een blokje geplaatst wordt
+//                 if (random() % 3 == 0) {
+//                     if (!(i == 1 && j == 1) &&
+//                         // mag niet helemaal linksonder of rechtsonder omdat
+//                         // players hier komen
+//                         !(i == height - 2 && j == width - 2)) {
+//                         gos.add(new Heart(j, i));
+//                     }
+//                 }
+//             }
+//         }
+//     }
+// }
 
 void Game::update() {
     int div = millis() - prevUpdate;  // verschil in ms sinds laatste verversing
