@@ -62,10 +62,10 @@ void IR::IRinit(uint8_t KHz, uint8_t Psize) {
 } //IR
 
 float IR::getByteRate() {
-  byteRate = ((message_size * 100) / ((time_ms - speed_timer)/10)); //update the byteRate value
+  byteRate = ((message_size * 100) / ((time_ms - speed_timer) / 10)); //update the byteRate value
   speed_timer = time_ms;
   message_size = 0;
-  if(byteRate > 0 && byteRate<200){
+  if (byteRate > 0 && byteRate < 200) {
     return byteRate;
   }
   return 0;
@@ -118,8 +118,17 @@ uint8_t IR::available() {
   }
 }
 
-void IR::read(char *string) {
-  strcpy(string, data);
+void IR::read(uint8_t *stream) {
+ // uint8_t n = 0;
+ // while (data[n] > 0) {
+ //   stream[n] = data[n];
+ //   n++;
+ // }
+
+// for(int x= 0; x < 3; x++){
+ // stream[x] = data[x];
+// }
+strcpy(stream, data);
 }
 
 int IR::error() {
