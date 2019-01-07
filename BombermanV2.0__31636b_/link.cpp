@@ -15,10 +15,6 @@
        byte 1 |  byte 2
      1XXX.XHHH|YYYY.YBLL
    ---------------------------
-    sent "i received a invalid message" (sent agian) cmd
-       byte 1
-     0001.0HHH
-   ----------------------------
     color
        byte 1 |  byte 2 | byte 3
      0011.0HHH|CCCC.CCCC|CCCC.CCCC
@@ -110,18 +106,6 @@ void link::broadcast(void) {
     lastSent = 0;
   }
 }
-/*
-  void link::confirm(void) {
-  if (lastSent == COLOR_DATA) {
-    Serial.println("c data arrived");
-    newColordata = 0;
-  }
-  if (lastSent == PLAYER_DATA) {
-    Serial.println("p data arrived");
-    newPlayerdata = 0; //player data can be updated
-  }
-  }
-*/
 
 uint8_t link::calcHash(uint8_t data[MESSAGE_SIZE]) {
   uint8_t hash = 0;

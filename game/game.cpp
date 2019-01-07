@@ -13,7 +13,7 @@ Game::~Game() {
 }
 
 void Game::addRandomBlocks() {
-    randomSeed(analogRead(0));  // voor de random-functie
+    randomSeed(240);  // voor de random-functie
     for (int i = 1; i < height - 1; i++) {
         for (int j = 1; j < width - 1; j++) {
             // ga langs alle posities maar sla grid-blokjes over
