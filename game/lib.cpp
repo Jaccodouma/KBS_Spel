@@ -38,9 +38,18 @@ point movePoint(point p, direction d, uint8_t distance) {
 
 void printPosition(position p) {
     Serial.print("Positie: ");
-    Serial.print(p.x, DEC);
+    printXY(p.x, p.y);
+}
+
+void printPoint(point p) {
+    Serial.print("Punt: ");
+    printXY(p.x, p.y);
+}
+
+void printXY(int x, int y) {
+    Serial.print(x, DEC);
     Serial.print(", ");
-    Serial.println(p.y, DEC);
+    Serial.println(y, DEC);
 }
 
 void freeRam() {

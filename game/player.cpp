@@ -11,7 +11,7 @@ Player::Player(Game *game, const char name[], uint8_t x, uint8_t y,
     prevPos = {fieldPos.x * blocksize, fieldPos.y * blocksize};
     screenPos = prevPos;
     this->color = color;
-    toggleUpdate(this);
+    updateGO(this);
 }
 
 void Player::move(direction d) {
@@ -26,13 +26,12 @@ void Player::update(int prevUpdate) {
     if (dir != direction::DIR_NO) { // als de speler een looprichting heeft
         this->prevPos = this->screenPos;  // sla vorige schermpositie op
         this->screenPos = movePoint(this->screenPos, dir, PIXELSPEED); // bereken de volgende pixelpunt
-
         if (this->screenPos.x % blocksize == 0 &&
             this->screenPos.y % blocksize == 0) {
             // naar midden van gridpunt gelopen
             this->dir = direction::DIR_NO; // zet de richting van de speler op GEEN
         }
-        toggleRedraw(this); // markeer voor hertekenen
+        redraw(this); // markeer voor hertekenen
     }
     if (wasDead) { // speler was net geraakt door een exlosie 
         counter -= prevUpdate;
@@ -60,7 +59,7 @@ void Player::draw(Gfx *gfx) {
     }
 
     // Zet opnieuw tekenen uit
-    toggleRedraw(this);
+    disableRedraw(this);
 }
 
 void Player::onExplosion(Player *p) {
@@ -72,7 +71,11 @@ void Player::onExplosion(Player *p) {
         wasDead = true;
         counter = IMMORALTIME;
     } else {
+        lives = NUMLIVES; //herstel leven tijdelijk
         // speler dood - proces om spel stop te zetten moet worden gestart
+    }
+    if (p != this) { // door andere speler zijn explosie geraakt
+        p->giveScore(POINTSEXPLOSIONHIT);
     }
     g->updateScores(this);
 }
@@ -91,7 +94,12 @@ void Player::plantBomb() {
     }
 }
 
-playerinfo Player::getPlayerinfo() { return {name, lives, nbombs}; }
+void Player::giveScore(int points) {
+    score += points;
+    g->updateScores(this);
+}
+
+playerinfo Player::getPlayerinfo() { return {name, lives, score}; }
 
 bool Player::isMoving() { return !!this->dir; }
 

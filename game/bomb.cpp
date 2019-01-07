@@ -1,11 +1,10 @@
 #include "bomb.h"
 #include "game.h"
 
-
 Bomb::Bomb(Game *game, int x, int y, Player *p) : Gameobject(x, y, true) {
     this->player = p;
     this->game = game;
-    toggleUpdate(this);
+    updateGO(this);
 }
 
 void Bomb::draw(Gfx *gfx) {
@@ -20,12 +19,10 @@ void Bomb::draw(Gfx *gfx) {
         gfx->drawBitmapField(fieldPos.x, fieldPos.y, bitBomb[1], RED);
         gfx->drawBitmapField(fieldPos.x, fieldPos.y, bitBomb[2], YELLOW);
     }
-    toggleRedraw(this);
 }
 
 void Bomb::update(int prevUpdate) {
     flags ^= (1<<B_STATE_BURN);
-    toggleRedraw(this);
 
     countdown -= prevUpdate;
 

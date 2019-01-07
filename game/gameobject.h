@@ -2,6 +2,7 @@
 
 #include "gfx.h"
 #include "lib.h"
+#include "scoreboard.h"
 
 class Game;
 class Player;
@@ -15,9 +16,12 @@ class Player;
 #define needsDelete(go) (go->flags & (1 << B_DELETE))
 #define needsRedraw(go) (go->flags & (1 << B_REDRAW))
 
-#define toggleUpdate(go) (go->flags ^= (1 << B_UPDATE))
-#define toggleRedraw(go) (go->flags ^= (1 << B_REDRAW))
 #define deleteObject(go) (go->flags |= (1 << B_DELETE))
+
+#define updateGO(go) (go->flags |= (1 << B_UPDATE))
+#define disableUpdate(go) (go->flags &= ~(1 << B_UPDATE))
+#define redraw(go) (go->flags |= (1 << B_REDRAW))
+#define disableRedraw(go) (go->flags &= ~(1 << B_REDRAW))
 
 #define isSolid(go) (go->flags & (1 << B_SOLID))
 

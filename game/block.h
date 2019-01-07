@@ -1,5 +1,7 @@
 #pragma once
 #include "gameobject.h"
+#include "player.h"
+
 
 class Block : public Gameobject {
     public:

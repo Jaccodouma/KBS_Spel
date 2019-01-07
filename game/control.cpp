@@ -14,7 +14,7 @@ void Control::startGame() {
     game = new Game(15, 17);
     Player *p = new Player(game, "ffk27", 1, 1, RED);
     game->addPlayer(p);
-    Player *p2 = new Player(game, "Merel", 13, 13, GREEN);
+    Player *p2 = new Player(game, "Merel", 13, 15, GREEN);
     game->addPlayer(p2);
     game->start();
     Serial.println("Game started");
@@ -35,7 +35,6 @@ void Control::update() {
             game->players[1]->plantBomb();
         }
         // movePlayer(game->players[0], dir);
-        // movePlayer(game->players[1], dir);
     }
 }
 
