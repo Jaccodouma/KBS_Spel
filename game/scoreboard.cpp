@@ -2,7 +2,10 @@
 #include "game.h"
 #include "player.h"
 
-Scoreboard::Scoreboard(Gfx *gfx) { this->gfx = gfx; }
+Scoreboard::Scoreboard(Gfx *gfx, Adafruit_ILI9341 *tft) {
+  this->gfx = gfx; 
+  this->tft = tft; 
+  }
 
 void Scoreboard::init(Player *players[]) {
     uint16_t cursorX = 0, cursorY = 0;
@@ -42,7 +45,7 @@ void Scoreboard::update(Player *players[]) {
         char buffer[12];
         sprintf(buffer, "%i, %ip", pinfo.lives, pinfo.score);
 
-        gfx->tft.fillRect(130, cursorY, 120, 16, CLR_BACKGROUND);
+        tft->fillRect(130, cursorY, 120, 16, CLR_BACKGROUND);
         gfx->drawText(cursorX, cursorY, buffer);
         cursorY += TEXTWIDTH + 1;
     }

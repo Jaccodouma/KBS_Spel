@@ -2,6 +2,7 @@
 
 #include "lib.h"
 #include "gfx.h"
+#include "Adafruit_ILI9341.h"  // TFT screen
 
 #define TEXTWIDTH 16
 
@@ -15,11 +16,13 @@ class Player;
 
 class Scoreboard {
     public:
-        Scoreboard(Gfx *gfx);
+        Scoreboard(Gfx *gfx, Adafruit_ILI9341 *tft);
         void init(Player *players[]);
         void update(Player *players[]);
     private:
         Gfx *gfx;
+	Adafruit_ILI9341 *tft;
+        
 };
 
 const uint8_t hearth[][32] PROGMEM = {

@@ -7,7 +7,7 @@
 #include "block.h"
 #include "bomb.h"
 #include "scoreboard.h"
-#include "heart.h"
+#include "Adafruit_ILI9341.h"
 
 #define REFRESHRATE 50 // elke 50ms dus 20Hz
 #define MAXNPLAYER 2 // max number players
@@ -16,7 +16,7 @@ class Game {
    public:
     Player* players[MAXNPLAYER] = {NULL, NULL};
 
-    Game(uint8_t width, uint8_t height);
+    Game(uint8_t width, uint8_t height, Adafruit_ILI9341 *tft, Gfx *gfx, Scoreboard *scoreboard);
     ~Game();
 
     bool start();
@@ -34,12 +34,13 @@ class Game {
     uint8_t getHeight();
 
    private:
-    Gfx gfx;
+    Adafruit_ILI9341 *tft;
+    Gfx *gfx;
+    Scoreboard *scoreboard;
     GoList gos;
     uint8_t width, height;
     unsigned long prevUpdate = 0;
     bool started = false;
-    Scoreboard scoreboard = Scoreboard(&gfx);
 
     void drawLevel();
     void addRandomBlocks();
@@ -47,5 +48,4 @@ class Game {
     void addCornerExplosion(char x, char y, Player *p, direction dir);
     void drawGrid();
     void drawGridBlock(int x, int y);
-    // void addRandomhearts(); 
 };

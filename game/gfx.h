@@ -32,13 +32,13 @@
 #define TFT_CS 10
 
 class Gfx {
-   public:
-    Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC);
+  public:
+    Gfx(Adafruit_ILI9341 *tft);
+
     uint8_t offsetX;
     uint8_t offsetY;
     uint8_t blocksize;
-    
-    Gfx();
+
     void drawRect(int x, int y, uint16_t color, bool fill = true);
     void drawRectField(int fieldX, int fieldY, uint16_t color, bool fill = true);
     void drawBitmap(int x, int y, const uint8_t *bitmap, uint16_t color);
@@ -46,6 +46,8 @@ class Gfx {
     void drawBitmapField(int x, int y, const uint8_t *bitmap, uint16_t color);
     void drawChar(int x, int y, char c, uint8_t size = TEXTSIZE, uint16_t color = TEXTCOLOR);
     void drawText(int x, int y, char *text, uint8_t size = TEXTSIZE, uint16_t color = TEXTCOLOR);
-   void drawXBitmapField(int x, int y, const uint8_t *bitmap, uint16_t color);
+    void drawXBitmapField(int x, int y, const uint8_t *bitmap, uint16_t color);
+
+    Adafruit_ILI9341 *tft;
 
 };
