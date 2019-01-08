@@ -94,8 +94,8 @@ int main(void)
 
   // Create Task objects
   IntroScreen *introScreen = new IntroScreen(&Screen, &nunchuk, &gameColour);
-  ConnectGame *connectGame = new ConnectGame(&Screen, &nunchuk, &gameColour, &scoreboard, &game, &myIR, &myLink);
-  Control *control = new Control(&nunchuk, &Screen, &gfx, &scoreboard, &game, &myIR, &myLink);
+  ConnectGame *connectGame = new ConnectGame(&Screen, &nunchuk, &gameColour, &scoreboard, &game, &myLink);
+  Control *control = new Control(&nunchuk, &Screen, &gfx, &scoreboard, &game, &myLink);
 
   // Add tasks to taskManager
   taskManager->addTask(introScreen);

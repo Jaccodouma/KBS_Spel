@@ -1,6 +1,8 @@
 #ifndef link_H
 #define link_H
 
+#include "IR.h"
+
 #define MESSAGE_SIZE 9
 
 #define COLOR_DATA 2

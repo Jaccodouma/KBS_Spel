@@ -1,13 +1,12 @@
 #include "ConnectGame.h"
 
 // Constructor
-ConnectGame::ConnectGame(Adafruit_ILI9341 *Screen, ArduinoNunchuk *nunchuk, GameColour *gameColour, Scoreboard *scoreboard, Game *game, IR *ir, link *myLink) {
+ConnectGame::ConnectGame(Adafruit_ILI9341 *Screen, ArduinoNunchuk *nunchuk, GameColour *gameColour, Scoreboard *scoreboard, Game *game, link *myLink) {
   this->Screen = Screen;
   this->nunchuk = nunchuk;
   this->gameColour = gameColour;
   this->game = game;
   this->myLink = myLink;
-  this->ir = ir;
   this->scoreboard = scoreboard;
 }
 
@@ -22,11 +21,11 @@ ConnectGame::run() {
     newGame = 0;
   }
   
-  if (ir->getTime_ms() > this->update_timer) { //do this every 1000ms
+  if (game->ir->getTime_ms() > this->update_timer) { //do this every 1000ms
     if (myLink->updateColorData(gameColour->getGameColour())) {
       Serial.println("color add to buffer");
     }
-    update_timer = (ir->getTime_ms() + 500);
+    update_timer = (game->ir->getTime_ms() + 500);
   }
 
   if (myLink->checkForData() > 0) { //keep repeating this in the loop to stay connected
