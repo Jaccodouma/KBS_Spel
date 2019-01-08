@@ -20,13 +20,12 @@ void Control::startGame() {
 }
 
 int Control::run() {
+
   nunchuk->update();
   direction dir = nunchuck_Direction();
 
   if (game->isStarted()) {
     game->update();
-
-    Serial.println((int)dir, DEC);
 
     movePlayer(dir); //bedienen van speler 0 met nunchuck
     if (nunchuk->zButton == 1) {

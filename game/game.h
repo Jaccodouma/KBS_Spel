@@ -4,17 +4,18 @@
 #include "golist.h"
 
 #include "player.h"
-#include "block.h"
 #include "bomb.h"
 #include "scoreboard.h"
 #include "Adafruit_ILI9341.h"
 
 #define REFRESHRATE 50 // elke 50ms dus 20Hz
 #define MAXNPLAYER 2 // max number players
+#define MAXNBLOCKS 60
 
 class Game {
    public:
     Player* players[MAXNPLAYER] = {NULL, NULL};
+    uint8_t blocks[MAXNBLOCKS];
 
     Game(uint8_t width, uint8_t height, Adafruit_ILI9341 *tft, Gfx *gfx, Scoreboard *scoreboard);
     ~Game();
@@ -44,8 +45,10 @@ class Game {
 
     void drawLevel();
     void addRandomBlocks();
+    void drawBlocks();
+    bool blockCollision(position p);
     bool addExplosion(char x, char y, Player *p, direction dir, bool last);
     void addCornerExplosion(char x, char y, Player *p, direction dir);
     void drawGrid();
-    void drawGridBlock(int x, int y);
+    void drawBlock(uint8_t x, uint8_t y, uint16_t colorfill, uint16_t colordraw);
 };

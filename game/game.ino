@@ -22,6 +22,10 @@ ISR(PCINT2_vect) {
 int main(void)
 {
     init();
+
+        Serial.begin(9600);
+    Serial.println("Welkom\n");
+    
     myIR.IRinit(56, 13);
     ArduinoNunchuk nunchuk;
     nunchuk.init();
@@ -30,9 +34,7 @@ int main(void)
     Scoreboard scoreboard = Scoreboard(&gfx, &Screen);
 
     Control control(&nunchuk, &Screen, &gfx, &scoreboard);
-    
-    Serial.begin(9600);
-    Serial.println("Welkom\n");
+  
 
     while(1) {
         control.run();
