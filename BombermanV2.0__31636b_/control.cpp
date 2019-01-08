@@ -14,11 +14,14 @@ void Control::startGame() {
   game->addPlayer(p);
   Player *p2 = new Player(game, "Merel", 13, 15, GREEN);
   game->addPlayer(p2);
+  freeRam();
   game->start();
+  freeRam();
   Serial.println("Game started");
 }
 
 int Control::run() {
+  Serial.println("runC");
   if (newGame) {
     Serial.println("build game");
     Control::startGame();
