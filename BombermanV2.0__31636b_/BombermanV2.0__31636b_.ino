@@ -6,8 +6,7 @@
 
 // Libraries for screen
 #include "Adafruit_GFX.h"
-#include "Adafruit_ILI9341.h"  // TFT screen
-#include "Adafruit_STMPE610.h" // Touch screenxgyggyygyg
+#include "Adafruit_ILI9341.h" // TFT screen
 
 // Other libraries
 #include "SPI.h"
@@ -16,15 +15,13 @@
 
 // Self-made Libraries and utilities
 #include "TaskManager.h"
-#include "IR.h"
-#include "touchScreen.h"
 #include "GameColour.h"
 #include "Game.h"
+#include "IR.h"
 #include "link.h"
 
 // Task classes
 #include "IntroScreen.h"
-#include "SettingMenu.h"
 #include "control.h"
 
 // Nunchuk library
@@ -40,7 +37,6 @@
 
 // Screen objects
 Adafruit_ILI9341 Screen = Adafruit_ILI9341(TFT_CS, TFT_DC);
-Adafruit_STMPE610 Touch = Adafruit_STMPE610(8);
 
 // Nunchuk object
 ArduinoNunchuk nunchuk = ArduinoNunchuk();
@@ -59,13 +55,19 @@ ISR(PCINT2_vect)
   myIR.pinChange();
 }
 
+unsigned long speed_timer;
 unsigned long update_timer;
+unsigned long p_update_timer;
+
+uint16_t kleur = 12348;
+
+int deleteme = 1;
 
 int main(void)
 {
-  Serial.begin(9600); // Serial for debugging
-
   init();
+  Serial.begin(115200); // Serial for debugging
+
   if (MASTER)
   {
     myIR.IRinit(38, 12);
@@ -88,45 +90,67 @@ int main(void)
 
   Gfx gfx(&Screen);
   Scoreboard scoreboard = Scoreboard(&gfx, &Screen);
+  Game game(15, 17, &Screen, &gfx, &scoreboard, &myIR);
 
   // Create TaskManager object
   TaskManager *taskManager = new TaskManager;
 
   // Create Task objects
-  IntroScreen *introScreen = new IntroScreen(&Screen, &Touch, &nunchuk, &gameColour);
-  SettingMenu *settingMenu = new SettingMenu(&Screen, &Touch, &nunchuk, &gameColour);
-  
-  Game game(15, 17, &Screen, &gfx, &scoreboard, &myIR);
-
+  IntroScreen *introScreen = new IntroScreen(&Screen, &nunchuk, &gameColour);
   Control *control = new Control(&nunchuk, &Screen, &gfx, &scoreboard, &game);
 
   // Add tasks to taskManager
   taskManager->addTask(introScreen);
-  taskManager->addTask(settingMenu);
   taskManager->addTask(control);
 
-  Serial.begin(9600); // Serial for debugging
-  Serial.println("Start");
-
-  // Start touch screen
-  if (!Touch.begin())
-  {
-    Serial.println("TOUCH SCREEN NOT FOUND");
-    while (1)
-      ; // Touch screen doesn't work!
-  }
+  Serial.println("STARTGAME");
 
   // Loop
   while (1)
   {
-    settingMenu->updateScreenBrightness(); // update screen brightness
-    taskManager->doTask();                 // do current task
-    //taskManager->doTask();                 // do current task
+    taskManager->doTask(); // do current task
 
     if (myIR.getTime_ms() > update_timer)
     { //do this every 1000ms
+      if (myLink.updateColorData(kleur))
+      {
+        Serial.println("color add to buffer");
+      }
+      kleur++;
+      update_timer = (myIR.getTime_ms() + 5000);
+    }
+
+    if (myIR.getTime_ms() > p_update_timer)
+    {                                             //do this every 1000ms
+      myLink.updatePlayerData(deleteme, 1, 1, 1); //X,Y,BOMB,LIVES
+      deleteme++;
+      if (deleteme > 10)
+      {
+        deleteme = 1;
+      }
+      p_update_timer = (myIR.getTime_ms() + 200);
+    }
+
+    if (myLink.checkForData() > 0)
+    { //keep repeating this in the loop to stay connected
+      Serial.print(" x:");
+      Serial.print(myLink.otherplayer_x);
+      Serial.print("  y:");
+      Serial.print(myLink.otherplayer_y);
+      Serial.print("  bomb:");
+      Serial.print(myLink.otherplayer_bomb);
+      Serial.print("  lives:");
+      Serial.print(myLink.otherplayer_lives);
+      Serial.print("  color:");
+      Serial.println(myLink.otherplayer_color);
+    }
+
+    if (myIR.getTime_ms() > speed_timer)
+    { //do this every 2000ms
+      Serial.print("                                speed:");
+      Serial.println(myIR.getByteRate());
       freeRam();
-      update_timer = (myIR.getTime_ms() + 500);
+      speed_timer = (myIR.getTime_ms() + 2000);
     }
   }
 }
