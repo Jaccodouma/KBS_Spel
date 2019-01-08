@@ -12,7 +12,7 @@
 #define KEEP_SENDING_UNTIL_ACK 2
 #define RECEIVE 3
 
-#define DEBUG 0
+#define DEBUG 1
 
 class link
 {

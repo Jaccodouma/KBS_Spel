@@ -24,8 +24,6 @@ public:
   void movePlayer(direction d);
 
 private:
-  uint8_t PlayerdataOUT[2]; //variable to store the player data
-  uint8_t calcHash(uint8_t data[MESSAGE_SIZE]);
   ArduinoNunchuk *nunchuk;
   Adafruit_ILI9341 *Screen;
   Game *game;
@@ -34,7 +32,7 @@ private:
   Scoreboard *scoreboard;
   direction nunchuck_Direction();
   void startGame();
-  void updatePlayerData(uint8_t x, uint8_t y, uint8_t bomb, uint8_t lives);
   unsigned long p_update_timer = 0;
+  unsigned long g_update_timer = 0;
   boolean newGame = 1;
 };
