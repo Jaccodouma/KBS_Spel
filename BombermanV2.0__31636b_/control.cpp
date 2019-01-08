@@ -1,42 +1,52 @@
 #include "control.h"
-#include "Adafruit_ILI9341.h"  // TFT screen
-#include "IR.h"
 
-Control::Control(ArduinoNunchuk *nunchuk, Adafruit_ILI9341 *Screen, Gfx *gfx, Scoreboard *scoreboard, Game *game) {
+Control::Control(ArduinoNunchuk *nunchuk, Adafruit_ILI9341 *Screen, Gfx *gfx, Scoreboard *scoreboard, Game *game, IR *ir, link *myLink) {
   this->nunchuk = nunchuk;
   this->Screen = Screen;
   this->gfx = gfx;
+  this->myLink = myLink;
   this->game = game;
   this->scoreboard = scoreboard;
 }
 
-void Control::startGame() {
-  Player *p = new Player(game, "ffk27", 1, 1, RED);
-  game->addPlayer(p);
-  Player *p2 = new Player(game, "Merel", 13, 15, GREEN);
-  game->addPlayer(p2);
-  game->start();
-  newGame = 0;
-}
-
 int Control::run() {
+  Serial.println("run");
   if (newGame) {
-    Serial.println("build game");
-    Control::startGame();
-  }
-  
-  nunchuk->update();
-  direction dir = nunchuck_Direction();
+    game->start();
+    newGame = 0;
+  } else {
 
-  if (game->isStarted()) {
-    game->update();
+    /*
+      if (ir->getTime_ms() > p_update_timer) { //do this every 1000ms
+        myLink->updatePlayerData(1, 1, 1, 1); //X,Y,BOMB,LIVES
+        p_update_timer = (ir->getTime_ms() + 2000);
+      }
+    */
+    if (myLink->checkForData() > 0) { //keep repeating this in the loop to stay connected
+      Serial.print(" x:");
+      Serial.print(myLink->otherplayer_x);
+      Serial.print("  y:");
+      Serial.print(myLink->otherplayer_y);
+      Serial.print("  bomb:");
+      Serial.print(myLink->otherplayer_bomb);
+      Serial.print("  lives:");
+      Serial.print(myLink->otherplayer_lives);
+      Serial.print("  color:");
+      Serial.println(myLink->otherplayer_color);
+    } else {
+      nunchuk->update();
+      direction dir = nunchuck_Direction();
+      if (game->isStarted()) {
+        game->update();
 
-    movePlayer(dir); //bedienen van speler 0 met nunchuck
-    if (nunchuk->zButton == 1) {
-      game->players[0]->plantBomb();
+        movePlayer(dir); //bedienen van speler 0 met nunchuck
+        if (nunchuk->zButton == 1) {
+          game->players[0]->plantBomb();
+        }
+      }
     }
+    return 0;
   }
-  return 0;
 }
 
 void Control::movePlayer(direction d) {

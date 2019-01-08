@@ -19,9 +19,14 @@
 #include "Game.h"
 #include "IR.h"
 #include "link.h"
+#include "ConnectGame.h"
+#include "lib.h"
+#include "player.h"
+#include "scoreboard.h"
 
 // Task classes
 #include "IntroScreen.h"
+#include "ConnectGame.h"
 #include "control.h"
 
 // Nunchuk library
@@ -54,14 +59,6 @@ ISR(PCINT2_vect)
 {
   myIR.pinChange();
 }
-
-unsigned long speed_timer;
-unsigned long update_timer;
-unsigned long p_update_timer;
-
-uint16_t kleur = 12348;
-
-int deleteme = 1;
 
 int main(void)
 {
@@ -97,10 +94,12 @@ int main(void)
 
   // Create Task objects
   IntroScreen *introScreen = new IntroScreen(&Screen, &nunchuk, &gameColour);
-  Control *control = new Control(&nunchuk, &Screen, &gfx, &scoreboard, &game);
+  ConnectGame *connectGame = new ConnectGame(&Screen, &nunchuk, &gameColour, &scoreboard, &game, &myIR, &myLink);
+  Control *control = new Control(&nunchuk, &Screen, &gfx, &scoreboard, &game, &myIR, &myLink);
 
   // Add tasks to taskManager
   taskManager->addTask(introScreen);
+  taskManager->addTask(connectGame);
   taskManager->addTask(control);
 
   Serial.println("STARTGAME");
@@ -109,48 +108,5 @@ int main(void)
   while (1)
   {
     taskManager->doTask(); // do current task
-
-    if (myIR.getTime_ms() > update_timer)
-    { //do this every 1000ms
-      if (myLink.updateColorData(kleur))
-      {
-        Serial.println("color add to buffer");
-      }
-      kleur++;
-      update_timer = (myIR.getTime_ms() + 5000);
-    }
-
-    if (myIR.getTime_ms() > p_update_timer)
-    {                                             //do this every 1000ms
-      myLink.updatePlayerData(deleteme, 1, 1, 1); //X,Y,BOMB,LIVES
-      deleteme++;
-      if (deleteme > 10)
-      {
-        deleteme = 1;
-      }
-      p_update_timer = (myIR.getTime_ms() + 200);
-    }
-
-    if (myLink.checkForData() > 0)
-    { //keep repeating this in the loop to stay connected
-      Serial.print(" x:");
-      Serial.print(myLink.otherplayer_x);
-      Serial.print("  y:");
-      Serial.print(myLink.otherplayer_y);
-      Serial.print("  bomb:");
-      Serial.print(myLink.otherplayer_bomb);
-      Serial.print("  lives:");
-      Serial.print(myLink.otherplayer_lives);
-      Serial.print("  color:");
-      Serial.println(myLink.otherplayer_color);
-    }
-
-    if (myIR.getTime_ms() > speed_timer)
-    { //do this every 2000ms
-      Serial.print("                                speed:");
-      Serial.println(myIR.getByteRate());
-      freeRam();
-      speed_timer = (myIR.getTime_ms() + 2000);
-    }
   }
 }
