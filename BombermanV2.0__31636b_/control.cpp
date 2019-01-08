@@ -16,14 +16,15 @@ void Control::startGame() {
   Player *p2 = new Player(game, "Merel", 13, 15, GREEN);
   game->addPlayer(p2);
   game->start();
+  newGame = 0;
 }
 
 int Control::run() {
   if (newGame) {
     Serial.println("build game");
     Control::startGame();
-    newGame = 0;
   }
+  
   nunchuk->update();
   direction dir = nunchuck_Direction();
 
@@ -34,7 +35,6 @@ int Control::run() {
     if (nunchuk->zButton == 1) {
       game->players[0]->plantBomb();
     }
-
   }
   return 0;
 }

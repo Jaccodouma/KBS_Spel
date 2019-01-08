@@ -1,13 +1,11 @@
 #include "IntroScreen.h"
 
 #include "Adafruit_ILI9341.h"	// TFT screen
-#include "Adafruit_STMPE610.h"	// Touch screen
 #include <ArduinoNunchuk.h>		// Nunchuk
 
 // Constructor
-IntroScreen::IntroScreen(Adafruit_ILI9341 *Screen, Adafruit_STMPE610 *TouchScreen, ArduinoNunchuk *nunchuk, GameColour *gameColour) {
+IntroScreen::IntroScreen(Adafruit_ILI9341 *Screen, ArduinoNunchuk *nunchuk, GameColour *gameColour) {
 	this->Screen = Screen;
-	this->TouchScreen = TouchScreen;
 	this->nunchuk = nunchuk;
 	this->gameColour = gameColour;
 	this->initialised = false;

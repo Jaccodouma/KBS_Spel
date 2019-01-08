@@ -72,9 +72,9 @@ rgb GameColour::getRGBfromHue(uint16_t hue) {
 	// Print output for debugging
 	Serial.print("Hue: "); Serial.println(hue);
 	//Serial.println(segment);
-	Serial.print("R: "); Serial.println(out.r);
-	Serial.print("G: "); Serial.println(out.g);
-	Serial.print("B: "); Serial.println(out.b);
+	//Serial.print("R: "); Serial.println(out.r);
+	//Serial.print("G: "); Serial.println(out.g);
+	//Serial.print("B: "); Serial.println(out.b);
 	
 	return out;
 }

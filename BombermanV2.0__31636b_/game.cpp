@@ -24,7 +24,7 @@ void Game::addRandomBlocks() {
       // ga langs alle posities maar sla grid-blokjes over
       if (!isEven(i) || !isEven(j)) {
         // kans is 1 op 3 dat er een blokje geplaatst wordt
-        if (random() % 5 == 0) {
+        if (random() % 10 == 0) {
           if (!(i == 1 && j == 1) &&
               // mag niet helemaal linksonder of rechtsonder omdat
               // players hier komen

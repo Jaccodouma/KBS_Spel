@@ -4,7 +4,6 @@
 #define _INTROSCREEN_h
 
 #include "Adafruit_ILI9341.h"	// TFT screen
-#include "Adafruit_STMPE610.h"	// Touch
 #include <ArduinoNunchuk.h>		// Nunchuk
 
 #include "GameColour.h"
@@ -13,11 +12,10 @@
 class IntroScreen: public Task
 {
 public:
-	IntroScreen(Adafruit_ILI9341 *Screen, Adafruit_STMPE610 *TouchScreen, ArduinoNunchuk *nunchuk, GameColour *gameColour);
+	IntroScreen(Adafruit_ILI9341 *Screen, ArduinoNunchuk *nunchuk, GameColour *gameColour);
 	int run();
 private:
 	Adafruit_ILI9341 *Screen;
-	Adafruit_STMPE610 *TouchScreen;
 	ArduinoNunchuk *nunchuk;
 	
 	boolean initialised; // if initialised the screen is showing the right stuff
