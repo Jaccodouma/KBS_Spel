@@ -8,6 +8,7 @@
 #include "bomb.h"
 #include "scoreboard.h"
 #include "Adafruit_ILI9341.h"
+#include "IR.h"
 
 #define REFRESHRATE 50 // elke 50ms dus 20Hz
 #define MAXNPLAYER 2 // max number players
@@ -16,7 +17,7 @@ class Game {
    public:
     Player* players[MAXNPLAYER] = {NULL, NULL};
 
-    Game(uint8_t width, uint8_t height, Adafruit_ILI9341 *tft, Gfx *gfx, Scoreboard *scoreboard);
+    Game(uint8_t width, uint8_t height, Adafruit_ILI9341 *tft, Gfx *gfx, Scoreboard *scoreboard, IR *ir);
     ~Game();
 
     bool start();
@@ -36,6 +37,7 @@ class Game {
    private:
     Adafruit_ILI9341 *tft;
     Gfx *gfx;
+    IR *ir;
     Scoreboard *scoreboard;
     GoList gos;
     uint8_t width, height;

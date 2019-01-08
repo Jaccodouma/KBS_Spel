@@ -1,27 +1,24 @@
 #include "control.h"
 #include "Adafruit_ILI9341.h"  // TFT screen
+#include "IR.h"
 
-Control::Control(ArduinoNunchuk *nunchuk, Adafruit_ILI9341 *Screen, Gfx *gfx, Scoreboard *scoreboard) {
+Control::Control(ArduinoNunchuk *nunchuk, Adafruit_ILI9341 *Screen, Gfx *gfx, Scoreboard *scoreboard, Game *game) {
   this->nunchuk = nunchuk;
   this->Screen = Screen;
   this->gfx = gfx;
+  this->game = game;
   this->scoreboard = scoreboard;
 }
 
 void Control::startGame() {
-  game = new Game(15, 17, Screen, gfx, scoreboard);
   Player *p = new Player(game, "ffk27", 1, 1, RED);
   game->addPlayer(p);
   Player *p2 = new Player(game, "Merel", 13, 15, GREEN);
   game->addPlayer(p2);
-  freeRam();
   game->start();
-  freeRam();
-  Serial.println("Game started");
 }
 
 int Control::run() {
-  Serial.println("runC");
   if (newGame) {
     Serial.println("build game");
     Control::startGame();
@@ -32,8 +29,6 @@ int Control::run() {
 
   if (game->isStarted()) {
     game->update();
-
-    Serial.println((int)dir, DEC);
 
     movePlayer(dir); //bedienen van speler 0 met nunchuck
     if (nunchuk->zButton == 1) {

@@ -6,8 +6,8 @@
 
 // Libraries for screen
 #include "Adafruit_GFX.h"
-#include "Adafruit_ILI9341.h"	// TFT screen
-#include "Adafruit_STMPE610.h"	// Touch screen
+#include "Adafruit_ILI9341.h"  // TFT screen
+#include "Adafruit_STMPE610.h" // Touch screenxgyggyygyg
 
 // Other libraries
 #include "SPI.h"
@@ -47,24 +47,34 @@ ArduinoNunchuk nunchuk = ArduinoNunchuk();
 
 #define MASTER 1
 
-//IR myIR(38, 12); //38KHz or 56KHz Transmitter Fq, pulse size (45 default)
+IR myIR(38, 12); //38KHz or 56KHz Transmitter Fq, pulse size (45 default)
 
-ISR(TIMER2_OVF_vect) {
-  //myIR.timerOverflow();
+ISR(TIMER2_OVF_vect)
+{
+  myIR.timerOverflow();
 }
 
-ISR(PCINT2_vect) {
-  //myIR.pinChange();
+ISR(PCINT2_vect)
+{
+  myIR.pinChange();
 }
 
-int main(void) {
+unsigned long update_timer;
+
+int main(void)
+{
+  Serial.begin(9600); // Serial for debugging
+
   init();
-  /* if (MASTER) {
-     myIR.IRinit(38, 12);
-    } else {
-     myIR.IRinit(56, 12);
-    }
-    link myLink(&myIR, MASTER); //ir obj, master/slave, broadcast interval (miliseconds)*/
+  if (MASTER)
+  {
+    myIR.IRinit(38, 12);
+  }
+  else
+  {
+    myIR.IRinit(56, 12);
+  }
+  link myLink(&myIR, MASTER); //ir obj, master/slave, broadcast interval (miliseconds)
 
   nunchuk.init();
 
@@ -83,27 +93,40 @@ int main(void) {
   TaskManager *taskManager = new TaskManager;
 
   // Create Task objects
-  IntroScreen *introScreen =			new IntroScreen(&Screen, &Touch, &nunchuk, &gameColour);
-  SettingMenu *settingMenu =			new SettingMenu(&Screen, &Touch, &nunchuk, &gameColour);
-  Control *control = new Control(&nunchuk, &Screen, &gfx, &scoreboard);
+  IntroScreen *introScreen = new IntroScreen(&Screen, &Touch, &nunchuk, &gameColour);
+  SettingMenu *settingMenu = new SettingMenu(&Screen, &Touch, &nunchuk, &gameColour);
+  
+  Game game(15, 17, &Screen, &gfx, &scoreboard, &myIR);
+
+  Control *control = new Control(&nunchuk, &Screen, &gfx, &scoreboard, &game);
 
   // Add tasks to taskManager
   taskManager->addTask(introScreen);
   taskManager->addTask(settingMenu);
   taskManager->addTask(control);
 
+  Serial.begin(9600); // Serial for debugging
+  Serial.println("Start");
+
   // Start touch screen
-  if (!Touch.begin()) {
+  if (!Touch.begin())
+  {
     Serial.println("TOUCH SCREEN NOT FOUND");
-    while (1); // Touch screen doesn't work!
+    while (1)
+      ; // Touch screen doesn't work!
   }
 
-  Serial.begin(9600); // Serial for debugging
-  Serial.println("Start...");
-
   // Loop
-  while (1) {
+  while (1)
+  {
     settingMenu->updateScreenBrightness(); // update screen brightness
-    taskManager->doTask(); // do current task
+    taskManager->doTask();                 // do current task
+    //taskManager->doTask();                 // do current task
+
+    if (myIR.getTime_ms() > update_timer)
+    { //do this every 1000ms
+      freeRam();
+      update_timer = (myIR.getTime_ms() + 500);
+    }
   }
 }

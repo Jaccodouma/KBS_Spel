@@ -2,11 +2,12 @@
 #include "explosion.h"
 #include "Adafruit_ILI9341.h"
 
-Game::Game(uint8_t width, uint8_t height, Adafruit_ILI9341 *tft, Gfx *gfx, Scoreboard *scoreboard) {
+Game::Game(uint8_t width, uint8_t height, Adafruit_ILI9341 *tft, Gfx *gfx, Scoreboard *scoreboard, IR *ir) {
   this->width = width;
   this->height = height;
   this->tft = tft;
   this->gfx = gfx;
+  this->ir = ir;
   this->scoreboard = scoreboard;
 }
 
@@ -23,12 +24,13 @@ void Game::addRandomBlocks() {
       // ga langs alle posities maar sla grid-blokjes over
       if (!isEven(i) || !isEven(j)) {
         // kans is 1 op 3 dat er een blokje geplaatst wordt
-        if (random() % 3 == 0) {
+        if (random() % 5 == 0) {
           if (!(i == 1 && j == 1) &&
               // mag niet helemaal linksonder of rechtsonder omdat
               // players hier komen
               !(i == height - 2 && j == width - 2)) {
             gos.add(new Block(j, i));
+            freeRam();
           }
         }
       }
@@ -37,9 +39,9 @@ void Game::addRandomBlocks() {
 }
 
 void Game::update() {
-  int div = millis() - prevUpdate;  // verschil in ms sinds laatste verversing
+  int div = ir->getTime_ms() - prevUpdate;  // verschil in ms sinds laatste verversing
   if (div >= REFRESHRATE) {
-    prevUpdate = millis();  // tijdstip van updaten
+    prevUpdate = ir->getTime_ms();  // tijdstip van updaten
     node *prevNode = NULL;  // pointer om vorige node bij te houden
     node *n = gos.head;     // huidige node, begin bij het hoofd van de
     // gelinkte lijst
@@ -116,6 +118,7 @@ Gameobject *Game::hasCollision(Gameobject *go, position p) {
 bool Game::start() {
   if (players[0] != NULL) {  // Start bij tenminste één speler
     this->started = true;
+    gfx->tft->fillScreen(CLR_BACKGROUND);
     drawLevel();
     addRandomBlocks();
     scoreboard->init(players);

@@ -13,7 +13,7 @@
 class Control: public Task  {
 
   public:
-    Control(ArduinoNunchuk *nunchuk, Adafruit_ILI9341 *Screen, Gfx *gfx, Scoreboard *scoreboard);
+    Control(ArduinoNunchuk *nunchuk, Adafruit_ILI9341 *Screen, Gfx *gfx, Scoreboard *scoreboard, Game *game);
     int run();
     void movePlayer(direction d);
 
