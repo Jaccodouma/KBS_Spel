@@ -40,12 +40,11 @@ class Player : public Gameobject {
 
     playerinfo getPlayerinfo();
 
-    point screenPos; //VERPLAASTE (GETTERS EN SETTERS)
-
    private:
     Game *g;
     direction dir = direction::DIR_NO;
     // pixelposities:
+    point screenPos;
     point prevPos;
     uint8_t blocksize;
     int score = 0;

@@ -61,7 +61,7 @@ void Player::draw(Gfx *gfx) {
     }
 
     // Zet opnieuw tekenen uit
-    disableRedraw(this);
+disableRedraw(this);
 }
 
 
