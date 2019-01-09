@@ -32,9 +32,7 @@ int Control::run()
       Serial.print(" b:");
       Serial.print(myLink->otherplayer_bomb);
       Serial.print(" l:");
-      Serial.print(myLink->otherplayer_lives);
-      Serial.print(" c:");
-      Serial.println(myLink->otherplayer_color);
+      Serial.println(myLink->otherplayer_lives);
 
       //DIR_NO, DIR_UP, DIR_DOWN, DIR_LEFT, DIR_RIGHT   !!!delete this
 
@@ -65,7 +63,7 @@ int Control::run()
       if(myLink->updatePlayerData(game->players[0]->fieldPos.x, game->players[0]->fieldPos.y, placeBomb, game->players[0]->lives)){ //X,Y,BOMB,LIVES
       Serial.println("sent data");
       }
-      
+
       placeBomb = 0;
 
       return 0;
