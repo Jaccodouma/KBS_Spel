@@ -1,11 +1,10 @@
 #include "player.h"
 #include "game.h"
 
-Player::Player(Game *game, const char name[], uint8_t x, uint8_t y,
+Player::Player(Game *game, uint8_t x, uint8_t y,
                uint16_t color, uint8_t blocksize)
     : Gameobject(x, y, false) {
     this->g = game;
-    strcpy(this->name, name);
     // ongeinistaliseerd, stel de pixelposities in
     this->blocksize = blocksize;
     prevPos = {fieldPos.x * blocksize, fieldPos.y * blocksize};
@@ -101,8 +100,6 @@ void Player::giveScore(int points) {
     score += points;
     g->updateScores(this);
 }
-
-playerinfo Player::getPlayerinfo() { return {name, lives, score}; }
 
 bool Player::isMoving() { return !!this->dir; }
 

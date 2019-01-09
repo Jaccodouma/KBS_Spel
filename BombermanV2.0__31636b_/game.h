@@ -49,7 +49,7 @@ uint8_t getHeight();
     void drawLevel();
     void addRandomBlocks();
     void drawBlocks();
-    bool blockCollision(position p);
+    int blockCollision(position p);
     bool addExplosion(char x, char y, Player *p, direction dir, bool last);
     void addCornerExplosion(char x, char y, Player *p, direction dir);
     void drawGrid();

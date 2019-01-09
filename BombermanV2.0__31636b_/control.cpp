@@ -66,7 +66,6 @@ int Control::run()
           game->players[0]->plantBomb();
         }
       }
-    freeRam();
     }
   }
   return 0;

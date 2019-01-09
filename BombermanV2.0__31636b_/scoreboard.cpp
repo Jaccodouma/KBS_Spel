@@ -11,14 +11,9 @@ void Scoreboard::init(Player *players[]) {
     uint16_t cursorX = 0, cursorY = 0;
 
     for (int i = 0; i < MAXNPLAYER; i++) {
-        // buffer iets vergroot omdat geheugenlek?
-        char buffer[10 + (MAXNAMELENGTH + 1) + 1];  // name + '\0' + :
-        // lukt op een of andere manier niet om de waarde 6 als variabele mee te
-        // geven
-        sprintf(buffer, "%-6s:", players[i]->name);  // reserveer 6 plaatsen.
-        gfx->drawText(cursorX, cursorY, buffer);
+        gfx->drawText(cursorX, cursorY, "P");
 
-        cursorX = MAXNAMELENGTH * (TEXTWIDTH - 1);
+        cursorX = 6 * (TEXTWIDTH - 1);
         gfx->drawXBitmap(0 - gfx->offsetX + cursorX, 0 - gfx->offsetY + cursorY,
                          hearth[0], DARKBROWN);
         gfx->drawXBitmap(0 - gfx->offsetX + cursorX, 0 - gfx->offsetY + cursorY,
@@ -39,11 +34,10 @@ void Scoreboard::update(Player *players[]) {
     uint16_t cursorX, cursorY = 0;
 
     for (int i = 0; i < MAXNPLAYER; i++) {
-        playerinfo pinfo = players[i]->getPlayerinfo();
 
         cursorX = 130;
         char buffer[12];
-        sprintf(buffer, "%i, %ip", pinfo.lives, pinfo.score);
+        sprintf(buffer, "%i, %ip", players[i]->lives, players[i]->score);
 
         tft->fillRect(130, cursorY, 120, 16, CLR_BACKGROUND);
         gfx->drawText(cursorX, cursorY, buffer);

@@ -106,19 +106,19 @@ bool Game::gridCollision(position p) {
   return false;
 }
 
-bool Game::blockCollision(position p) {
+int Game::blockCollision(position p) {
     for (int i = 0; i < MAXNBLOCKS; i++) {
         uint8_t block = blocks[i];
         if (block == 0) {
-            return false;
+            continue;
         }
         uint8_t x = block % width;
         uint8_t y = block / width;
         if (y == p.y && x == p.x) {
-            return true;
+            return i;
         }
     }
-    return false;
+    return -1;
 }
 
 Gameobject *Game::hasCollision(Gameobject *go, position p) {
@@ -168,7 +168,7 @@ void Game::movePlayer(Player *p, direction d) {
         if (gridCollision(nextpos)) {
             return;  // heeft een botsing tegen de vast blokjes
         }
-        if (blockCollision(nextpos)) {
+        if (blockCollision(nextpos) != -1) {
             return;
         }
         // zoek een gameobject waar de speler tegenaan botst.
@@ -224,8 +224,10 @@ bool Game::addExplosion(char x, char y, Player *p, direction dir, bool last) {
     if (gridCollision(pos)) {  // heeft een botsing tegen een grijs blokje
         return false;
     }
-    if (blockCollision(pos)) {
-        blocks[pos.y * width + pos.x] = 0;  // blokje weg
+    int blockindex = blockCollision(pos);
+    if (blockindex != -1) {
+        blocks[blockindex] = 0;  // blokje weg
+
         p->giveScore(POINTSBLOCKDESTROY);
         addCornerExplosion(x, y, p, dir);
         return false;
@@ -308,7 +310,7 @@ void Game::drawGrid() {
 void Game::drawBlocks() {
     for (int i = 0; i < MAXNBLOCKS; i++) {
         if (blocks[i] == 0) {
-            break;
+            continue;
         }
         drawBlock(blocks[i] % width, blocks[i] / width, PURPLE, DARKGREY);
     }

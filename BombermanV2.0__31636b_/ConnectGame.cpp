@@ -42,9 +42,9 @@ ConnectGame::run() {
   // Check if Zbutton is pressed on nunchuck. If it is, return TASK_DONE
   nunchuk->update();
   if (nunchuk->zButton) {
-    Player *p = new Player(game, "P1", 1, 1, gameColour->getGameColour());
+    Player *p = new Player(game, 1, 1, gameColour->getGameColour());
     game->addPlayer(p);
-    Player *p2 = new Player(game, "P2", 13, 15, myLink->otherplayer_color);
+    Player *p2 = new Player(game, 13, 15, myLink->otherplayer_color);
     game->addPlayer(p2);
     Serial.println("build done");
     return TASK_DONE;

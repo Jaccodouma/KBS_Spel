@@ -7,7 +7,7 @@
 // Self-made Libraries and utilities
 #include "TaskManager.h"
 #include "GameColour.h"
-#include "Game.h"
+#include "game.h"
 #include "IR.h"
 #include "link.h"
 #include "ConnectGame.h"
