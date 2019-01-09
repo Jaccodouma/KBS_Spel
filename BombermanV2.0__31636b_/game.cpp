@@ -125,7 +125,7 @@ Gameobject *Game::hasCollision(Gameobject *go, position p) {
   Gameobject *temp = gos.getNext();
   Gameobject *collision = NULL;
   while (temp != NULL) {
-    position pos = temp->getFieldPos();
+    position pos = temp->fieldPos;
     if (p.x == pos.x && p.y == pos.y) {  // botsing met een game-object
       collision = temp;
     }
@@ -163,7 +163,7 @@ void Game::movePlayer(Player *p, direction d) {
     // laat de alleen bewegen als de speler stilstaat en de volgende positie
     // geen bostsing zou veroorzaken
     if (!p->isMoving()) {
-        position nextpos = movePosition(p->getFieldPos(), d);
+        position nextpos = movePosition(p->fieldPos, d);
 
         if (gridCollision(nextpos)) {
             return;  // heeft een botsing tegen de vast blokjes
@@ -193,8 +193,8 @@ void Game::addGameobject(Gameobject *go) {
 }
 
 void Game::bombExplosion(Bomb *bomb) {
-  char x = bomb->getFieldPos().x;
-  char y = bomb->getFieldPos().y;
+  char x = bomb->fieldPos.x;
+  char y = bomb->fieldPos.y;
   gos.add(new Explosion(x, y, bomb->player));       // vuur op plaats van bom
   for (char i = x; i > x - EXPLOSION_RANGE; i--) {  // vuur links
     if (!addExplosion(i - 1, y, bomb->player, DIR_LEFT,

@@ -4,6 +4,7 @@
 #define _GAMECOLOUR_h
 
 #include <stdint.h> // for whatever reason uint8_t didn't get recognised
+#include "IR.h"
 
 // Typedefs
 typedef uint16_t colour;
@@ -18,7 +19,7 @@ struct rgb {
 class GameColour
 {
 public:
-	GameColour();
+	GameColour(IR *ir);
 	void generateNewColour(); // Randomly generates a new colour
 	void setGameColour(uint8_t red, uint8_t green, uint8_t blue);
 	colour color565(uint8_t red, uint8_t green, uint8_t blue);
@@ -29,12 +30,18 @@ public:
 	colour getGameColour_050();
 	colour getGameColour_negative();
 	colour getGameColour_negative_050();
+
+	uint16_t getHue();
 	
 	colour getBackgroundColour();
 	colour getBackgroundColour_light();
-private:
 	rgb getRGBfromHue(uint16_t hue);
+	colour hueToColour(uint16_t hue);
 
+	
+private:
+	IR *ir;
+	uint16_t hue;
 	colour gameColour;
 	colour gameColour_025;
 	colour gameColour_050;

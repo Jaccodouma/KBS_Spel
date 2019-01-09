@@ -73,7 +73,7 @@ void Player::onExplosion(Player *p) {
         wasDead = true;
         counter = IMMORALTIME;
     } else {
-        lives = NUMLIVES; //herstel leven tijdelijk
+        lives = 0; //herstel leven tijdelijk
         // speler dood - proces om spel stop te zetten moet worden gestart
     }
     if (p != this) { // door andere speler zijn explosie geraakt

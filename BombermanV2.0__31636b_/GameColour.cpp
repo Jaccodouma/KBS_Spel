@@ -1,16 +1,18 @@
 #include "GameColour.h"
 #include <Arduino.h>
 
-GameColour::GameColour() {
+GameColour::GameColour(IR *ir) {
+	this->ir = ir;
 	generateNewColour();
 	this->backgroundColour = color565(40,40,40);
 	this->backgroundColour_light = color565(60,60,60);
 }
 
 void GameColour::generateNewColour() {
-	//randomSeed(random()); // set seed for random() function, maybe shouldn't use random() for this but time or some more 'random' value 
-	
-	rgb newColourRGB =getRGBfromHue(random(0,360));
+	randomSeed(ir->getTime_ms()); // set seed for random() function, maybe shouldn't use random() for this but time or some more 'random' value 
+	this->hue = random(0,360);
+	rgb newColourRGB =getRGBfromHue(hue);
+	 Serial.print("Hue: "); Serial.println(hue);
 	
 	uint8_t r,g,b;
 	
@@ -70,13 +72,20 @@ rgb GameColour::getRGBfromHue(uint16_t hue) {
 	}
 	
 	// Print output for debugging
-	Serial.print("Hue: "); Serial.println(hue);
+	// Serial.print("Hue: "); Serial.println(hue);
 	//Serial.println(segment);
 	//Serial.print("R: "); Serial.println(out.r);
 	//Serial.print("G: "); Serial.println(out.g);
 	//Serial.print("B: "); Serial.println(out.b);
 	
 	return out;
+}
+
+
+colour GameColour::hueToColour(uint16_t hue) {
+	rgb tempRgb = getRGBfromHue(hue);
+
+	return color565(tempRgb.r, tempRgb.g, tempRgb.b); 
 }
 
 void GameColour::setGameColour(uint8_t red, uint8_t green, uint8_t blue) {
@@ -117,4 +126,8 @@ colour GameColour::getBackgroundColour() {
 
 colour GameColour::getBackgroundColour_light() {
 	return this->backgroundColour_light;
+}
+
+uint16_t GameColour::getHue() {
+	return this->hue;
 }

@@ -16,7 +16,7 @@ int Control::run()
   {
     game->start();
     newGame = 0;
-    this->p_update_timer = (game->ir->getTime_ms() + 500);
+    this->p_update_timer = (game->ir->getTime_ms() + 200);
     this->g_update_timer = (game->ir->getTime_ms() + 50);
     Serial.println("game started");
     return 0;
@@ -36,6 +36,22 @@ int Control::run()
       Serial.print(" c:");
       Serial.println(myLink->otherplayer_color);
 
+      //DIR_NO, DIR_UP, DIR_DOWN, DIR_LEFT, DIR_RIGHT   !!!delete this
+
+      if(myLink->otherplayer_x > game->players[1]->fieldPos.x){
+        game->players[1]->move(DIR_RIGHT); //bedienen van speler 1 met nunchuck
+      }else if(myLink->otherplayer_x < game->players[1]->fieldPos.x){
+        game->players[1]->move(DIR_LEFT); //bedienen van speler 1 met nunchuck
+      }
+
+      if(myLink->otherplayer_y > game->players[1]->fieldPos.y){
+        game->players[1]->move(DIR_DOWN); //bedienen van speler 1 met nunchuck
+      }else if(myLink->otherplayer_y < game->players[1]->fieldPos.y){
+        game->players[1]->move(DIR_UP); //bedienen van speler 1 met nunchuck
+      }
+
+      game->players[1]->lives = myLink->otherplayer_lives;
+
       if(myLink->otherplayer_bomb){
         game->players[1]->plantBomb();
       }
@@ -46,9 +62,12 @@ int Control::run()
       this->p_update_timer = (game->ir->getTime_ms() + 200);
       this->g_update_timer = (game->ir->getTime_ms() + 25);
 
-      myLink->updatePlayerData(3, 6, 1, 3); //X,Y,BOMB,LIVES
-
+      if(myLink->updatePlayerData(game->players[0]->fieldPos.x, game->players[0]->fieldPos.y, placeBomb, game->players[0]->lives)){ //X,Y,BOMB,LIVES
       Serial.println("sent data");
+      }
+      
+      placeBomb = 0;
+
       return 0;
     }
 
@@ -66,9 +85,9 @@ int Control::run()
         if (nunchuk->zButton == 1)
         {
           game->players[0]->plantBomb();
+          placeBomb = 1;
         }
       }
-      freeRam();
     }
   }
   return 0;

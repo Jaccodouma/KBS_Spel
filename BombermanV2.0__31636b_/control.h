@@ -24,6 +24,7 @@ public:
   void movePlayer(direction d);
 
 private:
+  boolean placeBomb = 0;
   ArduinoNunchuk *nunchuk;
   Adafruit_ILI9341 *Screen;
   Game *game;

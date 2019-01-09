@@ -78,7 +78,7 @@ int main(void)
   nunchuk.init();
 
   // Generate game colour
-  GameColour gameColour;
+  GameColour gameColour(&myIR);
 
   // Start screen and make it the right colour
   Screen.begin();
@@ -94,7 +94,7 @@ int main(void)
 
   // Create Task objects
   IntroScreen *introScreen = new IntroScreen(&Screen, &nunchuk, &gameColour);
-  ConnectGame *connectGame = new ConnectGame(&Screen, &nunchuk, &gameColour, &scoreboard, &game, &myLink);
+  ConnectGame *connectGame = new ConnectGame(&Screen, &nunchuk, &gameColour, &scoreboard, &game, &myLink, MASTER);
   Control *control = new Control(&nunchuk, &Screen, &gfx, &scoreboard, &game, &myLink);
 
   // Add tasks to taskManager

@@ -21,9 +21,10 @@
 class ConnectGame: public Task
 {
   public:
-    ConnectGame(Adafruit_ILI9341 *Screen, ArduinoNunchuk *nunchuk, GameColour *gameColour, Scoreboard *scoreboard, Game *game, link *myLink);
+    ConnectGame(Adafruit_ILI9341 *Screen, ArduinoNunchuk *nunchuk, GameColour *gameColour, Scoreboard *scoreboard, Game *game, link *myLink, boolean master);
     int run();
   private:
+    boolean master = 1;
     Adafruit_ILI9341 *Screen;
     ArduinoNunchuk *nunchuk;
     Game *game;
