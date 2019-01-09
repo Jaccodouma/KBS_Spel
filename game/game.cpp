@@ -30,8 +30,10 @@ void Game::addRandomBlocks() {
                         // mag niet helemaal linksonder of rechtsonder omdat
                         // players hier komen
                         !(i == height - 2 && j == width - 2)) {
-                        blocks[n] = width * i + j;
-                        n++;
+                        if (n < MAXNBLOCKS) {
+                            blocks[n] = width * i + j;
+                            n++;
+                        }
                     }
                 }
             }
@@ -220,7 +222,7 @@ bool Game::addExplosion(char x, char y, Player *p, direction dir, bool last) {
         return false;
     }
     if (blockCollision(pos)) {
-        blocks[pos.y * width + pos.x] = 0; // blokje weg
+        blocks[pos.y * width + pos.x] = 0;  // blokje weg
     }
     Gameobject *co = hasCollision(p, pos);  // tegenaan botsend object
     if (co) {
