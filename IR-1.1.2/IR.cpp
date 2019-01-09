@@ -128,7 +128,7 @@ void IR::read(uint8_t *stream) {
 // for(int x= 0; x < 3; x++){
  // stream[x] = data[x];
 // }
-strcpy(stream, data);
+strcpy((char*)stream, (const char*)data);
 }
 
 int IR::error() {
