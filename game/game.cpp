@@ -111,14 +111,17 @@ bool Game::gridCollision(position p) {
 
 bool Game::blockCollision(position p) {
     for (int i = 0; i < MAXNBLOCKS; i++) {
-        if (i == 0) {
-            break;
+        uint8_t block = blocks[i];
+        if (block == 0) {
+            return false;
         }
-        if (blocks[i] / width == p.y && blocks[i] % width == p.x) {
+        uint8_t x = block % width;
+        uint8_t y = block / width;
+        if (y == p.y && x == p.x) {
             return true;
         }
-        return false;
     }
+    return false;
 }
 
 Gameobject *Game::hasCollision(Gameobject *go, position p) {
@@ -223,6 +226,9 @@ bool Game::addExplosion(char x, char y, Player *p, direction dir, bool last) {
     }
     if (blockCollision(pos)) {
         blocks[pos.y * width + pos.x] = 0;  // blokje weg
+        p->giveScore(POINTSBLOCKDESTROY);
+        addCornerExplosion(x, y, p, dir);
+        return false;
     }
     Gameobject *co = hasCollision(p, pos);  // tegenaan botsend object
     if (co) {
@@ -311,7 +317,7 @@ void Game::drawBlocks() {
 
 void Game::drawBlock(uint8_t x, uint8_t y, uint16_t colorfill,
                      uint16_t colordraw) {
-    gfx->drawRectField(x, y, colordraw);
+    gfx->drawRectField(x, y, colorfill);
     gfx->drawRectField(x, y, colordraw, false);
 }
 

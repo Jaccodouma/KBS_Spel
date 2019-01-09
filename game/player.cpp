@@ -49,10 +49,9 @@ void Player::draw(Gfx *gfx) {
     gfx->drawRect(prevPos.x, prevPos.y, BLACK);
 
     if (wasDead) {
-        gfx->drawXBitmap(screenPos.x, screenPos.y, player_still[0], WHITE);
-        gfx->drawXBitmap(screenPos.x, screenPos.y, player_still[1], WHITE);
-        gfx->drawXBitmap(screenPos.x, screenPos.y, player_still[2], WHITE);
-        gfx->drawXBitmap(screenPos.x, screenPos.y, player_still[3], WHITE);
+        for (int i = 0; i < 4; i++) {
+            gfx->drawXBitmap(screenPos.x, screenPos.y, player_still[i], WHITE);
+        }
     } else {
         // Teken alle kleuren van het poppetje
         gfx->drawXBitmap(screenPos.x, screenPos.y, player_still[0], color);
