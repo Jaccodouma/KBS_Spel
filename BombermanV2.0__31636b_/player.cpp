@@ -19,7 +19,14 @@ void Player::move(direction d) {
         this->dir = d;
         this->fieldPos = movePosition(this->fieldPos, d);
     }
+}
 
+void Player::movePos(uint8_t x, uint8_t y) {
+    prevPos = {fieldPos.x * blocksize, fieldPos.y * blocksize};
+    fieldPos.x = x;
+    fieldPos.y = y;
+    screenPos = {x * blocksize, y * blocksize};
+    redraw(this);
 }
 
 void Player::update(int prevUpdate) {

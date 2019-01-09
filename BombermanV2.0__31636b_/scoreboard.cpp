@@ -11,7 +11,8 @@ void Scoreboard::init(Player *players[]) {
     uint16_t cursorX = 0, cursorY = 0;
 
     for (int i = 0; i < MAXNPLAYER; i++) {
-        gfx->drawText(cursorX, cursorY, "P");
+        const char *s = "Player";
+        gfx->drawText(cursorX, cursorY, s);
 
         cursorX = 6 * (TEXTWIDTH - 1);
         gfx->drawXBitmap(0 - gfx->offsetX + cursorX, 0 - gfx->offsetY + cursorY,

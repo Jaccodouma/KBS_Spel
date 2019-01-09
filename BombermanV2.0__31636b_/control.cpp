@@ -36,16 +36,9 @@ int Control::run()
 
       //DIR_NO, DIR_UP, DIR_DOWN, DIR_LEFT, DIR_RIGHT   !!!delete this
 
-      if(myLink->otherplayer_x > game->players[1]->fieldPos.x){
-        game->players[1]->move(DIR_RIGHT); //bedienen van speler 1 met nunchuck
-      }else if(myLink->otherplayer_x < game->players[1]->fieldPos.x){
-        game->players[1]->move(DIR_LEFT); //bedienen van speler 1 met nunchuck
-      }
-
-      if(myLink->otherplayer_y > game->players[1]->fieldPos.y){
-        game->players[1]->move(DIR_DOWN); //bedienen van speler 1 met nunchuck
-      }else if(myLink->otherplayer_y < game->players[1]->fieldPos.y){
-        game->players[1]->move(DIR_UP); //bedienen van speler 1 met nunchuck
+      // verandering in positie
+      if(myLink->otherplayer_x != game->players[1]->fieldPos.x || myLink->otherplayer_y != game->players[1]->fieldPos.y){
+        game->players[1]->movePos(myLink->otherplayer_x, myLink->otherplayer_y); //bedienen van speler 1 met nunchuck
       }
 
       game->players[1]->lives = myLink->otherplayer_lives;

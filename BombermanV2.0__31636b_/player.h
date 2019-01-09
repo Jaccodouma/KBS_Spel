@@ -21,6 +21,7 @@ class Player : public Gameobject {
     Game *g;
 
     void move(direction d);
+    void movePos(uint8_t x, uint8_t y);
     void update(int prevUpdate);
     void draw(Gfx *gfx);
     void onExplosion(Player *p);

@@ -34,7 +34,7 @@ void Gfx::drawChar(int x, int y, char c, uint8_t size, uint16_t color) {
     drawText(x, y, str, size, color);
 }
 
-void Gfx::drawText(int x, int y, char *text, uint8_t size, uint16_t color) {
+void Gfx::drawText(int x, int y, const char *text, uint8_t size, uint16_t color) {
     tft->setTextColor(color);
     tft->setTextSize(size);
     tft->setCursor(x, y);

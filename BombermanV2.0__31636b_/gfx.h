@@ -45,7 +45,7 @@ class Gfx {
     void drawXBitmap(int x, int y, const uint8_t *bitmap, uint16_t color);
     void drawBitmapField(int x, int y, const uint8_t *bitmap, uint16_t color);
     void drawChar(int x, int y, char c, uint8_t size = TEXTSIZE, uint16_t color = TEXTCOLOR);
-    void drawText(int x, int y, char *text, uint8_t size = TEXTSIZE, uint16_t color = TEXTCOLOR);
+    void drawText(int x, int y, const char *text, uint8_t size = TEXTSIZE, uint16_t color = TEXTCOLOR);
     void drawXBitmapField(int x, int y, const uint8_t *bitmap, uint16_t color);
 
     Adafruit_ILI9341 *tft;

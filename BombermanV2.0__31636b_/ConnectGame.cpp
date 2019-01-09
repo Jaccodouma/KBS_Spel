@@ -12,7 +12,7 @@ ConnectGame::ConnectGame(Adafruit_ILI9341 *Screen, ArduinoNunchuk *nunchuk, Game
   this->master = master;
 }
 
-ConnectGame::run()
+int ConnectGame::run()
 {
   if (newGame)
   {

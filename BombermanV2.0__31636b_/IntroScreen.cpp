@@ -11,7 +11,7 @@ IntroScreen::IntroScreen(Adafruit_ILI9341 *Screen, ArduinoNunchuk *nunchuk, Game
 	this->initialised = false;
 }
 
-IntroScreen::run() {
+int IntroScreen::run() {
 	if (!this->initialised) {
 		Serial.println("Drawing screen");
 		
