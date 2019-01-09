@@ -1,6 +1,8 @@
 #ifndef link_H
 #define link_H
 
+#include "IR.h"
+
 #define MESSAGE_SIZE 9
 
 #define COLOR_DATA 2
@@ -10,7 +12,7 @@
 #define KEEP_SENDING_UNTIL_ACK 2
 #define RECEIVE 3
 
-#define DEBUG 0
+#define DEBUG 1
 
 class link
 {

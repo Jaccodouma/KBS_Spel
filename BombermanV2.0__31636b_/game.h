@@ -9,6 +9,7 @@
 #include "scoreboard.h"
 #include "Adafruit_ILI9341.h"
 #include "IR.h"
+#include "explosion.h"
 
 #define REFRESHRATE 50 // elke 50ms dus 20Hz
 #define MAXNPLAYER 2 // max number players
@@ -33,11 +34,11 @@ class Game {
     void updateScores(Player *p);
     uint8_t getWidth();
     uint8_t getHeight();
+    IR *ir;
 
    private:
     Adafruit_ILI9341 *tft;
     Gfx *gfx;
-    IR *ir;
     Scoreboard *scoreboard;
     GoList gos;
     uint8_t width, height;
