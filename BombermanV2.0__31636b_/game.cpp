@@ -16,23 +16,30 @@ Game::~Game() {
 }
 
 void Game::addRandomBlocks() {
-  randomSeed(240);  // voor de random-functie
-  for (int i = 1; i < height - 1; i++) {
-    for (int j = 1; j < width - 1; j++) {
-      // ga langs alle posities maar sla grid-blokjes over
-      if (!isEven(i) || !isEven(j)) {
-        // kans is 1 op 3 dat er een blokje geplaatst wordt
-        if (random() % 5 == 0) {
-          if (!(i == 1 && j == 1) &&
-              // mag niet helemaal linksonder of rechtsonder omdat
-              // players hier komen
-              !(i == height - 2 && j == width - 2)) {
-            gos.add(new Block(j, i));
-          }
+    randomSeed(240);  // voor de random-functie
+    uint8_t n = 0;
+    for (int i = 1; i < height - 1; i++) {
+        for (int j = 1; j < width - 1; j++) {
+            // ga langs alle posities maar sla grid-blokjes over
+            if (!isEven(i) || !isEven(j)) {
+                // kans is 1 op 3 dat er een blokje geplaatst wordt
+                if (random() % 3 == 0) {
+                    if (!(i == 1 && j == 1) &&
+                        // mag niet helemaal linksonder of rechtsonder omdat
+                        // players hier komen
+                        !(i == height - 2 && j == width - 2)) {
+                        if (n < MAXNBLOCKS) {
+                            blocks[n] = width * i + j;
+                            n++;
+                        }
+                    }
+                }
+            }
         }
-      }
     }
-  }
+    for (; n < MAXNBLOCKS; n++) {  // clear de rest
+        blocks[n] = 0;
+    }
 }
 
 void Game::update() {
@@ -99,6 +106,21 @@ bool Game::gridCollision(position p) {
   return false;
 }
 
+bool Game::blockCollision(position p) {
+    for (int i = 0; i < MAXNBLOCKS; i++) {
+        uint8_t block = blocks[i];
+        if (block == 0) {
+            return false;
+        }
+        uint8_t x = block % width;
+        uint8_t y = block / width;
+        if (y == p.y && x == p.x) {
+            return true;
+        }
+    }
+    return false;
+}
+
 Gameobject *Game::hasCollision(Gameobject *go, position p) {
   Gameobject *temp = gos.getNext();
   Gameobject *collision = NULL;
@@ -138,29 +160,32 @@ bool Game::addPlayer(Player *p) {
 }
 
 void Game::movePlayer(Player *p, direction d) {
-  // laat de alleen bewegen als de speler stilstaat en de volgende positie
-  // geen bostsing zou veroorzaken
-  if (!p->isMoving()) {
-    position nextpos = movePosition(p->getFieldPos(), d);
+    // laat de alleen bewegen als de speler stilstaat en de volgende positie
+    // geen bostsing zou veroorzaken
+    if (!p->isMoving()) {
+        position nextpos = movePosition(p->getFieldPos(), d);
 
-    if (gridCollision(nextpos)) {
-      return;  // heeft een botsing tegen de vast blokjes
+        if (gridCollision(nextpos)) {
+            return;  // heeft een botsing tegen de vast blokjes
+        }
+        if (blockCollision(nextpos)) {
+            return;
+        }
+        // zoek een gameobject waar de speler tegenaan botst.
+        Gameobject *collision = hasCollision(p, nextpos);
+        if (collision == NULL) {  // de speler botst tegen geen enkel object
+            p->move(d);           // loop 1 blokje in die richting
+            return;
+        }
+        // speler botst wel tegen een object
+        collision->onPlayerCollision(
+            p);  // roep deze functie aan op het desbetreffende object
+        if (!isSolid(collision)) {  // als het object doordringbaar is, loop er
+            // doorheen en herteken het
+            p->move(d);  // loop 1 blokje in die richting
+            redraw(collision);
+        }
     }
-    // zoek een gameobject waar de speler tegenaan botst.
-    Gameobject *collision = hasCollision(p, nextpos);
-    if (collision == NULL) {  // de speler botst tegen geen enkel object
-      p->move(d);           // loop 1 blokje in die richting
-      return;
-    }
-    // speler botst wel tegen een object
-    collision->onPlayerCollision(
-      p);  // roep deze functie aan op het desbetreffende object
-    if (!isSolid(collision)) {  // als het object doordringbaar is, loop er
-      // doorheen en herteken het
-      p->move(d);             // loop 1 blokje in die richting
-      redraw(collision);
-    }
-  }
 }
 
 void Game::addGameobject(Gameobject *go) {
@@ -194,34 +219,40 @@ void Game::bombExplosion(Bomb *bomb) {
 }
 
 bool Game::addExplosion(char x, char y, Player *p, direction dir, bool last) {
-  // deze functie geeft false terug als de explosie moet stoppen
-  position pos = {x, y};
-  if (gridCollision(pos)) {  // heeft een botsing tegen een grijs blokje
-    return false;
-  }
-  Gameobject *co = hasCollision(p, pos);  // tegenaan botsend object
-  if (co) {
-    co->onExplosion(
-      p);  // roep onExplosion op het desbetreffende geraakte object aan
-    if (isSolid(co)) {  // als het een ondoordringbaar object is zal het
-      // gesloopt worden
-      addCornerExplosion(x, y, p, dir);
-
-      return false;  // voorkomt dat de explosie verder dan het gesloopte
-      // blokje gaat
+    // deze functie geeft false terug als de explosie moet stoppen
+    position pos = {x, y};
+    if (gridCollision(pos)) {  // heeft een botsing tegen een grijs blokje
+        return false;
     }
-  }
-  if (!last) {
-    if (dir == DIR_LEFT || dir == DIR_RIGHT) {
-      gos.add(new Explosion(x, y, p, EX_HORIZONTAL));
-    } else if (dir == DIR_UP || dir == DIR_DOWN) {
-      gos.add(new Explosion(x, y, p, EX_VERTICAL));
+    if (blockCollision(pos)) {
+        blocks[pos.y * width + pos.x] = 0;  // blokje weg
+        p->giveScore(POINTSBLOCKDESTROY);
+        addCornerExplosion(x, y, p, dir);
+        return false;
     }
-  } else {
-    addCornerExplosion(x, y, p, dir);
-  }
+    Gameobject *co = hasCollision(p, pos);  // tegenaan botsend object
+    if (co) {
+        co->onExplosion(
+            p);  // roep onExplosion op het desbetreffende geraakte object aan
+        if (isSolid(co)) {  // als het een ondoordringbaar object is zal het
+            // gesloopt worden
+            addCornerExplosion(x, y, p, dir);
 
-  return true;  // niks aan de hand, geen botsingen
+            return false;  // voorkomt dat de explosie verder dan het gesloopte
+                           // blokje gaat
+        }
+    }
+    if (!last) {
+        if (dir == DIR_LEFT || dir == DIR_RIGHT) {
+            gos.add(new Explosion(x, y, p, EX_HORIZONTAL));
+        } else if (dir == DIR_UP || dir == DIR_DOWN) {
+            gos.add(new Explosion(x, y, p, EX_VERTICAL));
+        }
+    } else {
+        addCornerExplosion(x, y, p, dir);
+    }
+
+    return true;  // niks aan de hand, geen botsingen
 }
 
 void Game::addCornerExplosion(char x, char y, Player *p, direction dir) {
@@ -254,29 +285,39 @@ void Game::drawLevel() {
                    gfx->tft->width() - gfx->offsetX * 2,
                    gfx->tft->height() - gfx->offsetY * 2, BLACK);
   drawGrid();
+  drawBlocks();
 }
-
 void Game::drawGrid() {
-  for (int i = 0; i < height; i++) {
-    for (int j = 0; j < width; j++) {
-      if (i == 0 || i == height - 1) {  // bovenste of onderste rij
-        drawGridBlock(j, i);
-      } else {
-        if (j == 0 || j == width - 1) {  // rand links of rechts
-          drawGridBlock(j, i);
-        } else {
-          if (isEven(i) && isEven(j)) {
-            drawGridBlock(j, i);
-          }
+    for (int i = 0; i < height; i++) {
+        for (int j = 0; j < width; j++) {
+            if (i == 0 || i == height - 1) {  // bovenste of onderste rij
+                drawBlock(j, i, LIGHTGREY, DARKGREY);
+            } else {
+                if (j == 0 || j == width - 1) {  // rand links of rechts
+                    drawBlock(j, i, LIGHTGREY, DARKGREY);
+                } else {
+                    if (isEven(i) && isEven(j)) {
+                        drawBlock(j, i, LIGHTGREY, DARKGREY);
+                    }
+                }
+            }
         }
-      }
     }
-  }
 }
 
-void Game::drawGridBlock(int x, int y) {
-  gfx->drawRectField(x, y, LIGHTGREY);
-  gfx->drawRectField(x, y, DARKGREY, false);
+void Game::drawBlocks() {
+    for (int i = 0; i < MAXNBLOCKS; i++) {
+        if (blocks[i] == 0) {
+            break;
+        }
+        drawBlock(blocks[i] % width, blocks[i] / width, PURPLE, DARKGREY);
+    }
+}
+
+void Game::drawBlock(uint8_t x, uint8_t y, uint16_t colorfill,
+                     uint16_t colordraw) {
+    gfx->drawRectField(x, y, colorfill);
+    gfx->drawRectField(x, y, colordraw, false);
 }
 
 void Game::updateScores(Player *p) {

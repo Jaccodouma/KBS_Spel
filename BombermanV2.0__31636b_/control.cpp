@@ -16,6 +16,8 @@ int Control::run()
   {
     game->start();
     newGame = 0;
+    this->p_update_timer = (game->ir->getTime_ms() + 500);
+    this->g_update_timer = (game->ir->getTime_ms() + 50);
     Serial.println("game started");
     return 0;
   }
@@ -41,10 +43,8 @@ int Control::run()
 
     if (game->ir->getTime_ms() > this->p_update_timer)
     { //do this every 1000ms
-      this->p_update_timer = (game->ir->getTime_ms() + 200);
-      this->g_update_timer = (game->ir->getTime_ms() + 10);
-      //myLink->updatePlayerData(1, 3, 1, 1); //X,Y,BOMB,LIVES
-      myLink->updateColorData(11);
+      this->p_update_timer = (game->ir->getTime_ms() + 500);
+      //myLink->updatePlayerData(1, 1, 0, 0); //X,Y,BOMB,LIVES
 
       Serial.println("sent data");
       return 0;
@@ -52,7 +52,7 @@ int Control::run()
 
     if (game->ir->getTime_ms() > this->g_update_timer)
     {
-      this->g_update_timer = (game->ir->getTime_ms() + 10);
+      this->g_update_timer = (game->ir->getTime_ms() + 50);
       nunchuk->update();
       direction dir = nunchuck_Direction();
 
@@ -66,6 +66,7 @@ int Control::run()
           game->players[0]->plantBomb();
         }
       }
+    freeRam();
     }
   }
   return 0;
