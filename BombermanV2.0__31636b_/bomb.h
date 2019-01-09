@@ -11,13 +11,12 @@
 class Bomb : public Gameobject {
    public:
     Player *player;
-    Bomb(Game *game, int x, int y, Player *p);
+    Bomb(int x, int y, Player *p);
     void update(int prevUpdate);
     void draw(Gfx *gfx);
     void onDelete(Gfx *gfx);
 
    private:
-    Game *game;
     int countdown = EXPLOSION_TIME;
 };
 

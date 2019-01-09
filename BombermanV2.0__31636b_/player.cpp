@@ -89,7 +89,7 @@ void Player::giveBomb() {
 
 void Player::plantBomb() {
     if (nbombs > 0) {
-        g->addGameobject(new Bomb(g, fieldPos.x, fieldPos.y, this));
+        g->addGameobject(new Bomb(fieldPos.x, fieldPos.y, this));
         // bom geplaatst
         nbombs--;
         g->updateScores(this);
