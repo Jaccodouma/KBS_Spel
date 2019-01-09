@@ -18,7 +18,7 @@ class Player : public Gameobject {
     uint8_t lives = NUMLIVES;
     int score = 0;
     point screenPos; //VERPLAASTE (GETTERS EN SETTERS)
-
+    Game *g;
 
     void move(direction d);
     void update(int prevUpdate);
@@ -33,7 +33,6 @@ class Player : public Gameobject {
     void giveScore(int points);
 
    private:
-    Game *g;
     direction dir = direction::DIR_NO;
     // pixelposities:
     point prevPos;

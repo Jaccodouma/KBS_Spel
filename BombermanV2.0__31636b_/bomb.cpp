@@ -1,9 +1,8 @@
 #include "bomb.h"
 #include "game.h"
 
-Bomb::Bomb(Game *game, int x, int y, Player *p) : Gameobject(x, y, true) {
+Bomb::Bomb(int x, int y, Player *p) : Gameobject(x, y, true) {
     this->player = p;
-    this->game = game;
     updateGO(this);
 }
 
@@ -34,6 +33,6 @@ void Bomb::update(int prevUpdate) {
 void Bomb::onDelete(Gfx *gfx) {
     // teken zwart vierkant over bom
     gfx->drawRectField(fieldPos.x, fieldPos.y, CLR_BACKGROUND);
-    game->bombExplosion(this);
+    player->g->bombExplosion(this);
     player->giveBomb(); // geef de mogelijkheid om een bomb te plaatsen weer terug
 }
