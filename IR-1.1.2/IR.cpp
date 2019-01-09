@@ -118,7 +118,7 @@ uint8_t IR::available() {
   }
 }
 
-void IR::read(uint8_t *stream) {
+/*void IR::read(uint8_t *stream) {
  // uint8_t n = 0;
  // while (data[n] > 0) {
  //   stream[n] = data[n];
@@ -128,8 +128,8 @@ void IR::read(uint8_t *stream) {
 // for(int x= 0; x < 3; x++){
  // stream[x] = data[x];
 // }
-strcpy((char*)stream, (const char*)data);
-}
+strcpy(stream, data);
+}*/
 
 int IR::error() {
   if (parityError) {
