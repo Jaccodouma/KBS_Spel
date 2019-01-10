@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Atmel Studio Solution File, Format Version 11.00
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{E66E83B9-2572-4076-B26E-6BE79FF3018A}") = "Bomberman", "Bomberman.cppproj", "{8F09FE4A-C0B6-4273-9585-A7ABE0E19F1C}"
+EndProject
+Project("{E66E83B9-2572-4076-B26E-6BE79FF3018A}") = "TaskManager", "..\TaskManager\TaskManager.cppproj", "{CD39B101-054E-4B74-904B-BDDB1263412A}"
+EndProject
+Project("{E66E83B9-2572-4076-B26E-6BE79FF3018A}") = "MIC4_Nunchuk", "C:\Users\Jacco\Documents\Arduino\MIC4_Nunchuk\MIC4_Nunchuk.cppproj", "{41ACCAD7-CAA8-4321-B8F8-A57651981080}"
+EndProject
+Project("{E66E83B9-2572-4076-B26E-6BE79FF3018A}") = "scherm_dimmer_menu", "..\scherm_dimmer_menu\scherm_dimmer_menu.cppproj", "{5295CEF5-1475-4572-A01E-8ED74A8AC6D6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|AVR = Debug|AVR
+		Release|AVR = Release|AVR
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8F09FE4A-C0B6-4273-9585-A7ABE0E19F1C}.Debug|AVR.ActiveCfg = Debug|AVR
+		{8F09FE4A-C0B6-4273-9585-A7ABE0E19F1C}.Debug|AVR.Build.0 = Debug|AVR
+		{8F09FE4A-C0B6-4273-9585-A7ABE0E19F1C}.Release|AVR.ActiveCfg = Release|AVR
+		{8F09FE4A-C0B6-4273-9585-A7ABE0E19F1C}.Release|AVR.Build.0 = Release|AVR
+		{CD39B101-054E-4B74-904B-BDDB1263412A}.Debug|AVR.ActiveCfg = Debug|AVR
+		{CD39B101-054E-4B74-904B-BDDB1263412A}.Debug|AVR.Build.0 = Debug|AVR
+		{CD39B101-054E-4B74-904B-BDDB1263412A}.Release|AVR.ActiveCfg = Release|AVR
+		{CD39B101-054E-4B74-904B-BDDB1263412A}.Release|AVR.Build.0 = Release|AVR
+		{41ACCAD7-CAA8-4321-B8F8-A57651981080}.Debug|AVR.ActiveCfg = Debug|AVR
+		{41ACCAD7-CAA8-4321-B8F8-A57651981080}.Debug|AVR.Build.0 = Debug|AVR
+		{41ACCAD7-CAA8-4321-B8F8-A57651981080}.Release|AVR.ActiveCfg = Release|AVR
+		{41ACCAD7-CAA8-4321-B8F8-A57651981080}.Release|AVR.Build.0 = Release|AVR
+		{5295CEF5-1475-4572-A01E-8ED74A8AC6D6}.Debug|AVR.ActiveCfg = Debug|AVR
+		{5295CEF5-1475-4572-A01E-8ED74A8AC6D6}.Debug|AVR.Build.0 = Debug|AVR
+		{5295CEF5-1475-4572-A01E-8ED74A8AC6D6}.Release|AVR.ActiveCfg = Release|AVR
+		{5295CEF5-1475-4572-A01E-8ED74A8AC6D6}.Release|AVR.Build.0 = Release|AVR
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
