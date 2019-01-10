@@ -312,7 +312,13 @@ void Game::drawBlocks() {
         if (blocks[i] == 0) {
             continue;
         }
-        drawBlock(blocks[i] % width, blocks[i] / width, PURPLE, DARKGREY);
+        uint8_t x = blocks[i] % width;
+        uint8_t y = blocks[i] / width;
+            char buffer[8];
+    sprintf(buffer, "%i", blocks[i]);
+        drawBlock(x, y, PURPLE, DARKGREY);
+           // gfx->drawText(x * gfx->blocksize + gfx->offsetX, y * gfx->blocksize + gfx->offsetY, buffer, 1, WHITE);
+
     }
 }
 

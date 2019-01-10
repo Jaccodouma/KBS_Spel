@@ -46,7 +46,7 @@ Adafruit_ILI9341 Screen = Adafruit_ILI9341(TFT_CS, TFT_DC);
 // Nunchuk object
 ArduinoNunchuk nunchuk = ArduinoNunchuk();
 
-#define MASTER 1
+#define MASTER 0
 
 IR myIR(38, 12); //38KHz or 56KHz Transmitter Fq, pulse size (45 default)
 

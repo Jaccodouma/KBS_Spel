@@ -33,24 +33,13 @@ class link
   private:
     IR *ir;
     uint8_t master;
-    unsigned long responce_timer = 0;
-
-    uint8_t mode = 1;
-
-    void confirm(void);
-
     uint8_t dataIN[MESSAGE_SIZE]; //an array to store the received data
-
-    uint8_t calcHash(uint8_t data[MESSAGE_SIZE]);
-
-    void broadcast(void); //message manager
     uint8_t lastSent = 0; //stores the last datatype; 0 = nothing, 1 = colordata, 2 = playerdata
-
-    //variables to store the new data
-    //uint8_t newPlayerdata = 0;
-    //uint8_t newColordata = 0;
     uint8_t PlayerdataOUT[2]; //variable to store the player data
     uint8_t ColordataOUT[3];  //variable to store the color data
+
+    uint8_t calcHash(uint8_t data[MESSAGE_SIZE]);
+    void broadcast(void); //message manager
 };
 
 #endif
